@@ -18,9 +18,7 @@ The first card played is the “lead” (like leader) and the other players must
 
 Whomever won the first trick gets to lead the next trick. Here’s how you get points, get as many tricks as you can.  
 
-Are you getting this? I hope you’re getting this, but if you’re ever struggling there’s a great video if you scroll down the page here. 
-
-[https://www.thesprucecrafts.com/euchre-rules-tricktaking-card-game-409350](https://www.thesprucecrafts.com/euchre-rules-tricktaking-card-game-409350)
+Are you getting this? I hope you’re getting this, but if you’re ever struggling there’s a great video if you scroll down the page [here.](https://www.thesprucecrafts.com/euchre-rules-tricktaking-card-game-409350) or a [quick guide](https://gathertogethergames.com/euchre) to reference. 
 
 **Scoring and special trump things:**
 
@@ -50,11 +48,11 @@ Once Trump is chosen the person left of the dealer plays the first card! Then it
 
 Wahoo! That’s Euchre, or at least one of the many versions of Euchre, it’s regionally specific where even separate towns play with some fun rule additions. There’s even a high level of <span style="text-decoration:underline;">cheating and stealing </span>baked into this past time—where I’m from at least. There’s no cheating possibilities built into my code but that might be an expansion! 
 
-[https://www.thesprucecrafts.com/how-to-cheat-at-euchre-411488](https://www.thesprucecrafts.com/how-to-cheat-at-euchre-411488)
+[how-to-cheat-at-euchre thesprucecrafts.com](https://www.thesprucecrafts.com/how-to-cheat-at-euchre-411488)
 
-My coded version doesn’t yet have visuals to it so to make things easier the game can be played in browser here, enjoy! 
+My coded version doesn’t yet have visuals to it so to make things easier the game can be played in browser [here](https://cardgames.io/euchre/), enjoy! 
 
-[https://cardgames.io/euchre/](https://cardgames.io/euchre/)
+
 
 **Fun terms:**
 
@@ -67,6 +65,8 @@ Screw the dealer: This is a rule played in this game where the dealer has to cho
 Going alone: This variation is used when a player has a strong hand and they can opt to “go alone” and perhaps win more points by doing so
 
 Bower: The name of the Jack’s of trump. The “right” bower is of the suit of trump while the “left” bower is the off suit Jack. 
+
+Knock to pass: Cool players will knock on the table to indicate a pass
 
 **Sources:**
 

@@ -6,14 +6,8 @@ Euchre Setup:
 
 We use the 9 and up cards out a regular deck of cards, so no 2–8 cards (aces are high). Once you have the Euchre deck ready you need 4 players, pick a person and sit across from them, their your partner now!
 
-
-
-<p id="gdcalert1" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/Euchre-Readme0.png). Store image on your image server and adjust path/filename if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert2">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/Euchre-Readme0.png "image_tooltip")
+<img src="images/TeamAroundTable.png" height = "150" alt="Team around table">
  
-
 **Euchre play:**
 
 Each round of play we each get 5 cards and we choose a suit to be the _special suit _that beats all others. 
@@ -24,9 +18,7 @@ The first card played is the “lead” (like leader) and the other players must
 
 Whomever won the first trick gets to lead the next trick. Here’s how you get points, get as many tricks as you can.  
 
-Are you getting this? I hope you’re getting this, but if you’re ever struggling there’s a great video if you scroll down the page here. 
-
-[https://www.thesprucecrafts.com/euchre-rules-tricktaking-card-game-409350](https://www.thesprucecrafts.com/euchre-rules-tricktaking-card-game-409350)
+Are you getting this? I hope you’re getting this, but if you’re ever struggling there’s a great video if you scroll down the page [here.](https://www.thesprucecrafts.com/euchre-rules-tricktaking-card-game-409350) or a [quick guide](https://gathertogethergames.com/euchre) to reference. 
 
 **Scoring and special trump things:**
 
@@ -34,15 +26,7 @@ Scoring? If your team chose Trump (the winningest suit) and you lose 3 or more t
 
 Special Trump stuff? Yep, the trump suit pulls over the Jack from the other suit of the same color. The order of highest to lowest of trump goes Jack, other Jack, Ace and down to the 9. This image shows the ranking order if clubs was trump. 
 
-  
-
-
-
-<p id="gdcalert2" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/Euchre-Readme1.png). Store image on your image server and adjust path/filename if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert3">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/Euchre-Readme1.png "image_tooltip")
-
+<img src="images/TrumpRank.jpg" height = "150" alt="Trump rank">
 
 Ok, are you lost yet? I know it’s odd but it’s part of the game’s charm. 
 
@@ -52,13 +36,7 @@ Alright, from the top! The person holding the deck of 24 cards the first round i
 
 The 4 cards remaining go face down near the dealer, the dealer then flips the top card up. This is the maybe-trump-is-this-suit card! 
 
-
-
-<p id="gdcalert3" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/Euchre-Readme2.png). Store image on your image server and adjust path/filename if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert4">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/Euchre-Readme2.png "image_tooltip")
-
+<img src="images/DecidingTrump.png" height = "150" alt="Deciding trump">
 
 The person left of the dealer will look at their hand and say whether or not they’d like that card’s suit to be the bestest suit. If so, then the dealer takes that cards and adds it to their hand, then discards. If not, then the next person makes the same Yay or Nay call. 
 
@@ -70,11 +48,11 @@ Once Trump is chosen the person left of the dealer plays the first card! Then it
 
 Wahoo! That’s Euchre, or at least one of the many versions of Euchre, it’s regionally specific where even separate towns play with some fun rule additions. There’s even a high level of <span style="text-decoration:underline;">cheating and stealing </span>baked into this past time—where I’m from at least. There’s no cheating possibilities built into my code but that might be an expansion! 
 
-[https://www.thesprucecrafts.com/how-to-cheat-at-euchre-411488](https://www.thesprucecrafts.com/how-to-cheat-at-euchre-411488)
+[how-to-cheat-at-euchre thesprucecrafts.com](https://www.thesprucecrafts.com/how-to-cheat-at-euchre-411488)
 
-My coded version doesn’t yet have visuals to it so to make things easier the game can be played in browser here, enjoy! 
+My coded version doesn’t yet have visuals to it so to make things easier the game can be played in browser [here](https://cardgames.io/euchre/), enjoy! 
 
-[https://cardgames.io/euchre/](https://cardgames.io/euchre/)
+
 
 **Fun terms:**
 
@@ -87,6 +65,8 @@ Screw the dealer: This is a rule played in this game where the dealer has to cho
 Going alone: This variation is used when a player has a strong hand and they can opt to “go alone” and perhaps win more points by doing so
 
 Bower: The name of the Jack’s of trump. The “right” bower is of the suit of trump while the “left” bower is the off suit Jack. 
+
+Knock to pass: Cool players will knock on the table to indicate a pass
 
 **Sources:**
 

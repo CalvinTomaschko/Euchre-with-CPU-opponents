@@ -6,12 +6,9 @@ Euchre Setup:
 
 We use the 9 and up cards out a regular deck of cards, so no 2–8 cards (aces are high). Once you have the Euchre deck ready you need 4 players, pick a person and sit across from them, their your partner now!
 
+<img src="images/TeamAroundTable.png" width = "300" alt="Team around table">
 
-
-<p id="gdcalert1" ><span style="color: red; font-weight: bold">>>>>>  gd2md-html alert: inline image link here (to images/Euchre-Readme0.png). Store image on your image server and adjust path/filename if necessary. </span><br>(<a href="#">Back to top</a>)(<a href="#gdcalert2">Next alert</a>)<br><span style="color: red; font-weight: bold">>>>>> </span></p>
-
-
-![alt_text](images/Euchre-Readme0.png "image_tooltip")
+![Team Around Table](images/TeamAroundTable.png)
  
 
 **Euchre play:**

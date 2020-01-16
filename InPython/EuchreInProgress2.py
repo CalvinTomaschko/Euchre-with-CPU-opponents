@@ -6,80 +6,7 @@
 # Created with guidance from the Black Jack game module
 
 
-# How many human players
 
-def how_many_humans():
-    num_humans = int(input("How many human players are there?"))
-    ### place exception error catch here
-    return table_positions(num_humans)
-
-# Which positions are the human players? 
-# They can be on the same team or opposing teams depending on where they sit
-
-
-def table_positions(output_num): 
-    table_position_dict = table_position_dict_default.copy()
-#     for seat in table_position_dict_default:
-#         table_position_dict.update(seat[0]:seat[1])
-    print (f"testing to see if table copied well {table_position_dict}")
-    print ("The positioning is around a table \n position 1 is on the south and then it goes clockwise \n up to the 4th position to the east")
-    print ("\n   p3  \n p2  p4\n   p1  ")
-    
-    # While loop until we get the right positions out
-    correct = False
-    while correct == False:
-        
-        # Passed from how_many_humans
-        for n in range(output_num): 
-            player_num = n + 1
-            print ("player "+str(player_num))
-            
-            num_to_swap = int(input("what position would you like to take? 1-4 \n"))
-            
-            # Based on the input we will alter the base table_position_dict of all pc players
-            keyval_swap = "chair_"+str(num_to_swap)
-            table_position_dict[keyval_swap] = 'hu player '+str(player_num)
-            ### error exception here
-            
-            print ('this is table_position_dict')
-            print (table_position_dict)
-        
-        print (table_position_dict)
-        final_ans = input("Now is all the positioning correct? Y or N")
-        if final_ans[0].lower() == 'y':
-            team_a = table_position_dict['chair_1'] + " & " +table_position_dict['chair_3']
-            team_b = table_position_dict['chair_2'] + " & " +table_position_dict['chair_4']
-            print (f"Team A is {team_a}")
-            print (f"Team B is {team_b}")
-            correct = True
-        else:
-            print ("Ok, we'll reset and restart")
-            table_position_dict = table_position_dict_default.copy()
-#             for seat in table_position_dict_default:
-#                 table_position_dict.update(seat[0]:seat[1])
-            print("This is the reset dict")
-            print(table_position_dict)
-    return (table_position_dict)
-        
-
-def print_teams(table_position_dict):
-    tdict = table_position_dict
-    south = tdict["chair_1"]
-    north = tdict["chair_3"]
-    west = tdict["chair_2"]
-    east = tdict["chair_4"]
-    print (f"Team North & South is {south} and {north}")
-    print (f"Team East & West is {west} and {east}")  
-    
-    
-# who's dealer, randomly pick a dealer
-
-def whos_first_dealer():
-    choice = random.randint(1,4)
-    first_dealer = "chair_"+ str(choice)
-    player = table_position_dict[first_dealer]
-    print (f'First deal is {player}')
-    return first_dealer   
 
 
 
@@ -222,9 +149,87 @@ class Dev_Hand:
 
 ################################
 
+### Functions ###
+### Functions ###
+### Functions ###
 
 
+## Setup ##
+## Setup ##
 
+# How many human players
+
+def how_many_humans():
+    num_humans = int(input("How many human players are there?"))
+    ### place exception error catch here
+    return table_positions(num_humans)
+
+# Which positions are the human players? 
+# They can be on the same team or opposing teams depending on where they sit
+
+def table_positions(output_num): 
+    table_position_dict = table_position_dict_default.copy()
+#     for seat in table_position_dict_default:
+#         table_position_dict.update(seat[0]:seat[1])
+    print (f"testing to see if table copied well {table_position_dict}")
+    print ("The positioning is around a table \n position 1 is on the south and then it goes clockwise \n up to the 4th position to the east")
+    print ("\n   p3  \n p2  p4\n   p1  ")
+    
+    # While loop until we get the right positions out
+    correct = False
+    while correct == False:
+        
+        # Passed from how_many_humans
+        for n in range(output_num): 
+            player_num = n + 1
+            print ("player "+str(player_num))
+            
+            num_to_swap = int(input("what position would you like to take? 1-4 \n"))
+            
+            # Based on the input we will alter the base table_position_dict of all pc players
+            keyval_swap = "chair_"+str(num_to_swap)
+            table_position_dict[keyval_swap] = 'hu player '+str(player_num)
+            ### error exception here
+            
+            print ('this is table_position_dict')
+            print (table_position_dict)
+        
+        print (table_position_dict)
+        final_ans = input("Now is all the positioning correct? Y or N")
+        if final_ans[0].lower() == 'y':
+            team_a = table_position_dict['chair_1'] + " & " +table_position_dict['chair_3']
+            team_b = table_position_dict['chair_2'] + " & " +table_position_dict['chair_4']
+            print (f"Team A is {team_a}")
+            print (f"Team B is {team_b}")
+            correct = True
+        else:
+            print ("Ok, we'll reset and restart")
+            table_position_dict = table_position_dict_default.copy()
+#             for seat in table_position_dict_default:
+#                 table_position_dict.update(seat[0]:seat[1])
+            print("This is the reset dict")
+            print(table_position_dict)
+    return (table_position_dict)
+        
+
+def print_teams(table_position_dict):
+    tdict = table_position_dict
+    south = tdict["chair_1"]
+    north = tdict["chair_3"]
+    west = tdict["chair_2"]
+    east = tdict["chair_4"]
+    print (f"Team North & South is {south} and {north}")
+    print (f"Team East & West is {west} and {east}")  
+    
+    
+# who's dealer, randomly pick a dealer
+
+def whos_first_dealer():
+    choice = random.randint(1,4)
+    first_dealer = "chair_"+ str(choice)
+    player = table_position_dict[first_dealer]
+    print (f'First deal is {player}')
+    return first_dealer   
 
 # Deal out 5 cards 
     
@@ -245,7 +250,13 @@ def top_card_suit(deck):
     return one_and_done_suit 
 #   Card(suit,rank)
 
+## Setup ##
+## Setup ##
 
+###################
+
+## PC functions, trump picking ##
+## PC functions, trump picking ##
 
 # Tells the numerical value of a given hand with trump as the signifier 
 
@@ -619,6 +630,14 @@ def pc_single_suited(list_hand_suits):
     
 
 
+
+## PC functions, trump picking ##
+## PC functions, trump picking ##
+
+###################
+
+## PC and HU Decision functions ##
+## PC and HU Decision functions ##
 
 # Decide on suit
 # who's left of the dealer
@@ -1203,7 +1222,6 @@ def pick_up_and_switch(player,name_hand,trump,deck,card = ''):
                 card_selection = int(input("Which card would you like to drop? 1,2,3,4, or 5 "))
                 card_selected = False # until we prove there was a proper selection
                 if card_selection in poss_ans:
-                    print (card_selected)
                     card_selected = True
                 if card_selected == False:
                     while card_selected == False:
@@ -1226,7 +1244,7 @@ def pick_up_and_switch(player,name_hand,trump,deck,card = ''):
 #     self.rank + ' of ' + self.suit
 #     chosen_card_to_drop[0] + ' of ' + chosen_card_to_drop[1]
     for this_card in hand.cards:
-        if this_card.rank == chosen_card_to_drop[0] and this_card.suit == chosen_card_to_drop[1]:
+        if this_card.rank == chosen_card_to_drop.rank and this_card.suit == chosen_card_to_drop.suit:
             card_index = hand.cards.index(this_card)
             card_for_deck = hand.cards.pop(card_index)
             print (f"card to be put in deck {card_for_deck} \n")
@@ -1248,6 +1266,13 @@ def pick_up_and_switch(player,name_hand,trump,deck,card = ''):
     
 #     def put_back(self,card):
 
+## PC and HU Decision functions ##
+## PC and HU Decision functions ##
+
+###################
+
+## Play Phase ##
+## Play Phase ##
 
 def left_of_dealer_play_first_card():
     # Check if PC is left of dealer
@@ -1325,9 +1350,14 @@ def suit_to_follow(round):
     if 2 >1:
         pass
 
+## Play Phase ##
+## Play Phase ##
 
+######################################
 
-# GAME SETUP
+### GAME SETUP perameters ###
+### GAME SETUP perameters ###
+### GAME SETUP perameters ###
 
 team_ns_score = 0
 team_ew_score = 0 
@@ -1342,6 +1372,9 @@ table_position_dict_default = {'chair_1':'pc South', 'chair_2':'pc West', 'chair
 # table_position_list = ["chair_1","chair_2","chair_3","chair_4"]
 # list_of_hand_objects = ["chair_1","chair_2","chair_3","chair_4"]
 
+### GAME SETUP perameters ###
+### GAME SETUP perameters ###
+### GAME SETUP perameters ###
 
 
 # NOTE: regular game execution moved to storage

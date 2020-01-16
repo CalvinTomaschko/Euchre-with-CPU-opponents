@@ -380,44 +380,42 @@ def pc_plays_a_card(trump,who_called,trick_round,hand):
 
 def pc_side_of_select_trump_after_flip():
 
+    decision = False
+    list_of_values = []
+    for suit_type in suits:
+        if suit_type == one_and_done_suit:
+            list_of_values.append(0)
+            continue
+        print(f"Suit_type from the IF in choose trump {suit_type} for PHV to look into")
+        list_of_values.append(pc_hand_value(list_of_hand_objects[trump_picker-1],suit_type))
+
+    # suit_list = pc_check_for_suits(list_of_hand_objects[trump_picker-1]) ## I dont' think this is needed here
+    # but rather inside of pc_best_playable_suit()
+
+    #### PROMBLEM here: takes one suit away but offsets the list indexing then.
+    print (f"heres the list of values {list_of_values} from PHV, still in STAF function to passed into PBPS")
+
+    # for list of values the highest one over a certain number is chosen for their trump
+
+    ### NEW THOUGHT!
+    #if no value in list of values over certain number then don't bother checking:
+    # else:
+    suit_to_pursue = pc_best_playable_suit(list_of_hand_objects[trump_picker-1],list_of_values,trump_picker)
+
+    # call function that uses the suit to pursue to choose yay or nay and give response
+
+    print (f"suit to pursue selection is --> {suit_to_pursue}")
+    value_for_this_suit = pc_hand_value(list_of_hand_objects[trump_picker-1],suit_type)
 
 
-            decision = False
-            list_of_values = []
-            for suit_type in suits:
-                if suit_type == one_and_done_suit:
-                    list_of_values.append(0)
-                    continue
-                print(f"Suit_type from the IF in choose trump {suit_type} for PHV to look into")
-                list_of_values.append(pc_hand_value(list_of_hand_objects[trump_picker-1],suit_type))
+    if pc_call_pick_up(list_of_hand_objects[trump_picker-1],suit_to_pursue,value_for_this_suit,trump_picker):
+        # The arguments are "hand", maybe_trump aka 'suit',value, and trump_picker
+        trump_chosen == True
+        return suit_to_pursue, chair;
+        ### EXIT HERE EXIT HERE
 
-            # suit_list = pc_check_for_suits(list_of_hand_objects[trump_picker-1]) ## I dont' think this is needed here
-            # but rather inside of pc_best_playable_suit()
-
-            #### PROMBLEM here: takes one suit away but offsets the list indexing then.
-            print (f"heres the list of values {list_of_values} from PHV, still in STAF function to passed into PBPS")
-
-            # for list of values the highest one over a certain number is chosen for their trump
-
-            ### NEW THOUGHT!
-            #if no value in list of values over certain number then don't bother checking:
-            # else:
-            suit_to_pursue = pc_best_playable_suit(list_of_hand_objects[trump_picker-1],list_of_values,trump_picker)
-
-            # call function that uses the suit to pursue to choose yay or nay and give response
-
-            print (f"suit to pursue selection is --> {suit_to_pursue}")
-            value_for_this_suit = pc_hand_value(list_of_hand_objects[trump_picker-1],suit_type)
-
-
-            if pc_call_pick_up(list_of_hand_objects[trump_picker-1],suit_to_pursue,value_for_this_suit,trump_picker):
-                # The arguments are "hand", maybe_trump aka 'suit',value, and trump_picker
-                trump_chosen == True
-                return suit_to_pursue, chair;
-                ### EXIT HERE EXIT HERE
-
-            if trump_chosen == False:
-                print (f"\n{table_position_dict[chair]} chooses to pass")
+    if trump_chosen == False:
+        print (f"\n{table_position_dict[chair]} chooses to pass")
 
 
 def pc_side_of_pass_or_order_up(suit_of_up_card):
@@ -444,19 +442,19 @@ def pc_side_of_pass_or_order_up(suit_of_up_card):
 
 def pc_side_of_pick_up_and_switch():
 
-card_count_list = [["Hearts",0],["Diamonds",0],["Spades",0],["Clubs",0]]
-all_card_list = []
-has_trump = False
+    card_count_list = [["Hearts",0],["Diamonds",0],["Spades",0],["Clubs",0]]
+    all_card_list = []
+    has_trump = False
 
-for card in hand.cards:
-    value = values[card.rank]
+    for card in hand.cards:
+        value = values[card.rank]
 
-    # With this one for loop we'll create two separate lists for the purpose
-    # of picking a good card to swap
+        # With this one for loop we'll create two separate lists for the purpose
+        # of picking a good card to swap
 
-##### Start: all_card_list section---------
+    ##### Start: all_card_list section---------
     #This section makes a list of cards with rank,suit,and accurate value
-    if card.suit == trump:
+        if card.suit == trump:
             # print (f"1 card.rank {card.rank}")  # Ace or Jack
             temp_rank = 't'+str(card.rank)
             # print (f"trump temp_rank {temp_rank}")
@@ -465,163 +463,165 @@ for card in hand.cards:
             # print (f"4 temp_value {temp_value}")
             all_card_list.append([card.rank,card.suit,temp_value])
 
-    elif card.rank == "Jack" and colors[card.suit] == trump_color:
-        temp_rank = 'tJick'
-        # print (f"the Left temp_rank {temp_rank}")
-        temp_value = values[temp_rank]
-        all_card_list.append([card.rank,card.suit,temp_value])
+        elif card.rank == "Jack" and colors[card.suit] == trump_color:
+            temp_rank = 'tJick'
+            # print (f"the Left temp_rank {temp_rank}")
+            temp_value = values[temp_rank]
+            all_card_list.append([card.rank,card.suit,temp_value])
 
-    else:
-        # print ("regular card")
-        value = values[card.rank]
-        all_card_list.append([card.rank,card.suit,value])
-##### End: all_card_list section
+        else:
+            # print ("regular card")
+            value = values[card.rank]
+            all_card_list.append([card.rank,card.suit,value])
+    ##### End: all_card_list section
 
-##### Start: card_count_list section -------
+    ##### Start: card_count_list section -------
     # This section only grabs non-trump and non-Ace values. Taking those
     # and adding them into a list of cards that could be swapped towards getting
     # a suit out of your hand, thereby making it a stronger hand for trumping
 
-    if card.suit == "Hearts":
-        if "Hearts" == trump:
-            has_trump = True
-        elif card.rank == "Ace":
-            pass
-        else:
-            card_count_list[0][1] += 1
-    if card.suit == "Diamonds":
-        if "Hearts" == trump:
-            has_trump = True
-        elif card.rank == "Ace":
-            pass
-        else:
-            card_count_list[1][1] += 1
-    if card.suit == "Spades":
-        if "Hearts" == trump:
-            has_trump = True
-        elif card.rank == "Ace":
-            pass
-        else:
-            card_count_list[2][1] += 1
-    if card.suit == "Clubs":
-        if "Hearts" == trump:
-            has_trump = True
-        elif card.rank == "Ace":
-            pass
-        else:
-            card_count_list[3][1] += 1
+        if card.suit == "Hearts":
+            if "Hearts" == trump:
+                has_trump = True
+            elif card.rank == "Ace":
+                pass
+            else:
+                card_count_list[0][1] += 1
+        if card.suit == "Diamonds":
+            if "Hearts" == trump:
+                has_trump = True
+            elif card.rank == "Ace":
+                pass
+            else:
+                card_count_list[1][1] += 1
+        if card.suit == "Spades":
+            if "Hearts" == trump:
+                has_trump = True
+            elif card.rank == "Ace":
+                pass
+            else:
+                card_count_list[2][1] += 1
+        if card.suit == "Clubs":
+            if "Hearts" == trump:
+                has_trump = True
+            elif card.rank == "Ace":
+                pass
+            else:
+                card_count_list[3][1] += 1
 
-##### End: card_count_list section
-
-
-##### Start: Look for Single Card of Suit section #####---------
-
-# Now card_count_list will look something like
-#  [["Hearts",2],["Diamonds",1],["Spades",1],["Clubs",1]]
-# Going through this list for single suit checking
-chosen_suit_to_drop = "empty"
-if has_trump == True:
-    # if there's no trump then there's no use trying to go single suited
-    # for loop for ones! last loop took out trump cards for use in swap
-    # so now only non-trump cards are up for grabs
-    suits_with_one_list = []
-    print (f"Looking at card_count_list {card_count_list}")
+    ##### End: card_count_list section
 
 
-    for suit in card_count_list:
-        if suit[1] == 1:
-            suits_with_one_list.append(suit)
-    print(f"let's see suits_with_one_list {suits_with_one_list} ")
-    # now suits_with_one_list should look like this
-    # [["Diamonds",1]["Spades",1],["Clubs",1]] or [["Spades",1]] or "empty" # no
-    # suits with just one card
-    if len(suits_with_one_list) != 0:
-        if len(suits_with_one_list) == 1:
-            print ("found len of 1")
-            chosen_suit_to_drop = suits_with_one_list[choice][0]
-            clear = True
-        else:
-            print ("found not len of 1")
-            # len(suits_with_one_list) < 1
-            # there's more than 1 single suited card that not trump or an Ace
-            # so let's pick 1 randomly
-            choice = random.randint(0,len(suits_with_one_list))
-            chosen_suit_to_drop = suits_with_one_list[choice][0]
+    ##### Start: Look for Single Card of Suit section #####---------
 
-if chosen_suit_to_drop != "empty":
+    # Now card_count_list will look something like
+    #  [["Hearts",2],["Diamonds",1],["Spades",1],["Clubs",1]]
+    # Going through this list for single suit checking
+    chosen_suit_to_drop = "empty"
+    if has_trump == True:
+        # if there's no trump then there's no use trying to go single suited
+        # for loop for ones! last loop took out trump cards for use in swap
+        # so now only non-trump cards are up for grabs
+        suits_with_one_list = []
+        print (f"Looking at card_count_list {card_count_list}")
+
+
+        for suit in card_count_list:
+            if suit[1] == 1:
+                suits_with_one_list.append(suit)
+        print(f"let's see suits_with_one_list {suits_with_one_list} ")
+        # now suits_with_one_list should look like this
+        # [["Diamonds",1]["Spades",1],["Clubs",1]] or [["Spades",1]] or "empty" # no
+        # suits with just one card
+        if len(suits_with_one_list) != 0:
+            if len(suits_with_one_list) == 1:
+                print ("found len of 1")
+                chosen_suit_to_drop = suits_with_one_list[choice][0]
+                clear = True
+            else:
+                print ("found not len of 1")
+                # len(suits_with_one_list) < 1
+                # there's more than 1 single suited card that not trump or an Ace
+                # so let's pick 1 randomly
+                choice = random.randint(0,len(suits_with_one_list))
+                chosen_suit_to_drop = suits_with_one_list[choice][0]
+
+    if chosen_suit_to_drop != "empty":
     # use that suit looking through hand to choose the card
     # return the card to drop
-    for card in hand: # may need to be hand.cards
-        if card.suit == chosen_suit_to_drop:
-            chosen_card_to_drop = card
-            print (f"chosen card at single suit section, {chosen_card_to_drop}")
-            decision = True
-### While loop exit, decision True
+        for card in hand: # may need to be hand.cards
+            if card.suit == chosen_suit_to_drop:
+                chosen_card_to_drop = card
+                print (f"chosen card at single suit section, {chosen_card_to_drop}")
+                decision = True
+    ### While loop exit, decision True
 
 
-# chosen_card_to_drop = ??????????
+    # chosen_card_to_drop = ??????????
 
-##### End: Look for Single Card of Suit section #####
+    ##### End: Look for Single Card of Suit section #####
 
 
 
-else:
-##### Start: Selecting low value card ------------
+    else:
+    ##### Start: Selecting low value card ------------
 
-    # Now if there wasn't an answer from the single card of a suit pursuit then
-    # we'll look to drop the lowest valued card!
-    # all_card_list  -->  [ [card.rank,card.suit,temp_value] , [cr,cs,tv] , 3 more =5 cards total]
-    # hand   --> 'Chair#'
-    # trump  -->  string of a suit, "Spades"
-    print (f"all_card_list{all_card_list}")
+        # Now if there wasn't an answer from the single card of a suit pursuit then
+        # we'll look to drop the lowest valued card!
+        # all_card_list  -->  [ [card.rank,card.suit,temp_value] , [cr,cs,tv] , 3 more =5 cards total]
+        # hand   --> 'Chair#'
+        # trump  -->  string of a suit, "Spades"
+        print (f"all_card_list{all_card_list}")
 
-    all_value_list = []
-    for card in all_card_list:
-        all_value_list.append(card[2])
+        all_value_list = []
+        for card in all_card_list:
+            all_value_list.append(card[2])
 
-    print (f"all_value_list{all_value_list}")
+        print (f"all_value_list{all_value_list}")
 
-    lowest_value = min(all_value_list)
-    print (f"lowest_value{lowest_value}")
+        lowest_value = min(all_value_list)
+        print (f"lowest_value{lowest_value}")
 
-    print(all_card_list)
-    ### Make new list here
+        print(all_card_list)
+        ### Make new list here
 
-    remain_list = []
-    for count,card in enumerate(all_card_list):
-        print (card)
-        print (f"counting loop {count}")
-        if card[2] == lowest_value:
-            remain_list.append(card)
+        remain_list = []
+        for count,card in enumerate(all_card_list):
+            print (card)
+            print (f"counting loop {count}")
+            if card[2] == lowest_value:
+                remain_list.append(card)
 #                             print ("is getting popped due to being lowest value")
 #                             all_card_list.pop(count)
 
 
-    # lowest value can not be trump, all tRank cards are higher, unless the hand was all trump
-    # in that case trump being the lowest is fine. Player is about to have a great hand
+        # lowest value can not be trump, all tRank cards are higher, unless the hand was all trump
+        # in that case trump being the lowest is fine. Player is about to have a great hand
 
-    # In case the play has 2 9s
-    # , this will choose one of them as lowest card. They would want to keep one if they had more of that
-    # suit because then they would lower the number of suits in their hand, thereby letting them
-    # trump on a turn where someone else lead a suit that they no long have and therefore don't have to
-    # follow suit
-    print (f"what remains of all_card_list{remain_list}")
-    if len(remain_list) >=2:
-        print ("len greater than 2")
-        choice = random.randint(0,len(remain_list))
-        chosen_card_to_drop = remain_list[choice]
-        print (f"chosen_card_to_drop{chosen_card_to_drop}")
-        print (f"chosen card at lowest value section")
-        decision = True
-### While loop exit, decision True
-    else:
-        print ("len of 1")
-        chosen_card_to_drop = remain_list[0]
-        print (f"chosen_card_to_drop{chosen_card_to_drop}")
-        print (f"chosen card at lowest value section")
-        decision = True
-### While loop exit, decision True
-##### End: Selecting low value card #####
+        # In case the play has 2 9s
+        # , this will choose one of them as lowest card. They would want to keep one if they had more of that
+        # suit because then they would lower the number of suits in their hand, thereby letting them
+        # trump on a turn where someone else lead a suit that they no long have and therefore don't have to
+        # follow suit
+        print (f"what remains of all_card_list{remain_list}")
+        
+        if len(remain_list) >=2:
+            print ("len greater than 2")
+            choice = random.randint(0,len(remain_list))
+            chosen_card_to_drop = remain_list[choice]
+            print (f"chosen_card_to_drop{chosen_card_to_drop}")
+            print (f"chosen card at lowest value section")
+            decision = True
+        ### While loop exit, decision True
+        
+        else:
+            print ("len of 1")
+            chosen_card_to_drop = remain_list[0]
+            print (f"chosen_card_to_drop{chosen_card_to_drop}")
+            print (f"chosen card at lowest value section")
+            decision = True
+    ### While loop exit, decision True
+    ##### End: Selecting low value card #####
 
-decision = True
-# PC DECISION TIME END -------------------------------------
+    decision = True
+    # PC DECISION TIME END -------------------------------------

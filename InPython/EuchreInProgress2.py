@@ -115,6 +115,61 @@ class Dev_Deck:
         
         self.deck = new_list
 
+
+    def hearts_for_2nd_and_one_off_suited(self):
+            
+        ## New list swapping
+            list_o_ranks = ["Jack","Ace","King","Queen","Ten"]
+            list_o_five_tcards = []
+            nine_for_top = []
+            new_list = []    
+            
+        ## Pull the desired cards   
+
+            for card in self.deck:
+                if card.rank in list_o_ranks and card.suit == 'Hearts':  
+                    list_o_five_tcards.append(card)
+                if card.rank == "Nine" and card.suit == 'Hearts':
+                    nine_for_top = card
+
+        ## Make new list leaving out the five tcards and the nine
+
+            for card in self.deck:
+                if card.rank == "Nine" and card.suit == 'Hearts':
+                    continue
+                if card not in list_o_five_tcards:
+                    new_list.append(card)
+        
+        ## Here's where I pull one random card and will add it later
+            random_card = random.choice(new_list)
+            new_list.remove(random_card)
+            # list is now one shorter
+
+
+    #         print ("same list, no tcards or tnine, new_list is")
+        
+        ## quick print as objects need to be called directly for print string
+    #         for card in new_list:
+    #             print (card)
+
+            for card in list_o_five_tcards:
+                new_list.insert(5,card)
+
+        ## Now I'm adding a random card to their hand
+            new_list.insert(5,random_card)
+
+        ## Add tNine to 4th spot
+
+            if nine_for_top != []:
+                new_list.insert(-3,nine_for_top)
+
+        ## Return final list   
+        
+        ## quick print to check, as card objects won't print unless directly called on
+    #         for card in new_list:
+    #             print (card)
+            
+            self.deck = new_list
     
     # Future goal: Deals must be dealt by going around the table twice 
     # giving everyone at least one card each time around   
@@ -1066,21 +1121,21 @@ def pick_up_and_switch(player,name_hand,trump,deck,card = ''):
                         else:
                             card_count_list[0][1] += 1
                     if card.suit == "Diamonds":
-                        if "Hearts" == trump:
+                        if "Diamonds" == trump:
                             has_trump = True
                         elif card.rank == "Ace":
                             pass
                         else:
                             card_count_list[1][1] += 1
                     if card.suit == "Spades":
-                        if "Hearts" == trump:
+                        if "Spades" == trump:
                             has_trump = True
                         elif card.rank == "Ace":
                             pass
                         else:
                             card_count_list[2][1] += 1
                     if card.suit == "Clubs":
-                        if "Hearts" == trump:
+                        if "Clubs" == trump:
                             has_trump = True
                         elif card.rank == "Ace":
                             pass
@@ -1304,32 +1359,54 @@ def pc_plays_a_card(chair, trump, who_called, hand, table):
     if table == []:
         #pc_plays_first_card():
         # their team called
+        print ("a")
         if chair in team_that_called:
             if chair == who_called:
                 # play aggressive
-                random_position = random.randint(0,len(hand.cards)-1)
-                print (f"random_position equals, {random_position}")
-                card_to_play = hand.cards.pop(random_position)
-                table.append(card_to_play)
-                print ("1 \n")
-                print (card_to_play)
+                card_list = []
+                print ("b")
+                for card in hand.cards:
+                # for card in hand make list with accurate rank and value
+                # now that trump is locked in
+                    if card.suit == trump:
+                        rank = "t" + str(card.rank)
+                        value = values[rank]
+                    else:
+                        rank = card.rank
+                        value = values[rank]
+                    card_list.append([card, rank, card.suit, value])
 
-                print ("table in funct")
-                print (table)
-                print (card_to_play)
-                returnable_list = []
-                returnable_list.append(card_to_play)
-                returnable_list.append(table)
-                print (f"this is returnable list {returnable_list}")
-                print (f"length of hand.card {len(hand.cards)}")
-                return [card_to_play, table];
+                # found this amazing max for given element of list
+                # https://dbader.org/blog/python-min-max-and-nested-lists
+                # max(nested_list, key=lambda x: x[1])
+                # max(nested_list, key=lambda x: (position, len(), or other attribute))
+
+                
             else:
                 # play conservative (off but high)
-                card_to_play = random.choice(hand.cards)
-                print ("2 \n")
-                print (card_to_play)
-               
-                return card_to_play
+                highest_value_card_block = max(card_list, key=lambda x: x[3] and x[3] <=6)
+                
+                highest_value = highest_value_card_block[3]
+                choices_for_card_to_play = []
+                for card in card_list:
+                    if card[3] == highest_value:
+                        choices_for_card_to_play.append(card)
+                if len(choices_for_card_to_play) == 1:
+                    highest_value_card = choices_for_card_to_play[0]
+                    card_to_play = highest_value_card[0]
+                else:
+                    selected_highest_value_card = random.choice(choices_for_card_to_play)
+                    card_to_play = selected_highest_value_card[0]
+                
+                table.append(card_to_play)
+                hand.cards.remove(card_to_play)
+                print (hand.cards)
+                for card in table:
+                    print (card)
+                return [card_to_play, table];
+
+
+                
         #their team did not call
         else:
             # play the conservative (off but high)
@@ -1483,7 +1560,9 @@ dev_deck.shuffle()
 
 # dev_deck.hearts_for_dealer()
 
-dev_deck.hearts_for_2nd()
+## dev_deck.hearts_for_2nd()
+
+dev_deck.hearts_for_2nd_and_one_off_suited()
 
 # print (f"printing dev_deck{dev_deck}")
 

@@ -129,4 +129,85 @@ class Hand:
 #     # Since not PC then human decision time!
 #     else:
 #         pass
-#         #choose from hand a card to play
+#         #choose from hand a card to play.
+
+
+
+
+
+# was used in pc_plays_a_card to make it print and to choose a random card
+
+                random_position = random.randint(0,len(hand.cards)-1)
+                print (f"random_position equals, {random_position}")
+                card_to_play = hand.cards.pop(random_position)
+                table.append(card_to_play)
+                print ("1 \n")
+                print (card_to_play)
+
+                print ("table in funct")
+                print (table)
+                print (card_to_play)
+                returnable_list = []
+                returnable_list.append(card_to_play)
+                returnable_list.append(table)
+                print (f"this is returnable list {returnable_list}")
+                print (f"length of hand.card {len(hand.cards)}")
+
+
+# Here's what I used for aggressive play, going to attempt conservative play
+# found this amazing max for given element of list
+                # https://dbader.org/blog/python-min-max-and-nested-lists
+                # max(nested_list, key=lambda x: x[1])
+                # max(nested_list, key=lambda x: (position, len(), or other attribute))
+
+                highest_value_card_block = max(card_list, key=lambda x: x[3])
+                
+                highest_value = highest_value_card_block[3]
+                choices_for_card_to_play = []
+                for card in card_list:
+                    if card[3] == highest_value:
+                        choices_for_card_to_play.append(card)
+                if len(choices_for_card_to_play) == 1:
+                    highest_value_card = choices_for_card_to_play[0]
+                    card_to_play = highest_value_card[0]
+                else:
+                    selected_highest_value_card = random.choice(choices_for_card_to_play)
+                    card_to_play = selected_highest_value_card[0]
+                
+                table.append(card_to_play)
+                hand.cards.remove(card_to_play)
+                print (hand.cards)
+                for card in table:
+                    print (card)
+                return [card_to_play, table];
+            else:
+                # play conservative (off but high)
+                card_to_play = random.choice(hand.cards)
+                print ("2 \n")
+                print (card_to_play)
+               
+                return card_to_play
+
+
+# This one here is for conservative play
+
+                highest_value_card_block = max(card_list, key=lambda x: x[3] and x[3] <=6)
+                
+                highest_value = highest_value_card_block[3]
+                choices_for_card_to_play = []
+                for card in card_list:
+                    if card[3] == highest_value:
+                        choices_for_card_to_play.append(card)
+                if len(choices_for_card_to_play) == 1:
+                    highest_value_card = choices_for_card_to_play[0]
+                    card_to_play = highest_value_card[0]
+                else:
+                    selected_highest_value_card = random.choice(choices_for_card_to_play)
+                    card_to_play = selected_highest_value_card[0]
+                
+                table.append(card_to_play)
+                hand.cards.remove(card_to_play)
+                print (hand.cards)
+                for card in table:
+                    print (card)
+                return [card_to_play, table];

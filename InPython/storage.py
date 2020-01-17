@@ -110,3 +110,23 @@ class Hand:
 
 # #will it show top card? 
 
+
+
+
+
+
+
+
+# Extra thought on player left of dealer function
+
+# def left_of_dealer_plays_first_card():
+#     # Check if PC is left of dealer
+#     chair = dealer +1
+#     if table_position_dict[chair] == "pc":
+#         pass
+#         # PC decision
+#         # adds first card into played_cards[0].append
+#     # Since not PC then human decision time!
+#     else:
+#         pass
+#         #choose from hand a card to play

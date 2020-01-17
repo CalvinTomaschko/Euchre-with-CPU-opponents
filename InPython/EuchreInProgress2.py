@@ -496,9 +496,6 @@ def pc_best_playable_suit(hand,list_of_suit_values,trump_picker):
     
     # for loop to make one_and done 0 if needed lets see
     
-    #######
-    #######
-    
     # list in order hdsc
     
     # now choose the highest valued trump suit to pursue, 
@@ -824,9 +821,6 @@ def select_trump_after_flip():
 
 
 
-
-
-
 def pass_or_order_up(suit_of_up_card):
     print("\n PASS OR ORDER UP FUNCTION")
     suit = suit_of_up_card
@@ -844,7 +838,7 @@ def pass_or_order_up(suit_of_up_card):
 # This function returns both true or false on if trump selected 
 # and who called in a form of string
 
-## Dealers turn counts 0,1,2,3 
+    ## Dealers turn counts 0,1,2,3 
     print (f"Passoou Here's dealers turn {dealers_turn}")
     trump_picker = table_position_list.index(dealers_turn)+1 # if dealer is chair 1, trump picker is 1
     # trump_picker represents a player to point at, there's no player 0 only 1-4
@@ -905,7 +899,7 @@ def pass_or_order_up(suit_of_up_card):
         # This IF ELSE statement is the gate for getting back through the BIG while loop
 
 
-## The IF is for PC players ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        ## The IF is for PC players ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         if table_position_dict[chair][:2] == "pc":
            
@@ -929,7 +923,7 @@ def pass_or_order_up(suit_of_up_card):
             
 
         
-## The ELSE is for  HU players ~~~~~~~~~~~~~~~~~~~~~~~~~
+        ## The ELSE is for  HU players ~~~~~~~~~~~~~~~~~~~~~~~~~
 
         else:
             print ("activated human decision time")
@@ -1020,7 +1014,7 @@ def pick_up_and_switch(player,name_hand,trump,deck,card = ''):
         
         # card_to_drop = ?
            
-# PC DECISION TIME START -------------------------------------            
+        # PC DECISION TIME START -------------------------------------            
             
             print (f"PC CHECKING {table_position_dict[player][:2]}")
             if table_position_dict[player][:2] == "pc":
@@ -1206,10 +1200,10 @@ def pick_up_and_switch(player,name_hand,trump,deck,card = ''):
         ##### End: Selecting low value card #####
                 
                 decision = True
-# PC DECISION TIME END -------------------------------------              
+        # PC DECISION TIME END -------------------------------------              
  
             else:
-# HU DECISION TIME START ------------------------------------- 
+        # HU DECISION TIME START ------------------------------------- 
             # if human do this
             
             # print hand
@@ -1237,7 +1231,7 @@ def pick_up_and_switch(player,name_hand,trump,deck,card = ''):
                 decision = True
         ### While loop exit, decision True 
             
-# HU DECISION TIME END ------------------------------------- 
+        # HU DECISION TIME END ------------------------------------- 
     #back to function indent
     card_for_deck = None
 #     ['Ten', 'Hearts', 8]
@@ -1266,6 +1260,7 @@ def pick_up_and_switch(player,name_hand,trump,deck,card = ''):
     
 #     def put_back(self,card):
 
+
 ## PC and HU Decision functions ##
 ## PC and HU Decision functions ##
 
@@ -1274,23 +1269,87 @@ def pick_up_and_switch(player,name_hand,trump,deck,card = ''):
 ## Play Phase ##
 ## Play Phase ##
 
-def left_of_dealer_play_first_card():
-    # Check if PC is left of dealer
-    chair = dealer +1
-    if table_position_dict[chair] == "pc":
+
+def left_of_dealer_plays_first(position_on_table, who_called, whats_trump, table):
+    
+    print ("\n In left of dealer")
+    chair = table_position_list[position_on_table]
+    # the hand objects as of Jan 16, 2020 can only be called through the list_of_hand_objects
+    this_hand = list_of_hand_objects[position_on_table]
+    print (f"this should be 'this hand' object gabbledygooc {this_hand}")
+    if table_position_dict[chair][0:2] == "pc":
+        print ("chair was pc")
+        return pc_plays_a_card(chair, whats_trump, who_called, this_hand,table)
+
+    else:
+        print ("chair was hu")
+        # hu_plays_a_card()
         pass
-        # PC decision
-        # adds first card into played_cards[0].append
-    # Since not PC then human decision time!
+
+def pc_plays_a_card(chair, trump, who_called, hand, table):
+    
+    # if who_called == "chair_1" or who_called == "chair_3":
+    #     team_that_called = "team_ns"
+    # else:
+    #     team_that_called = "team_ew"
+    print ("\n In pc plays a card" )
+    if who_called in team_ns:
+        team_that_called = team_ns
+    else:
+        team_that_called = team_ew
+    
+    print (f"this is 'team that called' -->{team_that_called}")
+
+
+    if table == []:
+        #pc_plays_first_card():
+        # their team called
+        if chair in team_that_called:
+            if chair == who_called:
+                # play aggressive
+                random_position = random.randint(0,len(hand.cards)-1)
+                print (f"random_position equals, {random_position}")
+                card_to_play = hand.cards.pop(random_position)
+                table.append(card_to_play)
+                print ("1 \n")
+                print (card_to_play)
+
+                print ("table in funct")
+                print (table)
+                print (card_to_play)
+                returnable_list = []
+                returnable_list.append(card_to_play)
+                returnable_list.append(table)
+                print (f"this is returnable list {returnable_list}")
+                print (f"length of hand.card {len(hand.cards)}")
+                return [card_to_play, table];
+            else:
+                # play conservative (off but high)
+                card_to_play = random.choice(hand.cards)
+                print ("2 \n")
+                print (card_to_play)
+               
+                return card_to_play
+        #their team did not call
+        else:
+            # play the conservative (off but high)
+            print ("3 \n")
+
+            card_to_play = random.choice(hand.cards)
+            print (card_to_play)            
+            return card_to_play
+
+
     else:
         pass
-        #choose from hand a card to play
+        # table is not empty
+        #pc_plays_another_card()
+        # what is suit to follow
+        # look at previous cards to see who has it and with what
+        
+        
+    
 
-
-
-def pc_plays_a_card(trump,who_called,trick_round,hand):
-    print ("\n PPAC FUNCTION")
-    pass
     # Makes a choice based on offense or defense if their team called or not
     # if not lead: follow suit
         # if suit can't beat lead, then throw lower of that suit
@@ -1300,6 +1359,19 @@ def pc_plays_a_card(trump,who_called,trick_round,hand):
             # elif opponents picked up: through highest non-trump
             # else lead with highest trump
         # elif (not first round): 
+# Left of dealer go
+#   Make decision on card and play
+# Next player
+#   what is suit to follow
+#   Make decision on card and play
+# Repeat Next player twice
+# Mark Trick winner
+# Trick winner plays next card
+# repeat Next player Thrice
+
+
+
+
 
 
 def hu_plays_a_card(trump,suit_to_follow,hand):
@@ -1327,17 +1399,7 @@ def check_trick_for_points(who_called):
 
 
 
-def lead_player_starts(whos_next):
-    if trick_counter >= 6:
-        # check_tricks_for_score(who_called)
-        return ("let's award team points")
-    
-    if table_position_dict[chair] == "pc":
-        # pc_play_a_card()
-        pass
-    else:
-        # hu_plays_a_card()
-        pass
+
 
 
 
@@ -1352,6 +1414,10 @@ def suit_to_follow(round):
 
 ## Play Phase ##
 ## Play Phase ##
+
+### Functions ###
+### Functions ###
+### Functions ###
 
 ######################################
 
@@ -1376,12 +1442,13 @@ table_position_dict_default = {'chair_1':'pc South', 'chair_2':'pc West', 'chair
 ### GAME SETUP perameters ###
 ### GAME SETUP perameters ###
 
+######################################
+
+# DEV GAME Execution
+# DEV GAME Execution
+# DEV GAME Execution
 
 # NOTE: regular game execution moved to storage
-
-# DEV GAME Execution
-# DEV GAME Execution
-# DEV GAME Execution
 
 # how_many_humans() -->table_positions()
 table_position_dict = how_many_humans()
@@ -1391,12 +1458,9 @@ table_position_list = []
 for chair in table_position_dict:
     table_position_list.append(chair)
 
-# CHECK print (f"Here's table position list {table_position_list}")
 print_teams(table_position_dict)
 
 dealers_turn = "chair_1"
-print (f"dealers turn is int or str? = {dealers_turn}")
-
 
 list_of_hand_objects = []
 
@@ -1406,12 +1470,6 @@ for chair in table_position_list:
     chair = Dev_Hand(name)
     list_of_hand_objects.append(chair)
 
-
-
-# print ("Look here to check in list hand objects has stuff") # CHECK 
-# print (len(list_of_hand_objects)) # CHECK 
-# print (list_of_hand_objects) # CHECK
-# print ("\n") # CHECK
 
 dev_deck = Dev_Deck() 
 ### euchre_deck.
@@ -1450,15 +1508,9 @@ one_and_done_suit = top_card_suit(dev_deck)
 # get_ipython().run_line_magic('whos', '')
 
 
+## TRUMP SELECTION ##
+## TRUMP SELECTION ##
 
-### DEV GAME execution
-### DEV GAME execution
-### DEV GAME execution
-
-
-
-# TRUMP SELECTION
-# ordered_up_qm = 
 
 two_part_response = pass_or_order_up(one_and_done_suit)
 # PassOOU returns a 2 list value of [true/false,str(chair) that called]
@@ -1469,15 +1521,16 @@ if who_called[0].lower() == 'c':
     print(f"{table_position_dict[who_called]},{who_called}, ordered up")
    
     print (dealers_turn)
-    print (dealers_turn)
     print (one_and_done_suit)
 ## TESTING HERE
     pick_up_and_switch(dealers_turn,dealers_turn,one_and_done_suit,dev_deck,card = '')
+    whats_trump = one_and_done_suit
     ### Hidden pass along to grab_top_card
 ### TESTING HERE
 
 else:
     print(f"Who ordered up? --> {who_called} ")
+
 
 
 if not ordered_up_qm: 
@@ -1487,10 +1540,81 @@ if not ordered_up_qm:
     print (f"what_trump is --> {whats_trump}")
     print (f"who_called is --> {who_called}")
 
-    
-    
+team_ns = ["chair_1","chair_3"]
+team_ew = ["chair_2","chair_4"]
+
+# NOTE: may have to add in that when dealer is screwed their team is the one that called
+
+## TRUMP SELECTION ##
+## TRUMP SELECTION ##
+
+########################
+
+## Trick play ##
+## Trick play ##
+
+# point to left of dealer
+
+dealer_position = table_position_list.index(dealers_turn)
+
+if table_position_list.index(dealers_turn) == 3:
+    player_left_of_dealer = 0
+else:
+    player_left_of_dealer = table_position_list.index(dealers_turn)+ 1
+
+trick_counter = 0
+table = []
+while trick_counter < 6:
+    if trick_counter == 0:
+        card_and_table = []
+        print ("trick_counter is zero")
+        card_and_table = left_of_dealer_plays_first(player_left_of_dealer, who_called, whats_trump, table)
+        print (f"this is the returned {card_and_table}")
+        one_selected = card_and_table[0]
+        table = card_and_table[1]
+        print (one_selected)
+        print (table)
+        trick_counter += 1
+        # NOTE: do I want this to be whocalled or which team called?
+        # Next player x3
+        # which team won the trick, add 
+    if trick_counter >= 1:
+        print ("trick_counter is greater or equal to one")
+        break
+        # trick_winner_plays_next_card()
+        # Next player x3
+        # which team won the trick, add
+
+# who gets points, add
+# did anybody win the game? 
+
+# Dealer and left of dealer now have a position number in table_position_dict
+
+### Play Functions ###
+### Play Functions ###
+### Play Functions ###
+
+
 
     
+### DEV GAME execution
+### DEV GAME execution
+### DEV GAME execution
+
+# To see variables, picked up from here in stackoverflow from jamk 
+# https://stackoverflow.com/questions/633127/viewing-all-defined-variables
+#----------------------------------------------
+# def printvars():
+
+#    tmp = globals().copy()
+#    [print(k,'  :  ',v,' type:' , type(v)) for k,v in tmp.items() if not k.startswith('_') and k!='tmp' and k!='In' and k!='Out' and not hasattr(v, '__call__')]
+
+# printvars()
+#----------------------------------------------
+# this one also kinda works, needs tinckering 
+# from same site by Brian R. Bondy
+
+# for name in vars().keys():#     print (name)# for value in vars().values():#     print (value)
 
 
 

@@ -1380,11 +1380,8 @@ def pc_plays_a_card(chair, trump, who_called, hand, table):
                 # https://dbader.org/blog/python-min-max-and-nested-lists
                 # max(nested_list, key=lambda x: x[1])
                 # max(nested_list, key=lambda x: (position, len(), or other attribute))
-
                 
-            else:
-                # play conservative (off but high)
-                highest_value_card_block = max(card_list, key=lambda x: x[3] and x[3] <=6)
+                highest_value_card_block = max(card_list, key=lambda x: x[3])
                 
                 highest_value = highest_value_card_block[3]
                 choices_for_card_to_play = []
@@ -1404,21 +1401,91 @@ def pc_plays_a_card(chair, trump, who_called, hand, table):
                 for card in table:
                     print (card)
                 return [card_to_play, table];
+                
+            else:
+                # play conservative (off but high)
+                highest_value_card_block = max(card_list, key=lambda x: x[3] and x[3] <=6)
+                
+                highest_value = highest_value_card_block[3]
+                choices_for_card_to_play = []
+                for card in card_list:
+                    if card[3] == highest_value:
+                        choices_for_card_to_play.append(card)
+                if len(choices_for_card_to_play) == 1:
+                    highest_value_card = choices_for_card_to_play[0]
+                    card_to_play = highest_value_card[0]
+                if len(choices_for_card_to_play) == 0:
+                    highest_value_card_block = max(card_list, key=lambda x: x[3])
+                    card_to_play = highest_value_card_block[0]
+                else:
+                    selected_highest_value_card = random.choice(choices_for_card_to_play)
+                    card_to_play = selected_highest_value_card[0]
+                
+                table.append(card_to_play)
+                hand.cards.remove(card_to_play)
+                print (hand.cards)
+                for card in table:
+                    print (card)
+                return [card_to_play, table];
 
 
                 
         #their team did not call
         else:
-            # play the conservative (off but high)
-            print ("3 \n")
-
-            card_to_play = random.choice(hand.cards)
-            print (card_to_play)            
-            return card_to_play
+                # play conservative (off but high)
+            highest_value_card_block = max(card_list, key=lambda x: x[3] and x[3] <=6)
+            
+            highest_value = highest_value_card_block[3]
+            choices_for_card_to_play = []
+            for card in card_list:
+                if card[3] == highest_value:
+                    choices_for_card_to_play.append(card)
+            if len(choices_for_card_to_play) == 1:
+                highest_value_card = choices_for_card_to_play[0]
+                card_to_play = highest_value_card[0]
+            if len(choices_for_card_to_play) == 0:
+                highest_value_card_block = max(card_list, key=lambda x: x[3])
+                card_to_play = highest_value_card_block[0]
+            else:
+                selected_highest_value_card = random.choice(choices_for_card_to_play)
+                card_to_play = selected_highest_value_card[0]
+            
+            table.append(card_to_play)
+            hand.cards.remove(card_to_play)
+            print (hand.cards)
+            for card in table:
+                print (card)
+            return [card_to_play, table];
 
 
     else:
-        pass
+        first_card_played = table[0]
+        # has partner played?
+        # if yes, is he winning
+        # partner winning with rank king or higher = T/F
+        # if yes, then play low off
+        # if no, play highest you can
+        suit_to_follow = first_card_played.suit
+        have_card_of_that_suit = False
+        for card in hand.cards:
+            if card.suit == suit_to_follow:
+                have_card_of_that_suit = True 
+        if have_card_of_that_suit == True:
+            # follow suit, play highest to beat or lowest to lose
+            pass
+        else:
+            # if you have trump 
+
+        
+        
+        card_to_play = selected_highest_value_card[0]
+        
+        table.append(card_to_play)
+        hand.cards.remove(card_to_play)
+        print (hand.cards)
+        for card in table:
+            print (card)
+        return [card_to_play, table];
         # table is not empty
         #pc_plays_another_card()
         # what is suit to follow

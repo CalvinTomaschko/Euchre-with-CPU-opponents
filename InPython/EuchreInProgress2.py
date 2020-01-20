@@ -1482,23 +1482,19 @@ def pc_plays_a_card(chair, trump, who_called, hand, table):
             pass
         else:
             # if you have trump 
-
-        
-        
-        card_to_play = selected_highest_value_card[0]
-        
-        # table.append(card_to_play)
-        hand.cards.remove(card_to_play)
-        print (hand.cards)
-        for card in table:
-            print (card)
-        # return [chair, card_to_play, table];
-        return [chair, card_to_play];
-        # table is not empty
-        #pc_plays_another_card()
-        # what is suit to follow
-        # look at previous cards to see who has it and with what
-        
+            card_to_play = selected_highest_value_card[0]
+            # table.append(card_to_play)
+            hand.cards.remove(card_to_play)
+            print (hand.cards)
+            for card in table:
+                print (card)
+            # return [chair, card_to_play, table];
+            return [chair, card_to_play];
+            # table is not empty
+            #pc_plays_another_card()
+            # what is suit to follow
+            # look at previous cards to see who has it and with what
+            
         
     
 
@@ -1522,7 +1518,18 @@ def pc_plays_a_card(chair, trump, who_called, hand, table):
 # repeat Next player Thrice
 
 
+def next_player(current_player_position, table_position_list):
 
+    print "last player was " current_player_position
+
+    if current_player_position == len(table_position_list)-1:
+        current_player_position = 0
+    else:
+        current_player_position +=1
+
+    print "now next player is " current_player_position
+
+    
 
 
 
@@ -1709,6 +1716,7 @@ team_ew = ["chair_2","chair_4"]
 
 # point to left of dealer
 
+# the position in the table_position_list
 dealer_position = table_position_list.index(dealers_turn)
 
 if table_position_list.index(dealers_turn) == 3:
@@ -1724,21 +1732,27 @@ table = []
 
 while trick_counter < 6:
     if trick_counter == 0:
-        card_and_table = []
+        chair_and_card = []
         print ("trick_counter is zero")
-        card_and_table = left_of_dealer_plays_first(player_left_of_dealer, who_called, whats_trump, table)
-        print (f"this is the returned {card_and_table}")
-        who_played_it = card_and_table[0]
-        one_selected = card_and_table[1]
-        # table = card_and_table[2]
+        chair_and_card = left_of_dealer_plays_first(player_left_of_dealer, who_called, whats_trump, table)
+        print (f"this is the returned {chair_and_card}")
+        who_played_it = chair_and_card[0]
+        one_selected = chair_and_card[1]
+        # table = chair_and_card[2]
         print (one_selected)
         print (table)
+
+         # Next player x3
+        next_player(player_left_of_dealer, table_position_list)
+
+
         trick_counter += 1
         # NOTE: do I want this to be whocalled or which team called?
-        # Next player x3
+       
         # which team won the trick, add 
     if trick_counter >= 1:
         print ("trick_counter is greater or equal to one")
+        pdb.set_trace()
         break
         # trick_winner_plays_next_card()
         # Next player x3

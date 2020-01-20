@@ -35,14 +35,16 @@ I have previously taken a course Intro to Programming with Python so I’m pleas
 
 # Build Status
 
-Not yet finished 
+In Progress
+
+EuchreInProgress.py is the file I'm currently working in
 
 
 # Built with 
 
 Language: Python
 
-Editor: Jupyter Notebook
+Editor: Jupyter Notebook at first, transistioned to Visual Studio Code for the last half
 
 
 # Features

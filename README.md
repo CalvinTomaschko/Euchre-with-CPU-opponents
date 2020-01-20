@@ -7,18 +7,6 @@ A challenge project in Python to bring a Michigan/Midwestern card game into digi
 
 Not yet available as code is still in progress
 
-At time of writing: 
-
-Table is filled with requested players human or CPU
-
-2 levels of Special Suit “Trump” selection, the first of 2 major components of the game
-
-still to come:
-
-Trick play, the 2nd major component where cards are laid on the table 
-
-score keeping
-
 
 # Motivation
 
@@ -58,6 +46,18 @@ Object Oriented Programming
 Use of built in functions
 
 Purposeful Error handling
+
+Gameplay Features:
+
+Playing Table is filled with requested players human or CPU
+
+Two stages of Special Suit (aka "Trump) selection, the first of major component of the game
+
+still to come:
+
+Playing out hands laying cards on the table  
+
+score keeping
 
 
 # Installation 

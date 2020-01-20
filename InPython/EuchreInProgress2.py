@@ -6,7 +6,8 @@
 # Created with guidance from the Black Jack game module
 
 
-
+import random
+import pdb
 
 
 
@@ -1362,7 +1363,7 @@ def pc_plays_a_card(chair, trump, who_called, hand, table):
         print ("a")
         if chair in team_that_called:
             if chair == who_called:
-                # play aggressive
+                # play aggressive, this ordered up or called and wants to take the lead
                 card_list = []
                 print ("b")
                 for card in hand.cards:
@@ -1395,14 +1396,16 @@ def pc_plays_a_card(chair, trump, who_called, hand, table):
                     selected_highest_value_card = random.choice(choices_for_card_to_play)
                     card_to_play = selected_highest_value_card[0]
                 
-                table.append(card_to_play)
+                # table.append(card_to_play)
                 hand.cards.remove(card_to_play)
                 print (hand.cards)
                 for card in table:
                     print (card)
-                return [card_to_play, table];
+                # return [chair, card_to_play, table];
+                return [chair, card_to_play];
                 
             else:
+                # this pc's partner called trump
                 # play conservative (off but high)
                 highest_value_card_block = max(card_list, key=lambda x: x[3] and x[3] <=6)
                 
@@ -1421,18 +1424,20 @@ def pc_plays_a_card(chair, trump, who_called, hand, table):
                     selected_highest_value_card = random.choice(choices_for_card_to_play)
                     card_to_play = selected_highest_value_card[0]
                 
-                table.append(card_to_play)
+                # table.append(card_to_play)
                 hand.cards.remove(card_to_play)
                 print (hand.cards)
                 for card in table:
                     print (card)
-                return [card_to_play, table];
+                # return [chair, card_to_play, table];
+                return [chair, card_to_play];
 
 
                 
-        #their team did not call
+        
         else:
-                # play conservative (off but high)
+            # this pc's team did not call trump, the opponents did
+            # play conservative (off but high)
             highest_value_card_block = max(card_list, key=lambda x: x[3] and x[3] <=6)
             
             highest_value = highest_value_card_block[3]
@@ -1450,15 +1455,17 @@ def pc_plays_a_card(chair, trump, who_called, hand, table):
                 selected_highest_value_card = random.choice(choices_for_card_to_play)
                 card_to_play = selected_highest_value_card[0]
             
-            table.append(card_to_play)
+            # table.append(card_to_play)
             hand.cards.remove(card_to_play)
             print (hand.cards)
             for card in table:
                 print (card)
-            return [card_to_play, table];
+            # return [chair, card_to_play, table];
+            return [chair, card_to_play];
 
 
     else:
+        # table [] is not empty, previous cards have been played
         first_card_played = table[0]
         # has partner played?
         # if yes, is he winning
@@ -1480,12 +1487,13 @@ def pc_plays_a_card(chair, trump, who_called, hand, table):
         
         card_to_play = selected_highest_value_card[0]
         
-        table.append(card_to_play)
+        # table.append(card_to_play)
         hand.cards.remove(card_to_play)
         print (hand.cards)
         for card in table:
             print (card)
-        return [card_to_play, table];
+        # return [chair, card_to_play, table];
+        return [chair, card_to_play];
         # table is not empty
         #pc_plays_another_card()
         # what is suit to follow
@@ -1571,7 +1579,7 @@ def suit_to_follow(round):
 
 team_ns_score = 0
 team_ew_score = 0 
-import random
+
 suits = ('Hearts', 'Diamonds', 'Spades', 'Clubs')
 ranks = ('Nine', 'Ten', 'Jack', 'Queen', 'King', 'Ace')
 values = {'Nine':1, 'Ten':2, 'Jack':3, 'Queen':4, 'King':5, 'Ace':6, 'tNine':7, 'tTen':8, 'tJick':12, 'tJack':13, 'tQueen': 9, 'tKing': 10, 'tAce':11}
@@ -1710,14 +1718,19 @@ else:
 
 trick_counter = 0
 table = []
+
+# python debugger 
+# pdb.set_trace()
+
 while trick_counter < 6:
     if trick_counter == 0:
         card_and_table = []
         print ("trick_counter is zero")
         card_and_table = left_of_dealer_plays_first(player_left_of_dealer, who_called, whats_trump, table)
         print (f"this is the returned {card_and_table}")
-        one_selected = card_and_table[0]
-        table = card_and_table[1]
+        who_played_it = card_and_table[0]
+        one_selected = card_and_table[1]
+        # table = card_and_table[2]
         print (one_selected)
         print (table)
         trick_counter += 1

@@ -1316,6 +1316,21 @@ def pick_up_and_switch(player,name_hand,trump,deck,card = ''):
     
 #     def put_back(self,card):
 
+def card_object_is_left_bower(card_object,trump):
+    trump_color = colors[trump]
+    if card.rank == "Jack" and colors[card.suit] == trump_color:
+        return True
+    else:
+        return False
+
+def card_is_left_bower(card,trump):
+    trump_color = colors[trump]
+    if card[0] == "Jack" and colors[card[1]] == trump_color:
+        return True
+    else:
+        return False
+
+
 
 ## PC and HU Decision functions ##
 ## PC and HU Decision functions ##
@@ -1348,6 +1363,9 @@ def pc_plays_a_card(chair, trump, who_called, hand, table):
     #     team_that_called = "team_ns"
     # else:
     #     team_that_called = "team_ew"
+    
+    # left_bowers_suit = 
+    
     print ("\n In pc plays a card" )
     if who_called in team_ns:
         team_that_called = team_ns
@@ -1464,10 +1482,17 @@ def pc_plays_a_card(chair, trump, who_called, hand, table):
 
     else:
         # table [] is not empty, previous cards have been played
-        first_card_played = table[0]
+        who_played_first_card = table[0][0]
+        first_card_played = table[0][1]
+        if card_object_is_left_bower(first_card_played,trump):
+            suit_to_follow = trump
+        else: 
+            suit_to_follow = first_card_played.suit
+        # follow suit
+        # who's winning
         # has partner played?
-        # if yes, is he winning
-        # partner winning with rank king or higher = T/F
+        # did they call trump
+        # if partner winning is it with rank king or higher = T/F
         # if yes, then play low off
         # if no, play highest you can
         suit_to_follow = first_card_played.suit
@@ -1592,6 +1617,10 @@ colors = {"Hearts":"red", "Diamonds":"red", "Clubs":"black", "Spades":"black"}
 table_position_dict_default = {'chair_1':'pc South', 'chair_2':'pc West', 'chair_3':'pc North', 'chair_4':'pc East'}
 # table_position_dict = {'chair_1':'pc South', 'chair_2':'pc West', 'chair_3':'pc North', 'chair_4':'pc East'} # default all pcs
 
+# Once trump is decided then values can be assigned more permanently
+
+
+
 # table_position_list = ["chair_1","chair_2","chair_3","chair_4"]
 # list_of_hand_objects = ["chair_1","chair_2","chair_3","chair_4"]
 
@@ -1664,8 +1693,6 @@ for player_hand in list_of_hand_objects:
 print ("\n")
 one_and_done_suit = top_card_suit(dev_deck)
 
-# get_ipython().run_line_magic('whos', '')
-
 
 ## TRUMP SELECTION ##
 ## TRUMP SELECTION ##
@@ -1725,10 +1752,46 @@ else:
 trick_counter = 0
 table = []
 
+# trump_card_list will hold all the cards and their current value based on the 
+# selected trump, looks like 
+# [card rank, card suit, Trump T/F, actual value]
+trump_card_list = []
+for suit in suits:
+    for rank in ranks:
+        trump_card_list.append([rank,suit])
+
+for card in trump_card_list:
+    if card[1] == whats_trump:
+        trank = 't' + card[0]
+        value = values[trank]
+        card.append(True)
+        card.append(value)
+        
+    elif card_is_left_bower(card,whats_trump):
+        value = values['tJick']
+        card.append(True)
+        card.append(value)
+    else:
+        value = values[card[0]]
+        card.append(False)
+        card.append(value)
+
+# print([x for x in a_list])
+
+print ([x for x in trump_card_list])
+
+
+# do the sort one last time and have it for the round, 
+# giving a [card.rank,actual_suit,card.value] and reference that 
+# for winning or not. Also actual suit is for the left bower jumping ship  
+
 # python debugger 
 # pdb.set_trace()
 
 while trick_counter < 6:
+
+
+
     if trick_counter == 0:
         chair_and_card = []
         print ("trick_counter is zero")

@@ -266,6 +266,18 @@ def table_positions(output_num):
             print("This is the reset dict")
             print(table_position_dict)
     return (table_position_dict)
+
+def table_positions_auto(output_num):
+        table_position_dict = table_position_dict_default.copy()
+#     for seat in table_position_dict_default:
+#         table_position_dict.update(seat[0]:seat[1])
+    print (f"testing to see if table copied well {table_position_dict}")
+    print ("The positioning is around a table \n position 1 is on the south and then it goes clockwise \n up to the 4th position to the east")
+    print ("\n   p3  \n p2  p4\n   p1  ")
+    
+    # While loop until we get the right positions out
+    table_position_dict = {'chair_1': 'hu player 1', 'chair_2': 'pc West', 'chair_3': 'pc North', 'chair_4': 'pc East'}
+    return (table_position_dict)
         
 
 def print_teams(table_position_dict):
@@ -1340,6 +1352,25 @@ def card_is_left_bower(card,trump):
 ## Play Phase ##
 ## Play Phase ##
 
+def make_trump_card_list(trump_card_list):
+    for suit in suits:
+        for rank in ranks:
+            trump_card_list.append([rank,suit])
+
+    for card in trump_card_list:
+        if card[1] == whats_trump:
+            trank = 't' + card[0]
+            value = values[trank]
+            card.append(value)
+            
+        elif card_is_left_bower(card,whats_trump):
+            value = values['tJick']
+            card.append(value)
+        else:
+            value = values[card[0]]
+            card.append(value)
+
+
 
 def left_of_dealer_plays_first(position_on_table, who_called, whats_trump, table):
     
@@ -1490,6 +1521,15 @@ def pc_plays_a_card(chair, trump, who_called, hand, table):
             suit_to_follow = first_card_played.suit
         # follow suit
         # who's winning
+
+
+
+
+            winner_chair_ = highest_value_card_block = max(table, key=lambda x: x[])
+        
+        
+        
+        
         # has partner played?
         # did they call trump
         # if partner winning is it with rank king or higher = T/F
@@ -1638,6 +1678,7 @@ table_position_dict_default = {'chair_1':'pc South', 'chair_2':'pc West', 'chair
 
 # how_many_humans() -->table_positions()
 table_position_dict = how_many_humans()
+table_position_dict = table_positions_auto(1)
 
 table_position_list = [] 
 
@@ -1739,6 +1780,17 @@ team_ew = ["chair_2","chair_4"]
 ## Trick play ##
 ## Trick play ##
 
+# trump_card_list will hold all the cards and their current value based on the 
+# selected trump, looks like 
+# [card rank, card suit, actual value]
+# to test if a card is trump, do an if value > 6
+trump_card_list = []
+make_trump_card_list(trump_card_list)
+
+# print([x for x in a_list])
+
+print ([x for x in trump_card_list])
+
 # point to left of dealer
 
 # the position in the table_position_list
@@ -1752,33 +1804,7 @@ else:
 trick_counter = 0
 table = []
 
-# trump_card_list will hold all the cards and their current value based on the 
-# selected trump, looks like 
-# [card rank, card suit, Trump T/F, actual value]
-trump_card_list = []
-for suit in suits:
-    for rank in ranks:
-        trump_card_list.append([rank,suit])
 
-for card in trump_card_list:
-    if card[1] == whats_trump:
-        trank = 't' + card[0]
-        value = values[trank]
-        card.append(True)
-        card.append(value)
-        
-    elif card_is_left_bower(card,whats_trump):
-        value = values['tJick']
-        card.append(True)
-        card.append(value)
-    else:
-        value = values[card[0]]
-        card.append(False)
-        card.append(value)
-
-# print([x for x in a_list])
-
-print ([x for x in trump_card_list])
 
 
 # do the sort one last time and have it for the round, 

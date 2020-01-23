@@ -51,27 +51,39 @@ class Card:
         self.rank = rank
         self.suit = suit
 
-card_object1 = Card("tJack", "Hearts")
-card_object2 = Card("tJick", "Diamonds")
+    def make_rank_trump(self):
+        old_rank = self.rank
+        trump_rank = "t" + old_rank
+        self.rank = trump_rank
+        print (f"old rank was {old_rank} of {self.suit} \n new rank is {trump_rank} of {card.suit}")
+
+
+
+card_object1 = Card("Jack", "Hearts")
+card_object2 = Card("Jack", "Diamonds")
 card_object3 = Card("Ace", "Spades")
 
 table_list = [["chair_1",card_object1],["chair_2",card_object2],["chair_3",card_object3]]
 
-
-
-
 # Ok, now, who won? 
 # I need to give the cards a value
+
+# card_object1.make_rank_trump()
+
 
 for card_played in table_list:
     card = card_played[1]
     if card.suit == whats_trump:
-        base_rank = card.rank 
-        this.card.rank = "t" + base_rank
+        card.make_rank_trump()
+    if card.rank == "Jack" and card_color == colors[whats_trump] and card.suit != whats_trump
+# go grab the if Jack is same color different suit 
     
 print (card_object1.rank)
 print (card_object2.rank)
 print (card_object3.rank)
+
+
+
 
 pdb.set_trace()
 

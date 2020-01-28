@@ -50,6 +50,8 @@ class Card:
     def __init__(self, rank, suit):
         self.rank = rank
         self.suit = suit
+        self.value = values[self.rank]
+
 
     def make_rank_trump(self,jick = False):
         if jick == True:
@@ -57,26 +59,34 @@ class Card:
             self.rank = "Jick"
             trump_rank = "t" + self.rank
             self.rank = trump_rank
-            print (f"old rank was {old_rank} of {self.suit} \n new rank is {trump_rank} of {whats_trump}")
+            print (f"old rank was {old_rank} of {self.suit}")
+            print (f"new rank is {trump_rank} of {whats_trump}")
+            self.value = values[self.rank]           
         else:
             old_rank = self.rank
             trump_rank = "t" + old_rank
             self.rank = trump_rank
-            print (f"old rank was {old_rank} of {self.suit} \n new rank is {trump_rank} of {card.suit}")
+            print (f"old rank was {old_rank} of {self.suit}") 
+            print (f"new rank is {trump_rank} of {card.suit}")
+            self.value = values[self.rank]
 
 
 
 card_object1 = Card("Jack", "Hearts")
 card_object2 = Card("Jack", "Diamonds")
 card_object3 = Card("Ace", "Spades")
+print (card_object1.value)
+print (card_object2.value)
+print (card_object3.value)
 
-table_list = [["chair_1",card_object1],["chair_2",card_object2],["chair_3",card_object3]]
 
 # Ok, now, who won? 
 # I need to give the cards a value
 
 # card_object1.make_rank_trump()
 trump_color = colors[whats_trump]
+
+table_list = [["chair_1",card_object2],["chair_2",card_object1],["chair_3",card_object3]]
 
 for card_played in table_list:
     card = card_played[1]
@@ -85,20 +95,34 @@ for card_played in table_list:
     if card.rank == "Jack" and colors[card.suit] == trump_color and card.suit != whats_trump:
         card.make_rank_trump(True)
 
+
+
     
 print (card_object1.rank)
 print (card_object2.rank)
 print (card_object3.rank)
 
+print (card_object1.value)
+print (card_object2.value)
+print (card_object3.value)
 
+# pdb.set_trace()
 
+# def whos_winning(table_list):
+#     card_value_list
+#     for chair_card in table_list:
 
-pdb.set_trace()
+winning_value = max(table_list, key=lambda x: x[1].value)
+print (winning_value)
 
 # now value is the 2nd position in the table_list
 # looks like ["chair_1",card_object1, actual_value]
 
 # to see who won, look through the list with lamda fun
 # and then print the 0th position
+
+
+
+# highest_value = max(key = lambda card.rank: values[card.rank])
 
 

@@ -29,9 +29,27 @@ class Dev_Card:
     def __init__(self,suit,rank):
         self.suit = suit
         self.rank = rank
+        self.value = values[self.rank]
         
     def __str__(self):
         return self.rank + ' of ' + self.suit
+    
+    def make_rank_trump(self,jick = False):
+        if jick == True:
+            old_rank = self.rank
+            self.rank = "Jick"
+            trump_rank = "t" + self.rank
+            self.rank = trump_rank
+            print (f"old rank was {old_rank} of {self.suit}")
+            print (f"new rank is {trump_rank} of {whats_trump}")
+            self.value = values[self.rank]           
+        else:
+            old_rank = self.rank
+            trump_rank = "t" + old_rank
+            self.rank = trump_rank
+            print (f"old rank was {old_rank} of {self.suit}") 
+            print (f"new rank is {trump_rank} of {card.suit}")
+            self.value = values[self.rank]
 
 
 class Dev_Deck:
@@ -1388,6 +1406,17 @@ def left_of_dealer_plays_first(position_on_table, who_called, whats_trump, table
         # hu_plays_a_card()
         pass
 
+def whos_winning(table_list):
+    '''Reply's with the chair that has played the highest value'''
+   
+    winning_chair_card = max(table_list, key=lambda x: x[1].value)
+    print ("\n Here's the winning chair and card from the table")
+    print (winning_chair_card)
+    winning_chair = winning_chair_card[0]
+    return winning_chair
+
+
+
 def pc_plays_a_card(chair, trump, who_called, hand, table):
     
     # if who_called == "chair_1" or who_called == "chair_3":
@@ -1784,12 +1813,20 @@ team_ew = ["chair_2","chair_4"]
 # selected trump, looks like 
 # [card rank, card suit, actual value]
 # to test if a card is trump, do an if value > 6
-trump_card_list = []
-make_trump_card_list(trump_card_list)
 
-# print([x for x in a_list])
+# This for loop applies the new values of the now known suit of trump
+for card in dev_deck:
+    if card.suit == whats_trump:
+        card.make_rank_trump()
+    if card.rank == "Jack" and colors[card.suit] == trump_color and card.suit != whats_trump:
+        card.make_rank_trump(True)
 
-print ([x for x in trump_card_list])
+# trump_card_list = []
+# make_trump_card_list(trump_card_list)
+
+# # print([x for x in a_list])
+
+# print ([x for x in trump_card_list])
 
 # point to left of dealer
 

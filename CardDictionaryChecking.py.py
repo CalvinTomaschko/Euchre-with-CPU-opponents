@@ -61,7 +61,8 @@ class Card:
             self.rank = trump_rank
             print (f"old rank was {old_rank} of {self.suit}")
             print (f"new rank is {trump_rank} of {whats_trump}")
-            self.value = values[self.rank]           
+            self.value = values[self.rank]
+            self.suit = whats_trump           
         else:
             old_rank = self.rank
             trump_rank = "t" + old_rank
@@ -106,7 +107,7 @@ print (card_object1.value)
 print (card_object2.value)
 print (card_object3.value)
 
-# pdb.set_trace()
+# 
 
 # def whos_winning(table_list):
 #     card_value_list
@@ -121,8 +122,45 @@ print (winning_value)
 # to see who won, look through the list with lamda fun
 # and then print the 0th position
 
+cards_in_hand = [card_object1,card_object2,card_object3]
 
+# 3 cards are H,D,S then H,H,S, no clubs
+suit_to_follow = "Hearts"
 
+cards_of_suit_to_follow = list(filter(lambda x: x.suit == suit_to_follow, cards_in_hand))
+
+print ("here's the list version")
+if cards_of_suit_to_follow == []:
+    print ("cards_of_suit_to_follow is empty list")
+else:
+    print (len(cards_of_suit_to_follow))
+    for card in cards_of_suit_to_follow:
+        print (card.rank) 
+        print (card.suit)
+        
+
+# has_suit_to_follow = bool(lambda card: False if card.suit != suit_to_follow)
+# print ("here's the true and false version")
+
+doesnt_have_any_of_suit = any(card.suit != suit_to_follow for card in cards_in_hand)
+
+print (doesnt_have_any_of_suit)
+
+winning_number_to_beat = 12
+
+cards_that_beat_it = list(filter(lambda x: x.value > winning_number_to_beat, cards_in_hand))
+
+print (cards_that_beat_it)
+
+winning_number_to_beat = 5
+
+cards_that_beat_it = list(filter(lambda x: x.value > winning_number_to_beat, cards_in_hand))
+
+print (cards_that_beat_it)
+
+# any card in hand can beat the winning card value
+
+pdb.set_trace()
 # highest_value = max(key = lambda card.rank: values[card.rank])
 
 

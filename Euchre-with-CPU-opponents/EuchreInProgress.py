@@ -42,7 +42,8 @@ class Dev_Card:
             self.rank = trump_rank
             print (f"old rank was {old_rank} of {self.suit}")
             print (f"new rank is {trump_rank} of {whats_trump}")
-            self.value = values[self.rank]           
+            self.value = values[self.rank]    
+            self.suit = whats_trump       
         else:
             old_rank = self.rank
             trump_rank = "t" + old_rank
@@ -1544,20 +1545,41 @@ def pc_plays_a_card(chair, trump, who_called, hand, table):
         # table [] is not empty, previous cards have been played
         who_played_first_card = table[0][0]
         first_card_played = table[0][1]
-        if card_object_is_left_bower(first_card_played,trump):
-            suit_to_follow = trump
+        
+        # who's winning and with what card
+        if len(table) == 1:
+            winning_chair = who_played_first_card
+            winning_card = first_card_played
         else: 
-            suit_to_follow = first_card_played.suit
-        # follow suit
-        # who's winning
-
-
-
-
-            winner_chair_ = highest_value_card_block = max(table, key=lambda x: x[])
+            winning_chair_and_card = max(table, key=lambda x: x[1].value)
+            winning_chair = winning_chair_and_card[0]
+            winning_card = winning_chair_and_card[1]
         
+        suit_to_follow = first_card_played.suit # suit to follow, if player has it
         
+        # write a lamda for if a suit equals this in hand
+        cards_in_hand_of_lead_suit = list(filter(lambda x: x.suit == suit_to_follow, hand.cards))
+
+        # Player has no cards of the lead suit
+        if cards_in_hand_of_lead_suit == []:
+            print ("cards_of_suit_to_follow is empty list")
+            # is winning chair on the same team?  
+            # find cards that can beat winning card
+
         
+        # Player indeed has cards of the lead suit
+        else:
+            for card in cards_in_hand_of_lead_suit:
+                print (card.rank)
+                print (card.suit)
+            for card in cards_in_hand_of_lead_suit:
+
+             
+                # if one of these cards can beat the card on the table then play high
+                # else play low
+        # is there a card of the suit_to_follow in this pc's hand?
+        
+        # is their trump in this pc's hand?
         
         # has partner played?
         # did they call trump
@@ -1822,7 +1844,7 @@ for card in dev_deck:
         card.make_rank_trump(True)
 
 # trump_card_list = []
-# make_trump_card_list(trump_card_list)
+# make_trump_card_list(trump_card_list) # old method as of Jan 27th 2020
 
 # # print([x for x in a_list])
 

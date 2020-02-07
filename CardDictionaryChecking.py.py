@@ -152,13 +152,17 @@ cards_that_beat_it = list(filter(lambda x: x.value > winning_number_to_beat, car
 
 print (cards_that_beat_it)
 
-winning_number_to_beat = 5
 
-cards_that_beat_it = list(filter(lambda x: x.value > winning_number_to_beat, cards_in_hand))
 
-print (cards_that_beat_it)
+# any card in hand of .suit trump 
 
-# any card in hand can beat the winning card value
+trump_cards_in_hand = list(filter(lambda x: x.suit == whats_trump, cards_in_hand))
+
+print (trump_cards_in_hand)
+
+
+
+
 
 pdb.set_trace()
 # highest_value = max(key = lambda card.rank: values[card.rank])

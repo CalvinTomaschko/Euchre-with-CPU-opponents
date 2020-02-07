@@ -1542,11 +1542,27 @@ def pc_plays_a_card(chair, trump, who_called, hand, table):
 
 
     else:
-        # table [] is not empty, previous cards have been played
+        # TABLE [] is NOT EMPTY, previous cards have been played
+
+        # Placing all potentially needed factors here (Feb 5th 2020) for now
+        # then putting some behind ifs to cut back on uncessary computations
+
+        # F> WHO LEAD
         who_played_first_card = table[0][0]
+        
+        # F> WHAT CARD WAS LEAD
         first_card_played = table[0][1]
         
-        # who's winning and with what card
+        # F> WHICH TEAM IS PC ON, help us see if partner has lead later
+        
+        if chair in team_ns:
+            this_pcs_team = team_ns
+        else:
+            this_pcs_team = team_ew
+        
+        # F> WHICH CHAIR IS WINNING 
+        # F> WHAT CARD WAS PLAYED
+        
         if len(table) == 1:
             winning_chair = who_played_first_card
             winning_card = first_card_played
@@ -1554,40 +1570,88 @@ def pc_plays_a_card(chair, trump, who_called, hand, table):
             winning_chair_and_card = max(table, key=lambda x: x[1].value)
             winning_chair = winning_chair_and_card[0]
             winning_card = winning_chair_and_card[1]
+
+        # F> WHICH TEAM IS WINNING
+        
+        partner_has_it = False
+        if winning_chair in this_pcs_team:
+            partner_has_it = True
+
+        if partner_has_it == True:
+            partner_chair_and_card = lamba x: x[0] == 
+            # Do a check if they used trump to do so
+            # when lead is off and they used trump, then they "trumped"
+            # when lead is trump then they just followed suit
+
+        # F> SUIT TO FOLLOW
         
         suit_to_follow = first_card_played.suit # suit to follow, if player has it
         
-        # write a lamda for if a suit equals this in hand
-        cards_in_hand_of_lead_suit = list(filter(lambda x: x.suit == suit_to_follow, hand.cards))
+        # F> LEAD SUIT WAS TRUMP Y/N
 
-        # Player has no cards of the lead suit
+        lead_suit_was_trump = False
+        if suit_to_follow == trump:
+            lead_suit_was_trump = True
+
+        # F> PC HAS LEAD SUIT
+
+        pc_has_lead_suit = True
+        cards_in_hand_of_lead_suit = list(filter(lambda x: x.suit == suit_to_follow, hand.cards))
+        if cards_in_hand_of_lead_suit == []:
+            pc_has_lead_suit = False
+        
+        
+
+        
+
+
+
+
+
+
+
+
+
+        # NOTHING BELOW THIS LINE FOR NOW
+     ####################################################################   
+        #  Player has NO CARDS of the LEAD SUIT
+        # player will trump if they can, or will play low off
         if cards_in_hand_of_lead_suit == []:
             print ("cards_of_suit_to_follow is empty list")
-            # is winning chair on the same team?  
-            # find cards that can beat winning card
+            trump_cards_in_hand = list(filter(lambda x: x.suit == whats_trump, cards_in_hand))
+            print (trump_cards_in_hand)
+            
+            # has NO TRUMP cards
+            if trump_cards_in_hand == []:
+                #   play non_trump low 
+            
+            # indeed HAS TRUMP cards
+            else:
+                # play lowest trump to take the lead! 
 
-        
-        # Player indeed has cards of the lead suit
+        # Player indeed HAS CARDS of the LEAD SUIT
+        # player will play a card of that suit
         else:
-            for card in cards_in_hand_of_lead_suit:
-                print (card.rank)
-                print (card.suit)
-            for card in cards_in_hand_of_lead_suit:
+            # for card in cards_in_hand_of_lead_suit:
+            #     print (card.rank)
+            #     print (card.suit)
+            # for card in cards_in_hand_of_lead_suit:
+            
+            # 1. partner trumped and is leading, play low
+            # 2. lead suit is trump and partner is in the lead with a 10,Q,or K, play an A,Ji, or Ja
+            # 3. partner followed suit and is leading, trump if you can, beat if you can, otherwise play low
+            if 
+            if winning_chair in this_pcs_team:
+                if winning_card.value > 9:
+                    # play non_trump low
+                    else:
+            # if one of your beats there's play high of that suit
+            # else play your lowest of that suit
 
-             
-                # if one of these cards can beat the card on the table then play high
-                # else play low
-        # is there a card of the suit_to_follow in this pc's hand?
-        
-        # is their trump in this pc's hand?
-        
-        # has partner played?
-        # did they call trump
-        # if partner winning is it with rank king or higher = T/F
-        # if yes, then play low off
-        # if no, play highest you can
+
         suit_to_follow = first_card_played.suit
         have_card_of_that_suit = False
+
         for card in hand.cards:
             if card.suit == suit_to_follow:
                 have_card_of_that_suit = True 

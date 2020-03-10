@@ -297,7 +297,7 @@ def left_of_dealer_plays_first(position_on_table, who_called, whats_trump, table
     print (f"this should be 'this hand' object gabbledygooc {this_hand}")
     if table_position_dict[chair][0:2] == "pc":
         print ("chair was pc")
-        return pc_plays_a_card(chair, whats_trump, who_called,table)
+        return pc_plays_a_card(position_on_table, whats_trump, who_called,table)
 
     else:
         print ("chair was hu")
@@ -312,6 +312,17 @@ def whos_winning(table_list):
     print (winning_chair_card)
     winning_chair = winning_chair_card[0]
     return winning_chair
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -336,20 +347,25 @@ def pc_plays_a_card(position_on_table, trump, who_called, table):
     
     print (f"this is 'team that called' -->{team_that_called}")
 
+    card_list = []
+
+    for card in hand.cards:
+            # for card in hand make list with accurate rank and value
+            # now that trump is locked in
+            rank = card.rank
+            value = values[rank]
+            card_list.append([card, rank, card.suit, value])
 
     if table == []:
         print ("Table is empty")
         #pc_plays_first_card():
         # their team called
         print ("a")
+
+        
+        
         if chair in team_that_called:
-            card_list = []
-            for card in hand.cards:
-                # for card in hand make list with accurate rank and value
-                # now that trump is locked in
-                    rank = card.rank
-                    value = values[rank]
-                    card_list.append([card, rank, card.suit, value])
+            
             
             if chair == who_called:
                 # play aggressive, this ordered up or called and wants to take the lead
@@ -366,6 +382,8 @@ def pc_plays_a_card(position_on_table, trump, who_called, table):
                 
                 highest_value = highest_value_card_block[3]
                 choices_for_card_to_play = []
+          ######### This is where I last was trying to figure out error on line 623 selected
+          # Highest_value_card[0]      
                 for card in card_list:
                     if card[3] == highest_value:
                         choices_for_card_to_play.append(card)
@@ -562,7 +580,7 @@ def pc_plays_a_card(position_on_table, trump, who_called, table):
         # player will trump if they can, or will play low off
         if cards_in_hand_of_lead_suit == []:
             print ("cards_of_suit_to_follow is empty list")
-            trump_cards_in_hand = list(filter(lambda x: x.suit == whats_trump, cards_in_hand))
+            trump_cards_in_hand = list(filter(lambda x: x.suit == whats_trump, hand.cards))
             print (trump_cards_in_hand)
             
             # has NO TRUMP cards
@@ -904,7 +922,7 @@ while trick_counter < 6:
         print ("trick_counter is greater or equal to one")
 
         # def pc_plays_a_card(position_on_table, trump, who_called, this_hand, table)
-        pc_plays_a_card(current_player_position, whats_trump, who_called)
+        pc_plays_a_card(current_player_position, whats_trump, who_called, table)
         pdb.set_trace()
         break
         # trick_winner_plays_next_card()

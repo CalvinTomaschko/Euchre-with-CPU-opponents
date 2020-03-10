@@ -287,7 +287,7 @@ def table_positions(output_num):
     return (table_position_dict)
 
 def table_positions_auto(output_num):
-        table_position_dict = table_position_dict_default.copy()
+    table_position_dict = table_position_dict_default.copy()
 #     for seat in table_position_dict_default:
 #         table_position_dict.update(seat[0]:seat[1])
     print (f"testing to see if table copied well {table_position_dict}")
@@ -1447,13 +1447,13 @@ def pc_plays_a_card(chair, trump, who_called, hand, table):
                 print ("b")
                 for card in hand.cards:
                 # for card in hand make list with accurate rank and value
+
+                # Directly below for 8 lines tries to assign trump but this is taken care of already in the execution code once trump is established
+
                 # now that trump is locked in
-                    if card.suit == trump:
-                        rank = "t" + str(card.rank)
-                        value = values[rank]
-                    else:
-                        rank = card.rank
-                        value = values[rank]
+
+                    rank = card.rank
+                    value = values[rank]
                     card_list.append([card, rank, card.suit, value])
 
                 # found this amazing max for given element of list
@@ -1572,13 +1572,15 @@ def pc_plays_a_card(chair, trump, who_called, hand, table):
             winning_card = winning_chair_and_card[1]
 
         # F> WHICH TEAM IS WINNING
-        
+        # F> PARTNER_HAS_IT T/F
+
         partner_has_it = False
         if winning_chair in this_pcs_team:
             partner_has_it = True
 
-        if partner_has_it == True:
-            partner_chair_and_card = lamba x: x[0] == 
+        # Come back to! 
+        # if partner_has_it == True:
+            # partner_chair_and_card = lamba x: x[0] ==
             # Do a check if they used trump to do so
             # when lead is off and they used trump, then they "trumped"
             # when lead is trump then they just followed suit
@@ -1600,8 +1602,38 @@ def pc_plays_a_card(chair, trump, who_called, hand, table):
         if cards_in_hand_of_lead_suit == []:
             pc_has_lead_suit = False
         
-        
+        # Instances to call for 
+        # These will all be made for if there is only 1 other card on the table, meaning it's simplified
+        # No need to calibrate if partner has it or not
+        # variables are:
+        #  
+        # who_played_first_card
+        # first_card_played
+        # winning_chair
+        # winning_card
+        # suit_to_follow
+        # pc_has_lead_suit t/f
+        # cards_in_hand_of_lead_suit [list]
+        # lead_suit_was_trump t/f
+        # partner_has_it t/f
+        # partner_trumped t/f
 
+        # IF LEN(TABLE) == 1:  ____________________________________
+
+        # Lead suit not trump, PC has lead suit
+        # if lead suit != trump and PC has trump
+        if suit_to_follow != trump and pc_has_lead_suit == True:
+            # play highest off of lead suit
+            # find highest card in cards_in_hand_of_lead_suit
+            highest_card = max(cards_in_hand_of_lead_suit, key=lambda x: x[1].value)
+
+
+
+        # Lead suit not trump, PC does not have lead suit
+
+        # lead suit is trump, PC has
+
+        # lead suit is trump, PC does not have
         
 
 
@@ -1623,10 +1655,12 @@ def pc_plays_a_card(chair, trump, who_called, hand, table):
             
             # has NO TRUMP cards
             if trump_cards_in_hand == []:
+                pass
                 #   play non_trump low 
             
             # indeed HAS TRUMP cards
             else:
+                pass
                 # play lowest trump to take the lead! 
 
         # Player indeed HAS CARDS of the LEAD SUIT
@@ -1640,11 +1674,13 @@ def pc_plays_a_card(chair, trump, who_called, hand, table):
             # 1. partner trumped and is leading, play low
             # 2. lead suit is trump and partner is in the lead with a 10,Q,or K, play an A,Ji, or Ja
             # 3. partner followed suit and is leading, trump if you can, beat if you can, otherwise play low
-            if 
+            
             if winning_chair in this_pcs_team:
                 if winning_card.value > 9:
+                    pass
                     # play non_trump low
-                    else:
+                else:
+                    pass
             # if one of your beats there's play high of that suit
             # else play your lowest of that suit
 
@@ -1900,12 +1936,23 @@ team_ew = ["chair_2","chair_4"]
 # [card rank, card suit, actual value]
 # to test if a card is trump, do an if value > 6
 
+
+# # python debugger 
+# pdb.set_trace()
+
 # This for loop applies the new values of the now known suit of trump
-for card in dev_deck:
-    if card.suit == whats_trump:
-        card.make_rank_trump()
-    if card.rank == "Jack" and colors[card.suit] == trump_color and card.suit != whats_trump:
-        card.make_rank_trump(True)
+
+# Needs to go through all cards in each hand, not each card in dev deck
+# March 2020
+
+trump_color = colors[whats_trump]
+
+for hand in list_of_hand_objects:
+    for card in hand.cards:
+        if card.suit == whats_trump:
+            card.make_rank_trump()
+        if card.rank == "Jack" and colors[card.suit] == trump_color and card.suit != whats_trump:
+            card.make_rank_trump(True)
 
 # trump_card_list = []
 # make_trump_card_list(trump_card_list) # old method as of Jan 27th 2020
@@ -1934,8 +1981,6 @@ table = []
 # giving a [card.rank,actual_suit,card.value] and reference that 
 # for winning or not. Also actual suit is for the left bower jumping ship  
 
-# python debugger 
-# pdb.set_trace()
 
 while trick_counter < 6:
 

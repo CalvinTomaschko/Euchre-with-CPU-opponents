@@ -161,6 +161,17 @@ trump_cards_in_hand = list(filter(lambda x: x.suit == whats_trump, cards_in_hand
 print (trump_cards_in_hand)
 
 
+team_ns = ["chair_1","chair_3"]
+team_ew = ["chair_2","chair_4"]
+
+# if pc is chair 2 how do I test if winning chair is their partner
+
+# is winner_chair on same team
+# this pc's team is 
+pc_chair = "chair_2"
+
+
+
 
 
 

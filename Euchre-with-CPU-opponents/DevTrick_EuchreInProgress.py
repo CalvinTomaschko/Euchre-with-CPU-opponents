@@ -328,51 +328,48 @@ def whos_winning(table_list):
 
 def pc_plays_a_card(position_on_table, trump, who_called, table):
     
-    # if who_called == "chair_1" or who_called == "chair_3":
-    #     team_that_called = "team_ns"
-    # else:
-    #     team_that_called = "team_ew"
-    
-    # left_bowers_suit = 
+
 
     chair = table_position_list[position_on_table]
     hand = list_of_hand_objects[position_on_table]
     
-    print ("\n In pc plays a card" )
-    
+    print ("\nIn function pc_plays_a_card" )
+
+    print ("\nCards on table")
+    for card in table:
+        print (card)
+
     if who_called in team_ns:
         team_that_called = team_ns
     else:
         team_that_called = team_ew
     
-    print (f"this is 'team that called' -->{team_that_called}")
+    print (f"\nthis is 'team that called' -->{team_that_called}")
 
+    
+    # Making the card list to work with
+    
     card_list = []
-
     for card in hand.cards:
-            # for card in hand make list with accurate rank and value
-            # now that trump is locked in
             rank = card.rank
             value = values[rank]
             card_list.append([card, rank, card.suit, value])
 
-    if table == []:
-        print ("Table is empty")
-        #pc_plays_first_card():
-        # their team called
-        print ("a")
+    print (f"\nThis chairs--> {chair} <--cards")
+    for card in hand.cards:
+        print (card)
 
+
+    if table == []:  # TABLE IS EMPTY, picks which "style" to play ___________
+        print ("\nTable is empty\n")
         
-        
+        # Same team called
         if chair in team_that_called:
-            
-            
-            if chair == who_called:
+                    
+            if chair == who_called: # This PC called
+
                 # play aggressive, this ordered up or called and wants to take the lead
                 
-                print ("b")
-                
-
                 # found this amazing max for given element of list
                 # https://dbader.org/blog/python-min-max-and-nested-lists
                 # max(nested_list, key=lambda x: x[1])
@@ -382,8 +379,7 @@ def pc_plays_a_card(position_on_table, trump, who_called, table):
                 
                 highest_value = highest_value_card_block[3]
                 choices_for_card_to_play = []
-          ######### This is where I last was trying to figure out error on line 623 selected
-          # Highest_value_card[0]      
+    
                 for card in card_list:
                     if card[3] == highest_value:
                         choices_for_card_to_play.append(card)
@@ -394,16 +390,13 @@ def pc_plays_a_card(position_on_table, trump, who_called, table):
                     selected_highest_value_card = random.choice(choices_for_card_to_play)
                     card_to_play = selected_highest_value_card[0]
                 
-                # table.append(card_to_play)
                 hand.cards.remove(card_to_play)
-                print (hand.cards)
-                for card in table:
-                    print (card)
+                
                 # return [chair, card_to_play, table];
+                print ("\nend of, this PC called trump")
                 return [chair, card_to_play];
                 
-            else:
-                # this pc's partner called trump
+            else:  # this pc's partner called trump
                 # play conservative (off but high)
                 highest_value_card_block = max(card_list, key=lambda x: x[3] and x[3] <=6)
                 
@@ -424,15 +417,13 @@ def pc_plays_a_card(position_on_table, trump, who_called, table):
                 
                 # table.append(card_to_play)
                 hand.cards.remove(card_to_play)
-                print (hand.cards)
-                for card in table:
-                    print (card)
+
                 # return [chair, card_to_play, table];
+                print ("\nend of, this pc's partner called trump")
                 return [chair, card_to_play];
 
 
-        else:
-            # this pc's team did not call trump, the opponents did
+        else: # THIS PC'S TEAM DID NOT CALL trump, the opponents did __________
             # play conservative (off but high)
             highest_value_card_block = max(card_list, key=lambda x: x[3] and x[3] <=6)
             
@@ -453,16 +444,14 @@ def pc_plays_a_card(position_on_table, trump, who_called, table):
             
             # table.append(card_to_play)
             hand.cards.remove(card_to_play)
-            print (hand.cards)
-            for card in table:
-                print (card)
+
             # return [chair, card_to_play, table];
+            print ("\nend of, this PC's team did not call trump")
             return [chair, card_to_play];
 
 
-    else:
-        # TABLE [] is NOT EMPTY, previous cards have been played
-        print ("Table is not empty")
+    else:  # TABLE [] is NOT EMPTY, previous cards have been played __________
+        print ("\nTable is not empty\n")
 
         # Placing all potentially needed factors here (Feb 5th 2020) for now
         # then putting some behind ifs to cut back on uncessary computations
@@ -527,136 +516,62 @@ def pc_plays_a_card(position_on_table, trump, who_called, table):
         # No need to calibrate if partner has it or not
         # variables are:
         #  
-        # who_played_first_card
-        # first_card_played
-        # winning_chair
-        # winning_card
-        # suit_to_follow
-        # pc_has_lead_suit t/f
-        # cards_in_hand_of_lead_suit [list]
-        # lead_suit_was_trump t/f
-        # partner_has_it t/f
-        # partner_trumped t/f
+        #   who_played_first_card
+        #   first_card_played
+        #   winning_chair
+        #   winning_card
+        #   suit_to_follow
+        #   pc_has_lead_suit t/f
+        #   cards_in_hand_of_lead_suit [list]
+        #   lead_suit_was_trump t/f
+        #   partner_has_it t/f
+        #   partner_trumped t/f
 
         # IF LEN(TABLE) == 1:  ____________________________________
 
+        # SCENARIO 1.
         # Lead suit not trump, PC has lead suit
         # if lead suit != trump and PC has trump
         if suit_to_follow != trump and pc_has_lead_suit == True:
+            print ("\nScenario 1: Lead is not trump, pc has that suit")
             # play highest off of lead suit
             # find highest card in cards_in_hand_of_lead_suit
             card_to_play = max(cards_in_hand_of_lead_suit, key=lambda x: x[1].value)
             return [chair, card_to_play];
 
-
-
+        # SCENARIO 2.
         # Lead suit not trump, PC does not have lead suit
-
-        # lead suit is trump, PC has
-
-        # lead suit is trump, PC does not have
-
-
-
-
-        
-
-
-        # default will be the else, and that is "if can beat, if can't play low"
-        else:
+        if suit_to_follow != trump and pc_has_lead_suit == False:
+            print ("\nScenario 2: Lead is not trump, pc does not have that suit")
             pass
-            # if can beat play high, following suit
-            # else: 
-            #     can't beat play low, following suit
 
+        # SCENARIO 3.
+        # lead suit is trump, PC has
+        if suit_to_follow == trump and pc_has_lead_suit == True:
+            print ("\nScenario 3: Lead is indeed trump, pc has that suit")
+            pass
 
-
+        # SCENARIO 4.
+        # lead suit is trump, PC does not have
+        if suit_to_follow == trump and pc_has_lead_suit == False:
+            print ("\nScenario 2 Lead is indeed trump, pc does not have that suit")
+            pass
 
 
 
         # NOTHING BELOW THIS LINE FOR NOW
      ####################################################################   
-        #  Player has NO CARDS of the LEAD SUIT
-        # player will trump if they can, or will play low off
-        if cards_in_hand_of_lead_suit == []:
-            print ("cards_of_suit_to_follow is empty list")
-            trump_cards_in_hand = list(filter(lambda x: x.suit == whats_trump, hand.cards))
-            print (trump_cards_in_hand)
-            
-            # has NO TRUMP cards
-            if trump_cards_in_hand == []:
-                pass
-                #   play non_trump low 
-            
-            # indeed HAS TRUMP cards
-            else:
-                pass
-                # play lowest trump to take the lead! 
 
-        # Player indeed HAS CARDS of the LEAD SUIT
-        # player will play a card of that suit
-        else:
-            pass
-            # for card in cards_in_hand_of_lead_suit:
-            #     print (card.rank)
-            #     print (card.suit)
-            # for card in cards_in_hand_of_lead_suit:
-            
-            # 1. partner trumped and is leading, play low
-            # 2. lead suit is trump and partner is in the lead with a 10,Q,or K, play an A,Ji, or Ja
-            # 3. partner followed suit and is leading, trump if you can, beat if you can, otherwise play low
-            # if 
-            if winning_chair in this_pcs_team:
-                if winning_card.value > 9:
-                    pass
-                    # play non_trump low
-                else:
-                    pass
-            # if one of your beats there's play high of that suit
-            # else play your lowest of that suit
+        # Might use later
+
+        # trump_cards_in_hand = list(filter(lambda x: x.suit == whats_trump, hand.cards))
+
+     ####################################################
 
 
-        suit_to_follow = first_card_played.suit
-        have_card_of_that_suit = False
 
-        for card in hand.cards:
-            if card.suit == suit_to_follow:
-                have_card_of_that_suit = True 
-        if have_card_of_that_suit == True:
-            # follow suit, play highest to beat or lowest to lose
-            pass
-        else:
-            # if you have trump 
-            card_to_play = selected_highest_value_card[0]
-            # table.append(card_to_play)
-            hand.cards.remove(card_to_play)
-            print (hand.cards)
-            for card in table:
-                print (card)
-            # return [chair, card_to_play, table];
-            return [chair, card_to_play];
-            # table is not empty
-            #pc_plays_another_card()
-            # what is suit to follow
-            # look at previous cards to see who has it and with what
-            
-        
-    
 
-    # Makes a choice based on offense or defense if their team called or not
-    # if not lead: follow suit
-        # if suit can't beat lead, then throw lower of that suit
-        # if first round
-            # if partner called: throw low trump 
-            # unless other team picked up the right bauer 
-            # elif opponents picked up: through highest non-trump
-            # else lead with highest trump
-        # elif (not first round): 
-# Left of dealer go
-#   Make decision on card and play
-# Next player
-#   what is suit to follow
-#   Make decision on card and play
+
 # Repeat Next player twice
 # Mark Trick winner
 # Trick winner plays next card
@@ -923,7 +838,7 @@ while trick_counter < 6:
 
         # def pc_plays_a_card(position_on_table, trump, who_called, this_hand, table)
         pc_plays_a_card(current_player_position, whats_trump, who_called, table)
-        pdb.set_trace()
+        
         break
         # trick_winner_plays_next_card()
         # Next player x3

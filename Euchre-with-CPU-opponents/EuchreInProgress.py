@@ -1435,6 +1435,16 @@ def pc_plays_a_card(chair, trump, who_called, hand, table):
     
     print (f"this is 'team that called' -->{team_that_called}")
 
+    for card in hand.cards:
+    # for card in hand make list with accurate rank and value
+
+    # Directly below for 8 lines tries to assign trump but this is taken care of already in the execution code once trump is established
+
+    # now that trump is locked in
+
+        rank = card.rank
+        value = values[rank]
+        card_list.append([card, rank, card.suit, value])
 
     if table == []:
         #pc_plays_first_card():
@@ -1445,16 +1455,7 @@ def pc_plays_a_card(chair, trump, who_called, hand, table):
                 # play aggressive, this ordered up or called and wants to take the lead
                 card_list = []
                 print ("b")
-                for card in hand.cards:
-                # for card in hand make list with accurate rank and value
 
-                # Directly below for 8 lines tries to assign trump but this is taken care of already in the execution code once trump is established
-
-                # now that trump is locked in
-
-                    rank = card.rank
-                    value = values[rank]
-                    card_list.append([card, rank, card.suit, value])
 
                 # found this amazing max for given element of list
                 # https://dbader.org/blog/python-min-max-and-nested-lists

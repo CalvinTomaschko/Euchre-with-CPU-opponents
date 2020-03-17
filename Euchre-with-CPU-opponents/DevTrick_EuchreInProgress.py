@@ -40,8 +40,8 @@ class Dev_Card:
             self.rank = "Jick"
             trump_rank = "t" + self.rank
             self.rank = trump_rank
-            print (f"old rank was {old_rank} of {self.suit}")
-            print (f"new rank is {trump_rank} of {whats_trump}")
+            # print (f"old rank was {old_rank} of {self.suit}")
+            # print (f"new rank is {trump_rank} of {whats_trump}")
             self.value = values[self.rank]    
             self.suit = whats_trump       
         else:
@@ -294,7 +294,7 @@ def left_of_dealer_plays_first(position_on_table, who_called, whats_trump, table
     chair = table_position_list[position_on_table]
     # the hand objects as of Jan 16, 2020 can only be called through the list_of_hand_objects
     this_hand = list_of_hand_objects[position_on_table]
-    print (f"this should be 'this hand' object gabbledygooc {this_hand}")
+    print (f"this is {this_hand}")
     if table_position_dict[chair][0:2] == "pc":
         print ("chair was pc")
         return pc_plays_a_card(position_on_table, whats_trump, who_called,table)
@@ -335,9 +335,12 @@ def pc_plays_a_card(position_on_table, trump, who_called, table):
     
     print ("\nIn function pc_plays_a_card" )
 
-    print ("\nCards on table")
-    for card in table:
-        print (card)
+    if len(table) != 0:
+        print ("\nCards on table")
+        for card in table:
+            print (card[1])
+    else:
+        print ("\ntable is empty")
 
     if who_called in team_ns:
         team_that_called = team_ns
@@ -345,7 +348,7 @@ def pc_plays_a_card(position_on_table, trump, who_called, table):
         team_that_called = team_ew
     
     print (f"\nthis is 'team that called' -->{team_that_called}")
-
+    print (f"This is who called, {who_called}")
     
     # Making the card list to work with
     
@@ -370,10 +373,10 @@ def pc_plays_a_card(position_on_table, trump, who_called, table):
 
                 # play aggressive, this ordered up or called and wants to take the lead
                 
-                # found this amazing max for given element of list
-                # https://dbader.org/blog/python-min-max-and-nested-lists
-                # max(nested_list, key=lambda x: x[1])
-                # max(nested_list, key=lambda x: (position, len(), or other attribute))
+                    # found this amazing max for given element of list
+                    # https://dbader.org/blog/python-min-max-and-nested-lists
+                    # max(nested_list, key=lambda x: x[1])
+                    # max(nested_list, key=lambda x: (position, len(), or other attribute))
                 
                 highest_value_card_block = max(card_list, key=lambda x: x[3])
                 
@@ -458,17 +461,18 @@ def pc_plays_a_card(position_on_table, trump, who_called, table):
 
         # F> WHO LEAD
         who_played_first_card = table[0][0]
-        
+        print (f"-->{who_played_first_card}<-- played first card")
         # F> WHAT CARD WAS LEAD
         first_card_played = table[0][1]
-        
+        print (f"-->{first_card_played}<-- was first card")
+
         # F> WHICH TEAM IS PC ON, help us see if partner has lead later
         
         if chair in team_ns:
             this_pcs_team = team_ns
         else:
             this_pcs_team = team_ew
-        
+        print (f"-->{this_pcs_team}<-- is this pc's team")
         # F> WHICH CHAIR IS WINNING 
         # F> WHAT CARD WAS PLAYED
         
@@ -503,6 +507,7 @@ def pc_plays_a_card(position_on_table, trump, who_called, table):
         lead_suit_was_trump = False
         if suit_to_follow == trump:
             lead_suit_was_trump = True
+        print (f"Lead suit was trump?-->{lead_suit_was_trump}<--")
 
         # F> PC HAS LEAD SUIT
 
@@ -510,7 +515,9 @@ def pc_plays_a_card(position_on_table, trump, who_called, table):
         cards_in_hand_of_lead_suit = list(filter(lambda x: x.suit == suit_to_follow, hand.cards))
         if cards_in_hand_of_lead_suit == []:
             pc_has_lead_suit = False
-        
+        print (f"PC has lead suit?-->{pc_has_lead_suit}<--")
+
+
         # Instances to call for 
         # These will all be made for if there is only 1 other card on the table, meaning it's simplified
         # No need to calibrate if partner has it or not
@@ -588,6 +595,8 @@ def next_player(current_player_position, table_position_list):
         current_player_position +=1
 
     print (f"now next player is {current_player_position+1}")
+
+    return current_player_position
 
     
 
@@ -722,13 +731,13 @@ dev_deck.hearts_for_2nd_and_one_off_suited()
 for player_hand in list_of_hand_objects:
     deal_cards(player_hand,dev_deck)
     
-for player_hand in list_of_hand_objects:
-    print("\n")
-    print (table_position_dict[str(player_hand)])
-    print (f"Cards in {player_hand}'s hand")
-    for card in player_hand.cards:
-        print (card)
-print ("\n")
+# for player_hand in list_of_hand_objects:
+#     print("\n")
+#     # print (table_position_dict[str(player_hand)])
+#     # print (f"Cards in {player_hand}'s hand")
+#     for card in player_hand.cards:
+#         # print (card)
+# # print ("\n")
 one_and_done_suit = top_card_suit(dev_deck)
 
 # DEV GAME Setup
@@ -804,8 +813,7 @@ table = []
 # giving a [card.rank,actual_suit,card.value] and reference that 
 # for winning or not. Also actual suit is for the left bower jumping ship  
 
-# python debugger 
-# pdb.set_trace()
+
 
 current_player_position = -2
 
@@ -818,17 +826,20 @@ while trick_counter < 6:
         chair_and_card = []
         print ("trick_counter is zero")
         chair_and_card = left_of_dealer_plays_first(player_left_of_dealer, who_called, whats_trump, table)
-        print (f"this is the returned {chair_and_card}")
         who_played_it = chair_and_card[0]
         one_selected = chair_and_card[1]
+        print (f"\nthis is the returned chair, {who_played_it}, and card, {one_selected}")
         table.append(chair_and_card)
         # table = chair_and_card[2]
-        print (one_selected)
-        print (table)
+        print (f"current player position starts as {current_player_position}")
         current_player_position = player_left_of_dealer
+        print (f"A. current player position is now {current_player_position}")
          # Next player x3
-        next_player(current_player_position, table_position_list)
-
+        next_player_answer = next_player(current_player_position, table_position_list)
+        current_player_position = next_player_answer
+        print (f"B. and now, after func next_player,is {current_player_position}")    
+# python debugger 
+        pdb.set_trace()
         trick_counter += 1
         # NOTE: do I want this to be whocalled or which team called?
        

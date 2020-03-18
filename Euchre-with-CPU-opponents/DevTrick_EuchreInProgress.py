@@ -473,6 +473,7 @@ def pc_plays_a_card(position_on_table, trump, who_called, table):
         else:
             this_pcs_team = team_ew
         print (f"-->{this_pcs_team}<-- is this pc's team")
+        
         # F> WHICH CHAIR IS WINNING 
         # F> WHAT CARD WAS PLAYED
         
@@ -483,6 +484,13 @@ def pc_plays_a_card(position_on_table, trump, who_called, table):
             winning_chair_and_card = max(table, key=lambda x: x[1].value)
             winning_chair = winning_chair_and_card[0]
             winning_card = winning_chair_and_card[1]
+
+        # F> WINNING CARD SCORE
+
+        winning_card_value = winning_card.value
+
+        print(f"This is the winning card, {winning_card}")
+        print(f"This is the winning card's value, {winning_card_value}")
 
         # F> WHICH TEAM IS WINNING
         # F> PARTNER_HAS_IT T/F
@@ -510,12 +518,27 @@ def pc_plays_a_card(position_on_table, trump, who_called, table):
         print (f"Lead suit was trump?-->{lead_suit_was_trump}<--")
 
         # F> PC HAS LEAD SUIT
+        # F> CARDS IN HAND OF LEAD SUIT
+
+        # card_list.append([card, rank, card.suit, value])
 
         pc_has_lead_suit = True
-        cards_in_hand_of_lead_suit = list(filter(lambda x: x.suit == suit_to_follow, hand.cards))
+        cards_in_hand_of_lead_suit = list(filter(lambda x: x[2] == suit_to_follow, card_list))
+
         if cards_in_hand_of_lead_suit == []:
             pc_has_lead_suit = False
         print (f"PC has lead suit?-->{pc_has_lead_suit}<--")
+
+        # F> HAS TRUMP? T/F
+        # F> CARDS IN HAND OF TRUMP
+
+        has_trump = True
+        cards_in_hand_of_trump = list(filter(lambda x: x[2] == trump, card_list))
+        if len(cards_in_hand_of_trump) == 0:
+            has_trump = False
+        print (f"Has_trump? is -->{has_trump}<--")
+        
+        
 
 
         # Instances to call for 
@@ -526,42 +549,92 @@ def pc_plays_a_card(position_on_table, trump, who_called, table):
         #   who_played_first_card
         #   first_card_played
         #   winning_chair
-        #   winning_card
+        #   winning_card   &&&   winning_card_value
         #   suit_to_follow
         #   pc_has_lead_suit t/f
         #   cards_in_hand_of_lead_suit [list]
         #   lead_suit_was_trump t/f
         #   partner_has_it t/f
         #   partner_trumped t/f
+        #   has_trump
+        #   cards_in_hand_of_trump 
+
+        # card_list is build with these ([card, rank, card.suit, value])
+
 
         # IF LEN(TABLE) == 1:  ____________________________________
 
-        # SCENARIO 1.
+        # SCENARIO 1. Follow suit
         # Lead suit not trump, PC has lead suit
         # if lead suit != trump and PC has trump
         if suit_to_follow != trump and pc_has_lead_suit == True:
-            print ("\nScenario 1: Lead is not trump, pc has that suit")
-            # play highest off of lead suit
-            # find highest card in cards_in_hand_of_lead_suit
-            card_to_play = max(cards_in_hand_of_lead_suit, key=lambda x: x[1].value)
+            print ("\nScenario 1: Lead is not trump, pc has that suit, follow suit")
+            
+            max_card_to_play = max(cards_in_hand_of_lead_suit, key=lambda x: x[3])
+            min_card_to_play = min(cards_in_hand_of_lead_suit, key=lambda x: x[3])
+            
+            # default play lowest
+            card_to_play = min_card_to_play
+            
+            # unless they have more than one?
+            if len(cards_in_hand_of_lead_suit) > 1:
+                
+            # if yes, can you beat the winning card?
+                if max_card_to_play[3] > winning_card_value:
+                    card_to_play = max_card_to_play 
+
+            card_to_remove = card_to_play[0]
+            # this card to play is in [card, rank, card.suit, value] format
+            hand.cards.remove(card_to_remove)
+            print(f"This is the card_to_play, {card_to_remove} from Scenario 1")
             return [chair, card_to_play];
 
-        # SCENARIO 2.
+
+        # SCENARIO 2. Could Trump!
         # Lead suit not trump, PC does not have lead suit
         if suit_to_follow != trump and pc_has_lead_suit == False:
             print ("\nScenario 2: Lead is not trump, pc does not have that suit")
+            
+            # default
+            min_value_cards = min(card_list, key=lambda x: x[3])
+            if len(min_value_cards) > 1:
+                card_to_play = random.choice(min_value_cards)
+            else:
+                card_to_play = min_value_cards
+
+            if has_trump == True: 
+                max_card_to_play = max(cards_in_hand_of_trump, key=lambda x: x[3])
+                card_to_play = max_card_to_play
+            
+            # this card to play is in [card, rank, card.suit, value] format
+            
+            card_to_remove = card_to_play[0]
+            hand.cards.remove(card_to_remove)
+            print(f"This is the card_to_play, {card_to_remove} from Scenario 2")
             pass
 
-        # SCENARIO 3.
+        # SCENARIO 3. Who has higher trump?
         # lead suit is trump, PC has
         if suit_to_follow == trump and pc_has_lead_suit == True:
             print ("\nScenario 3: Lead is indeed trump, pc has that suit")
+
+            # do you have more than one?
+            # if yes, can you beat the winning card?
+
+
+            # default play lowest
+
+            # hand.cards.remove(card_to_play)
+            card_to_remove = card_to_play[0]
+            hand.cards.remove(card_to_remove)
+            print(f"This is the card_to_play, {card_to_remove} from Scenario 3")
             pass
 
-        # SCENARIO 4.
+        # SCENARIO 4. You lose, play a low card, narrow amount of suits, keep aces
         # lead suit is trump, PC does not have
         if suit_to_follow == trump and pc_has_lead_suit == False:
             print ("\nScenario 2 Lead is indeed trump, pc does not have that suit")
+            # hand.cards.remove(card_to_play)
             pass
 
 
@@ -839,7 +912,7 @@ while trick_counter < 6:
         current_player_position = next_player_answer
         print (f"B. and now, after func next_player,is {current_player_position}")    
 # python debugger 
-        pdb.set_trace()
+        # pdb.set_trace()
         trick_counter += 1
         # NOTE: do I want this to be whocalled or which team called?
        

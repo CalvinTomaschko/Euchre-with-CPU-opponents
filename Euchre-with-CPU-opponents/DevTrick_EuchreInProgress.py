@@ -9,6 +9,8 @@
 import random
 import pdb
 
+from collections import Counter
+
 
 
 
@@ -611,29 +613,147 @@ def pc_plays_a_card(position_on_table, trump, who_called, table):
             card_to_remove = card_to_play[0]
             hand.cards.remove(card_to_remove)
             print(f"This is the card_to_play, {card_to_remove} from Scenario 2")
-            pass
+            return [chair, card_to_play];
+
 
         # SCENARIO 3. Who has higher trump?
         # lead suit is trump, PC has
         if suit_to_follow == trump and pc_has_lead_suit == True:
             print ("\nScenario 3: Lead is indeed trump, pc has that suit")
 
+            max_card_to_play = max(cards_in_hand_of_lead_suit, key=lambda x: x[3])
+            min_card_to_play = min(cards_in_hand_of_lead_suit, key=lambda x: x[3])
             # do you have more than one?
             # if yes, can you beat the winning card?
 
-
             # default play lowest
+            card_to_play = min_card_to_play    
+            
+            # can you beat the winning card?
+            if max_card_to_play[3] > winning_card_value:
+                card_to_play = max_card_to_play 
 
+            
             # hand.cards.remove(card_to_play)
             card_to_remove = card_to_play[0]
             hand.cards.remove(card_to_remove)
             print(f"This is the card_to_play, {card_to_remove} from Scenario 3")
-            pass
+            return [chair, card_to_play];
+
+
+   #   who_played_first_card
+        #   first_card_played
+        #   winning_chair
+        #   winning_card   &&&   winning_card_value
+        #   suit_to_follow
+        #   pc_has_lead_suit t/f
+        #   cards_in_hand_of_lead_suit [list]
+        #   lead_suit_was_trump t/f
+        #   partner_has_it t/f
+        #   partner_trumped t/f
+        #   has_trump
+        #   cards_in_hand_of_trump 
+
+        # card_list is build with these ([card, rank, card.suit, value])
 
         # SCENARIO 4. You lose, play a low card, narrow amount of suits, keep aces
         # lead suit is trump, PC does not have
         if suit_to_follow == trump and pc_has_lead_suit == False:
             print ("\nScenario 2 Lead is indeed trump, pc does not have that suit")
+
+            # 9s=1, 10s=2, Js=3, Qs=3, Ks=4, As=5
+            # Find single suits and get rid of one of those if it's not an ACE or KING
+
+            # Checking for Single Suited
+            # Checking for Single Suited
+            
+            # Guide for effective card to card checking
+
+            # for i in range(len(card_list)):
+            #     for j in range(i+1,len(card_list)):
+            #         print (f"'i'&'j' is --> {i},{j}")
+
+            if len(card_list) < 2:
+            
+                # Step 1: add all suits that are in hand
+                
+                suits_with_only_one = [] # Think "Hearts" and "Spades"
+
+                for card in card_list:
+                    if card[2] not in suits_in_hand:
+                        suits_with_only_one.append(a_card[2])
+
+                if suits_with_only_one != []
+
+                    # example suits_with_only_one = ["Hearts","Spades","Clubs"]
+
+                    # Step 2: Compare cards, if one card matches another, remove that suit from suit_in_hand
+                    uniquely_suited_cards = []
+
+                    # go through each card to look at each card info block
+                    for i in range(len(card_list)):
+                        # look at each other card info block
+                        for j in range(i+1,len(card_list)):
+                            # if card info block [2] matches
+                            if card_list[i][2] == card_list[j][2]:
+                                # if card info block [2] is in suits_with_only_one
+                                if card_list[i][2] in suits_with_only_one:
+                                    print (card_list[i][2],card_list[j][2])
+                                    suits_with_only_one.remove(card_list[i][2])
+                                    # delete
+
+                    print(suits_with_only_one)
+
+                    # Step: 3: go through cards in hand, grab the one with suits in suit_with_only_one
+                    for card in card_list:
+                        if card[2] in suits_with_only_one:
+                            uniquely_suited_cards.append(card)
+
+                    print (uniquely_suited_cards)
+
+                    # Step 4: take out Aces as 
+                    for card in uniquely_suited_cards:
+                        if card[3] == 6 or card[3] == 5:
+                            uniquely_suited_cards.remove(card)
+
+                    print(uniquely_suited_cards)
+
+                    # END of checking for single suited, non Ace or King
+                    # END of checking for single suited, non Ace or King
+
+
+
+
+            for card_info in card_list:
+                if card_info[2] not in suits_remaining_list:
+                    suits_remaining_list.append(card_info[2]
+
+            suit_countdown_list = []
+            for suit in suits_remaining_list:
+                suit_countdown_list.append([suit,5])
+
+            # [[Hearts,5][Diamonds,5]]
+
+            for card in card_list:
+                for item in suit_countdown_list:
+                    if card[2] == item[0]:
+                        item[1] -= 1
+
+
+            suits_with_only_one = []
+            for item in suit_countdown_list:
+                if item[1] == 4:
+                    suits_with_only_one.append(item[1])
+
+            
+            only_of_their_suit_list = []
+            for card in card_list:
+
+
+
+
+            only_of_their_suit_not_ace_or_king = list(filter(lambda x: x[3] < 4, only_of_their_suit_list))
+
             # hand.cards.remove(card_to_play)
             pass
 

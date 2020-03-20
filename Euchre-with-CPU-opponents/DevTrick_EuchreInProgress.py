@@ -683,28 +683,32 @@ def pc_plays_a_card(position_on_table, trump, who_called, table):
                     if card[2] not in suits_in_hand:
                         suits_with_only_one.append(a_card[2])
 
+                
+
+                # example suits_with_only_one = ["Hearts","Spades","Clubs"]
+
+                # Step 2: Compare cards, if one card matches another, remove that suit from suit_in_hand
+                
+
+                # go through each card to look at each card info block
+                for i in range(len(card_list)):
+                    # look at each other card info block
+                    for j in range(i+1,len(card_list)):
+                        # if card info block [2] matches
+                        if card_list[i][2] == card_list[j][2]:
+                            # if card info block [2] is in suits_with_only_one
+                            if card_list[i][2] in suits_with_only_one:
+                                print (card_list[i][2],card_list[j][2])
+                                suits_with_only_one.remove(card_list[i][2])
+                                # delete
+                
                 if suits_with_only_one != []
-
-                    # example suits_with_only_one = ["Hearts","Spades","Clubs"]
-
-                    # Step 2: Compare cards, if one card matches another, remove that suit from suit_in_hand
-                    uniquely_suited_cards = []
-
-                    # go through each card to look at each card info block
-                    for i in range(len(card_list)):
-                        # look at each other card info block
-                        for j in range(i+1,len(card_list)):
-                            # if card info block [2] matches
-                            if card_list[i][2] == card_list[j][2]:
-                                # if card info block [2] is in suits_with_only_one
-                                if card_list[i][2] in suits_with_only_one:
-                                    print (card_list[i][2],card_list[j][2])
-                                    suits_with_only_one.remove(card_list[i][2])
-                                    # delete
-
                     print(suits_with_only_one)
 
-                    # Step: 3: go through cards in hand, grab the one with suits in suit_with_only_one
+                    # Step: 3: go through cards in hand, grab the one with suits in suit_with_only_one 
+                    
+                    uniquely_suited_cards = []
+                   
                     for card in card_list:
                         if card[2] in suits_with_only_one:
                             uniquely_suited_cards.append(card)
@@ -713,14 +717,26 @@ def pc_plays_a_card(position_on_table, trump, who_called, table):
 
                     # Step 4: take out Aces as 
                     for card in uniquely_suited_cards:
+
                         if card[3] == 6 or card[3] == 5:
                             uniquely_suited_cards.remove(card)
 
                     print(uniquely_suited_cards)
 
-                    # END of checking for single suited, non Ace or King
-                    # END of checking for single suited, non Ace or King
+                    if uniquely_suited_cards != []:
+                        if len(uniquely_suited_cards) > 1:
+                            card_to_play = random.choice(uniquely_suited_cards)
+                        else:
+                            card_to_play = uniquely_suited_cards[0]
+                        
+                        # REMOVE CARD HERE AND RETURN   
+                        return [chair, card_to_play];
 
+                    # END of checking for single suited, non Ace or King
+                    # END of checking for single suited, non Ace or King
+            
+            # If there wasn't a single of a suit card to get rid of 
+            # then thread continues here to find lowest valued card
 
 
 

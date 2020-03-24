@@ -196,6 +196,129 @@ class Dev_Deck:
     # Future goal: Deals must be dealt by going around the table twice 
     # giving everyone at least one card each time around   
     
+    def pick_a_hand_give_cards_from_list(self):
+            # If a certain card arrangement causes an error we need to be able to copy and paste
+            # the results and have this method recreate it for us. So this takes the verticle unseparated result
+            # and will distribute the cards in that manner. 
+
+        # SELECT WHICH CHAIR TO BE GIVEN THE CARDS
+        chair = -1
+        acceptable_answer = [1,2,3,4]
+        while chair not in acceptable_answer:
+            chair = int(input("Swapping cards from text file into \nselected chair \nplease select Chair # 1,2,3,or 4"))
+
+        # READ .TXT FILE WHERE OUTPUT CARDS WERE COPIED
+        # THEN BREAK DOWN THE TEXT INTO LISTED ITEMS
+
+        copy_card_file = open("Euchre-with-CPU-opponents\copyhere.txt","r")
+
+        big_list = copy_card_file.readlines()
+        copy_card_file.seek(0)
+        print(copy_card_file.readlines())
+        print (big_list)
+        copy_card_file.close()
+
+        # example from Kite, https://kite.com/python/answers/how-to-remove-newline-character-from-a-list-in-python
+
+        # sample_list = ["a", "b\n", "c\n"]
+        # converted_list = []
+        # for element in sample_list:
+        #     converted_list.append(element.strip())
+        # print(converted_list)
+
+        big_list_minus_returns = []
+
+        for line in big_list:
+            big_list_minus_returns.append(line.strip())
+
+        print(big_list_minus_returns)
+
+        big_list_minus_ofs = []
+
+        for line in big_list_minus_returns:
+            big_list_minus_ofs.append(line.replace(" of",''))
+
+        print(big_list_minus_ofs)
+
+        # https://mkyong.com/python/python-how-to-split-a-string/
+
+        big_list_final = []
+
+
+        for string in big_list_minus_ofs:
+            big_list_final.append(string.split())
+
+        print (big_list_final)
+
+        # big_list_final looks like [['Nine', 'Diamonds'], ['Nine', 'Clubs'],...[]]
+
+        # NOW LISTED ITEMS ARE READY TO BE COMPARED TO CARD OBJECTS
+
+        # find card objects that match text list parts
+        # store those objects in this players hand
+
+        ## Pull the desired cards   
+        desired_card_objects = []
+
+        for card_object in self.deck:
+            for card_deets in big_list_final:
+                if card_object.rank == card_deets[0] and card_object.suit == card_deets[1]:  
+                    desired_card_objects.append(card_object)
+
+        # WITH A LIST OF DESIRED CARDS, make place holders where the same cards are in the deck
+
+        for card in self.deck:
+            if card in desired_card_objects:
+                self.deck[card] = "To be replaced"
+                
+        # Chair 1: 1-5
+        # Chair 2: 6-10
+        # Chair 3: 11-15
+        # Chair 4: 16-20
+        
+        # NOW TO REPLACE ALL THE "TO BE REPLACED" PLACE HOLDERS 
+        # take the last 5 cards and put them in
+
+        five_cards_to_put_in = []
+        five_cards_found_near_bottom = False
+        i = (len(self.deck)-1) # position of last item
+        while five_cards_found_near_bottom == False:
+            if self.deck[i] != "To be replaced":
+                card_to_add = self.deck.pop(i)
+                five_cards_to_put_in.append(card_to_add)
+            i -=1
+            if len(five_card_to_put_in) == 5:
+                five_cards_found_near_bottom = True
+
+        # INSERT DESIRED CARDS INTO THE DECK 
+
+        for card in self.deck:
+            if card == "To be replaced":
+                swap_card = five_cards_to_put_in.pop()
+                card = swap_card
+
+        insert_pos = 5*(chair-1)
+
+        for card_object in desired_card_objects:
+            self.deck.insert(insert_pos,card_object)
+
+        # turning this
+
+        # Nine of Diamonds
+        # Nine of Clubs
+        # King of Clubs
+        # Queen of Clubs
+        # Ten of Clubs
+
+        # into this
+
+        # [["Nine","Diamonds"],
+        # ["Nine","Clubs"],
+        # ["King","Clubs"],
+        # [Queen","Clubs],
+        # [Ten","Clubs]]
+
+
     def deal(self):
         single_card = self.deck.pop(0)
         return single_card
@@ -314,17 +437,6 @@ def whos_winning(table_list):
     print (winning_chair_card)
     winning_chair = winning_chair_card[0]
     return winning_chair
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -602,7 +714,7 @@ def pc_plays_a_card(position_on_table, trump, who_called, table):
             if len(min_value_cards) > 1:
                 card_to_play = random.choice(min_value_cards)
             else:
-                card_to_play = min_value_cards
+                card_to_play = min_value_cards[0]
 
             if has_trump == True: 
                 max_card_to_play = max(cards_in_hand_of_trump, key=lambda x: x[3])
@@ -702,7 +814,7 @@ def pc_plays_a_card(position_on_table, trump, who_called, table):
                                 suits_with_only_one.remove(card_list[i][2])
                                 # delete
                 
-                if suits_with_only_one != []
+                if suits_with_only_one != []:
                     print(suits_with_only_one)
 
                     # Step: 3: go through cards in hand, grab the one with suits in suit_with_only_one 
@@ -729,7 +841,9 @@ def pc_plays_a_card(position_on_table, trump, who_called, table):
                         else:
                             card_to_play = uniquely_suited_cards[0]
                         
-                        # REMOVE CARD HERE AND RETURN   
+                        card_to_remove = card_to_play[0]
+                        hand.cards.remove(card_to_remove)
+                        print(f"This is the card_to_play, {card_to_remove} from Scenario 4")
                         return [chair, card_to_play];
 
                     # END of checking for single suited, non Ace or King
@@ -738,41 +852,12 @@ def pc_plays_a_card(position_on_table, trump, who_called, table):
             # If there wasn't a single of a suit card to get rid of 
             # then thread continues here to find lowest valued card
 
-
-
-            for card_info in card_list:
-                if card_info[2] not in suits_remaining_list:
-                    suits_remaining_list.append(card_info[2]
-
-            suit_countdown_list = []
-            for suit in suits_remaining_list:
-                suit_countdown_list.append([suit,5])
-
-            # [[Hearts,5][Diamonds,5]]
-
-            for card in card_list:
-                for item in suit_countdown_list:
-                    if card[2] == item[0]:
-                        item[1] -= 1
-
-
-            suits_with_only_one = []
-            for item in suit_countdown_list:
-                if item[1] == 4:
-                    suits_with_only_one.append(item[1])
-
-            
-            only_of_their_suit_list = []
-            for card in card_list:
-
-
-
-
-            only_of_their_suit_not_ace_or_king = list(filter(lambda x: x[3] < 4, only_of_their_suit_list))
-
-            # hand.cards.remove(card_to_play)
-            pass
-
+             # default
+            min_value_cards = min(card_list, key=lambda x: x[3])
+            if len(min_value_cards) > 1:
+                card_to_play = random.choice(min_value_cards)
+            else:
+                card_to_play = min_value_cards
 
 
         # NOTHING BELOW THIS LINE FOR NOW
@@ -929,6 +1014,8 @@ dev_deck.shuffle()
 
 dev_deck.hearts_for_2nd_and_one_off_suited()
 
+dev_deck.pick_a_hand_give_cards_from_list()
+
 # print (f"printing dev_deck{dev_deck}")
 
 # The below is if you want to only shuffle from a certain number down in the deck
@@ -1058,6 +1145,11 @@ while trick_counter < 6:
 
         # def pc_plays_a_card(position_on_table, trump, who_called, this_hand, table)
         pc_plays_a_card(current_player_position, whats_trump, who_called, table)
+        print (f"C. current player position is now {current_player_position}")
+        next_player_answer = next_player(current_player_position, table_position_list)
+        current_player_position = next_player_answer
+        print (f"D. and now, after func next_player,is {current_player_position}") 
+        pc_plays_a_card(current_player_position, whats_trump, who_called, table) 
         
         break
         # trick_winner_plays_next_card()

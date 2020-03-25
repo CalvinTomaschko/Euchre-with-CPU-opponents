@@ -269,7 +269,8 @@ class Dev_Deck:
 
         for card in self.deck:
             if card in desired_card_objects:
-                self.deck[card] = "To be replaced"
+                position = self.deck.index(card)# find card in the list using index
+                self.deck[position] = "To be replaced"
                 
         # Chair 1: 1-5
         # Chair 2: 6-10
@@ -282,20 +283,34 @@ class Dev_Deck:
         five_cards_to_put_in = []
         five_cards_found_near_bottom = False
         i = (len(self.deck)-1) # position of last item
+        
         while five_cards_found_near_bottom == False:
             if self.deck[i] != "To be replaced":
-                card_to_add = self.deck.pop(i)
-                five_cards_to_put_in.append(card_to_add)
+                print ("found a card object")
+                card_for_list = self.deck.pop(i)
+                print (f"card to add {card_for_list}")
+                five_cards_to_put_in.append(card_for_list)
+
             i -=1
-            if len(five_card_to_put_in) == 5:
+            if len(five_cards_to_put_in) == 5:
                 five_cards_found_near_bottom = True
 
         # INSERT DESIRED CARDS INTO THE DECK 
 
+
+        print (five_cards_to_put_in)
+
+        print (dev_deck.deck)
+
         for card in self.deck:
             if card == "To be replaced":
-                swap_card = five_cards_to_put_in.pop()
-                card = swap_card
+                print("Match found")
+                position = self.deck.index(card)# find card in the list using index
+                swap_card = five_cards_to_put_in.pop(0)
+                self.deck[position] = swap_card
+        
+
+
 
         insert_pos = 5*(chair-1)
 
@@ -303,6 +318,9 @@ class Dev_Deck:
             self.deck.insert(insert_pos,card_object)
 
         # turning this
+
+        # python debugger 
+        pdb.set_trace()
 
         # Nine of Diamonds
         # Nine of Clubs
@@ -1016,6 +1034,11 @@ dev_deck.hearts_for_2nd_and_one_off_suited()
 
 dev_deck.pick_a_hand_give_cards_from_list()
 
+print("Out of pick_a_hand_give_cards_from_list")
+
+# python debugger 
+pdb.set_trace()
+
 # print (f"printing dev_deck{dev_deck}")
 
 # The below is if you want to only shuffle from a certain number down in the deck
@@ -1068,8 +1091,7 @@ team_ew = ["chair_2","chair_4"]
 # Needs to go through all cards in each hand, not each card in dev deck
 # March 2020
 
-# # python debugger 
-# pdb.set_trace()
+
 
 # This for loop applies the new values of the now known suit of trump
 
@@ -1077,6 +1099,7 @@ trump_color = colors[whats_trump]
 
 for hand in list_of_hand_objects:
     for card in hand.cards:
+
         if card.suit == whats_trump:
             card.make_rank_trump()
         if card.rank == "Jack" and colors[card.suit] == trump_color and card.suit != whats_trump:

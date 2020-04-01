@@ -319,8 +319,7 @@ class Dev_Deck:
 
         # turning this
 
-        # python debugger 
-        pdb.set_trace()
+
 
         # Nine of Diamonds
         # Nine of Clubs
@@ -336,6 +335,145 @@ class Dev_Deck:
         # [Queen","Clubs],
         # [Ten","Clubs]]
 
+
+    def repeat_deck_from_list(self):
+            # If a certain card arrangement causes an error we need to be able to copy and paste
+            # the results and have this method recreate it for us. So this takes the verticle unseparated result
+            # and will distribute the cards in that manner. 
+
+
+        # READ .TXT FILE WHERE OUTPUT CARDS WERE COPIED
+        # THEN BREAK DOWN THE TEXT INTO LISTED ITEMS
+
+        copy_card_file = open("Euchre-with-CPU-opponents\copyhere.txt","r")
+
+        big_list = copy_card_file.readlines()
+        copy_card_file.seek(0)
+        print(copy_card_file.readlines())
+        print (big_list)
+        copy_card_file.close()
+
+        # example from Kite, https://kite.com/python/answers/how-to-remove-newline-character-from-a-list-in-python
+
+        # sample_list = ["a", "b\n", "c\n"]
+        # converted_list = []
+        # for element in sample_list:
+        #     converted_list.append(element.strip())
+        # print(converted_list)
+
+        big_list_minus_returns = []
+
+        for line in big_list:
+            big_list_minus_returns.append(line.strip())
+
+        print(big_list_minus_returns)
+
+        big_list_minus_ofs = []
+
+        for line in big_list_minus_returns:
+            big_list_minus_ofs.append(line.replace(" of",''))
+
+        print(big_list_minus_ofs)
+
+        # https://mkyong.com/python/python-how-to-split-a-string/
+
+        big_list_final = []
+
+
+        for string in big_list_minus_ofs:
+            big_list_final.append(string.split())
+
+        print (big_list_final)
+
+        # big_list_final looks like [['Nine', 'Diamonds'], ['Nine', 'Clubs'],...[]]
+
+        # NOW LISTED ITEMS ARE READY TO BE COMPARED TO CARD OBJECTS
+
+        ## Pull the desired cards   
+        desired_order_card_objects = []
+
+        for card_deets in big_list_final:
+            for card_object in self.deck:
+                if card_object.rank == card_deets[0] and card_object.suit == card_deets[1]:
+                    # pop that card out and put in desired_order_card_objects, to be put back in deck in order later  
+                    position = self.deck.index(card_object)# find card in the list using index
+                    card_for_list = self.deck.pop(position)
+                    desired_order_card_objects.append(card_for_list)
+
+        
+        ###########################################################################
+        # delete inside here
+                    
+
+        # WITH A LIST OF DESIRED CARDS, make place holders where the same cards are in the deck
+
+        for card in self.deck:
+            if card in desired_card_objects:
+                position = self.deck.index(card)# find card in the list using index
+                self.deck[position] = "To be replaced"
+
+                # NOW TO REPLACE ALL THE "TO BE REPLACED" PLACE HOLDERS 
+        # take the last 5 cards and put them in
+
+        five_cards_to_put_in = []
+        five_cards_found_near_bottom = False
+        i = (len(self.deck)-1) # position of last item
+        
+        while five_cards_found_near_bottom == False:
+            if self.deck[i] != "To be replaced":
+                print ("found a card object")
+                card_for_list = self.deck.pop(i)
+                print (f"card to add {card_for_list}")
+                five_cards_to_put_in.append(card_for_list)
+
+            i -=1
+            if len(five_cards_to_put_in) == 5:
+                five_cards_found_near_bottom = True
+
+        # INSERT DESIRED CARDS INTO THE DECK 
+
+
+        print (five_cards_to_put_in)
+
+        print (dev_deck.deck)
+
+        for card in self.deck:
+            if card == "To be replaced":
+                print("Match found")
+                position = self.deck.index(card)# find card in the list using index
+                swap_card = five_cards_to_put_in.pop(0)
+                self.deck[position] = swap_card
+        
+
+
+
+        insert_pos = 5*(chair-1)
+
+        for card_object in desired_card_objects:
+            self.deck.insert(insert_pos,card_object)
+
+        # delete inside here
+        #############################################################################
+        
+        
+       
+        # turning this
+
+
+
+        # Nine of Diamonds
+        # Nine of Clubs
+        # King of Clubs
+        # Queen of Clubs
+        # Ten of Clubs
+
+        # into this
+
+        # [["Nine","Diamonds"],
+        # ["Nine","Clubs"],
+        # ["King","Clubs"],
+        # [Queen","Clubs],
+        # [Ten","Clubs]]
 
     def deal(self):
         single_card = self.deck.pop(0)
@@ -1132,7 +1270,8 @@ table = []
 # giving a [card.rank,actual_suit,card.value] and reference that 
 # for winning or not. Also actual suit is for the left bower jumping ship  
 
-
+        # # python debugger 
+        # pdb.set_trace()
 
 current_player_position = -2
 

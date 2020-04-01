@@ -45,25 +45,9 @@ def pick_a_hand_give_cards_from_list(self):
     print (big_list_final)
 
 
-    # NOW LISTED ITEMS ARE READY TO BE COMPARED TO CARD OBJECTS
-
-    # find card objects that match text list parts
-    # store those objects in this players hand
-    # 
-    # put this hand's current cards in a separate list
-    # read all hands
-    # find cards that match list
-    # take those cards out of those hands, put them in this hand, replace missing cards with old cards from this hand
-    # done! 
-
-    # chair = -1
-    # acceptable_answer = [1,2,3,4]
-    # while chair not in acceptable_answer:
-    #     chair = int(input("please select Chair # 1,2,3,or 4"))
+    # The first 5 are chair 1 and so on
 
 
-    # copied_cards = "Eight of Circles"
-    # acceptable_string_entered = False
 
 
 

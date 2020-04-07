@@ -205,7 +205,13 @@ class Dev_Deck:
         chair = -1
         acceptable_answer = [1,2,3,4]
         while chair not in acceptable_answer:
-            chair = int(input("Swapping cards from text file into \nselected chair \nplease select Chair # 1,2,3,or 4"))
+            chair = input("Swapping cards from text file into \nselected chair \nplease select Chair # 1,2,3,or 4")
+            if not (chair.isdigit()):
+                chair = -1
+                print ("That's not reading right, try again please")
+            else: 
+                chair = int(chair)
+            # Error exception for empty string here, can't make empty string an integer
 
         # READ .TXT FILE WHERE OUTPUT CARDS WERE COPIED
         # THEN BREAK DOWN THE TEXT INTO LISTED ITEMS
@@ -271,6 +277,15 @@ class Dev_Deck:
             if card in desired_card_objects:
                 position = self.deck.index(card)# find card in the list using index
                 self.deck[position] = "To be replaced"
+
+       
+        print ("\n")
+
+        print (f"Length dev_deck {len(dev_deck.deck)}")
+       
+       
+        for card in self.deck:
+            print (card) 
                 
         # Chair 1: 1-5
         # Chair 2: 6-10
@@ -284,6 +299,10 @@ class Dev_Deck:
         five_cards_found_near_bottom = False
         i = (len(self.deck)-1) # position of last item
         
+        print (f"Length self.deck-1 = {i}")
+
+        print (f"Length dev_deck {len(dev_deck.deck)}")
+
         while five_cards_found_near_bottom == False:
             if self.deck[i] != "To be replaced":
                 print ("found a card object")
@@ -295,27 +314,45 @@ class Dev_Deck:
             if len(five_cards_to_put_in) == 5:
                 five_cards_found_near_bottom = True
 
+        print ("\n")
         # INSERT DESIRED CARDS INTO THE DECK 
-
-
-        print (five_cards_to_put_in)
-
-        print (dev_deck.deck)
-
         for card in self.deck:
+            print (card)
+        print ("\n")
+        print (five_cards_to_put_in)
+        print ("\n")
+
+        print (f"Length dev_deck {len(dev_deck.deck)}")
+
+        for count,card in enumerate(self.deck):
+            print (count)
             if card == "To be replaced":
                 print("Match found")
                 position = self.deck.index(card)# find card in the list using index
                 swap_card = five_cards_to_put_in.pop(0)
                 self.deck[position] = swap_card
-        
+                print (f"Cards left in five card list {len(five_cards_to_put_in)}")
+        print ("\n")
+        print (f"Length dev_deck {len(dev_deck.deck)}")
 
-
+        for card in self.deck:
+            print (card)
 
         insert_pos = 5*(chair-1)
 
         for card_object in desired_card_objects:
             self.deck.insert(insert_pos,card_object)
+        
+        print ("\n")
+        print (f"Length dev_deck {len(dev_deck.deck)}")
+
+        for card in self.deck:
+            print (card)
+
+        # print ("\ndev_deck card")
+        # for card in dev_deck.deck:
+            
+        #     print (card)
 
         # turning this
 
@@ -345,7 +382,7 @@ class Dev_Deck:
         # READ .TXT FILE WHERE OUTPUT CARDS WERE COPIED
         # THEN BREAK DOWN THE TEXT INTO LISTED ITEMS
 
-        copy_card_file = open("Euchre-with-CPU-opponents\copyhere.txt","r")
+        copy_card_file = open("Euchre-with-CPU-opponents\CopyDeckHere.txt","r")
 
         big_list = copy_card_file.readlines()
         copy_card_file.seek(0)
@@ -383,97 +420,66 @@ class Dev_Deck:
         for string in big_list_minus_ofs:
             big_list_final.append(string.split())
 
-        print (big_list_final)
+        print (f"big_list_final is {len(big_list_final)}")
 
         # big_list_final looks like [['Nine', 'Diamonds'], ['Nine', 'Clubs'],...[]]
 
         # NOW LISTED ITEMS ARE READY TO BE COMPARED TO CARD OBJECTS
+        print (f"dev_deck.deck len is {len(self.deck)}")
 
-        ## Pull the desired cards   
-        desired_order_card_objects = []
+        new_deck_to_replace = []
 
-        for card_deets in big_list_final:
+        print ("organizing deck now")
+        for count, card_deets in enumerate(big_list_final):
             for card_object in self.deck:
                 if card_object.rank == card_deets[0] and card_object.suit == card_deets[1]:
-                    # pop that card out and put in desired_order_card_objects, to be put back in deck in order later  
+                    # pop that card out and put in desired_order_card_objects, to be put back in deck in order later 
                     position = self.deck.index(card_object)# find card in the list using index
-                    card_for_list = self.deck.pop(position)
-                    desired_order_card_objects.append(card_for_list)
+                    card_for_new_deck = self.deck[position]
+                    new_deck_to_replace.append(card_for_new_deck)
+                    print (f"found match, position {count}")
+                    # Find card, pop card, insert in list where belong
+                    # position = self.deck.index(card_object)# find card in the list using index
+                    # card_to_move = self.deck.pop(position)
+                    # self.deck.insert(count,card_to_move)
+                    # self.deck.append(card_to_move)
+        # Deck ought to be reorganized now
+        
+        print (f"new_deck_to_replace len is {len(new_deck_to_replace)}")
 
         
-        ###########################################################################
-        # delete inside here
-                    
+        self.deck.clear()
 
-        # WITH A LIST OF DESIRED CARDS, make place holders where the same cards are in the deck
+        print (f"dev.deck len is {len(self.deck)}")
 
-        for card in self.deck:
-            if card in desired_card_objects:
-                position = self.deck.index(card)# find card in the list using index
-                self.deck[position] = "To be replaced"
+        for card in new_deck_to_replace:
+            self.deck.append(card)
 
-                # NOW TO REPLACE ALL THE "TO BE REPLACED" PLACE HOLDERS 
-        # take the last 5 cards and put them in
-
-        five_cards_to_put_in = []
-        five_cards_found_near_bottom = False
-        i = (len(self.deck)-1) # position of last item
-        
-        while five_cards_found_near_bottom == False:
-            if self.deck[i] != "To be replaced":
-                print ("found a card object")
-                card_for_list = self.deck.pop(i)
-                print (f"card to add {card_for_list}")
-                five_cards_to_put_in.append(card_for_list)
-
-            i -=1
-            if len(five_cards_to_put_in) == 5:
-                five_cards_found_near_bottom = True
-
-        # INSERT DESIRED CARDS INTO THE DECK 
+        print (f"dev.deck len is {len(self.deck)}")
 
 
-        print (five_cards_to_put_in)
+        spacing_variables = [21,10,0]
+        print ("Mainlist        dev_deck")
+        for count, card_object in enumerate(self.deck):
+            print (count)
+            # print (f" {big_list_final[count]} should be --> {self.deck[count]}" )
+            
+            print("%-21s %-10s %-19s" %(big_list_final[count],"is -->",self.deck[count]))
 
-        print (dev_deck.deck)
+        counter_list_suits = [0,0,0,0]
+        counter_list_ranks = [0,0,0,0,0,0]
 
-        for card in self.deck:
-            if card == "To be replaced":
-                print("Match found")
-                position = self.deck.index(card)# find card in the list using index
-                swap_card = five_cards_to_put_in.pop(0)
-                self.deck[position] = swap_card
-        
-
-
-
-        insert_pos = 5*(chair-1)
-
-        for card_object in desired_card_objects:
-            self.deck.insert(insert_pos,card_object)
-
-        # delete inside here
-        #############################################################################
-        
-        
-       
-        # turning this
-
-
-
-        # Nine of Diamonds
-        # Nine of Clubs
-        # King of Clubs
-        # Queen of Clubs
-        # Ten of Clubs
-
-        # into this
-
-        # [["Nine","Diamonds"],
-        # ["Nine","Clubs"],
-        # ["King","Clubs"],
-        # [Queen","Clubs],
-        # [Ten","Clubs]]
+        for count, suit in enumerate(suits):
+            for card in self.deck:
+                if card.suit == suit:
+                    counter_list_suits[count] = counter_list_suits[count] + 1
+        # for count, card_deets in enumerate(big_list_final):
+        for count,rank in enumerate(ranks): 
+            for card in self.deck:
+                if card.rank == rank:
+                    counter_list_ranks[count] = counter_list_ranks[count] + 1
+        print (counter_list_suits)
+        print (counter_list_ranks)
 
     def deal(self):
         single_card = self.deck.pop(0)
@@ -1131,7 +1137,7 @@ table_position_dict_default = {'chair_1':'pc South', 'chair_2':'pc West', 'chair
 # DEV GAME Execution
 
 # DEV GAME Setup
-# DEV GAME Setup
+# DEV GAME Setup---------------------------------------------------------------------------------------------
 
 # NOTE: regular game execution moved to storage
 
@@ -1170,7 +1176,9 @@ dev_deck.shuffle()
 
 dev_deck.hearts_for_2nd_and_one_off_suited()
 
-dev_deck.pick_a_hand_give_cards_from_list()
+# dev_deck.pick_a_hand_give_cards_from_list()
+
+dev_deck.repeat_deck_from_list()
 
 print("Out of pick_a_hand_give_cards_from_list")
 
@@ -1197,7 +1205,7 @@ for player_hand in list_of_hand_objects:
 # # print ("\n")
 one_and_done_suit = top_card_suit(dev_deck)
 
-# DEV GAME Setup
+# DEV GAME Setup--------------------------------------------------------------------------
 # DEV GAME Setup
 
 ## TRUMP SELECTION ##

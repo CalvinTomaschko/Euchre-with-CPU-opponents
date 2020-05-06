@@ -951,6 +951,14 @@ def pc_plays_a_card(position_on_table, trump, who_called, table):
             #     for j in range(i+1,len(card_list)):
             #         print (f"'i'&'j' is --> {i},{j}")
 
+            card_to_remove = "place holder"
+            
+            has_unique_ace = False
+            has_unique_king = False
+            
+            
+            # ________Find all uniquely suited cards
+
             if len(card_list) > 2:
             
                 # Step 1: add all suits that are in hand
@@ -958,50 +966,39 @@ def pc_plays_a_card(position_on_table, trump, who_called, table):
                 suits_with_only_one = [] # Think "Hearts" and "Spades"
 
                 for card in card_list:
-                    if card[2] not in suits_in_hand:
-                        suits_with_only_one.append(a_card[2])
+                    if card[2] not in suits_with_only_one:
+                        suits_with_only_one.append(card[2])
 
+                uniquely_suited_cards = []
+
+                if len(suits_with_only_one) <= 1:
                 
-
-                # example suits_with_only_one = ["Hearts","Spades","Clubs"]
-
-                # Step 2: Compare cards, if one card matches another, remove that suit from suit_in_hand
-                
-
-                # go through each card to look at each card info block
-                for i in range(len(card_list)):
-                    # look at each other card info block
-                    for j in range(i+1,len(card_list)):
-                        # if card info block [2] matches
-                        if card_list[i][2] == card_list[j][2]:
-                            # if card info block [2] is in suits_with_only_one
-                            if card_list[i][2] in suits_with_only_one:
-                                print (card_list[i][2],card_list[j][2])
-                                suits_with_only_one.remove(card_list[i][2])
-                                # delete
-                
-                if suits_with_only_one != []:
-                    print(suits_with_only_one)
-
-                    # Step: 3: go through cards in hand, grab the one with suits in suit_with_only_one 
-                    
-                    uniquely_suited_cards = []
-                   
                     for card in card_list:
                         if card[2] in suits_with_only_one:
                             uniquely_suited_cards.append(card)
 
-                    print (uniquely_suited_cards)
+                #_______ Uniquely suited cards found, if any
 
-                    # Step 4: take out Aces as 
+
+                #________ Now if there are uniquely suited cards, check if they're aces or kings
+                # remove if so becaue generally you want to keep those
+                # check for aces first maybe?
+                
+                if uniquely_suited_cards != []:
+                
                     for card in uniquely_suited_cards:
 
-                        if card[3] == 6 or card[3] == 5:
+                        if card[3] == 6:
+                            has_unique_ace = True
+                            uniquely_suited_cards.remove(card)
+                        if card[3] == 5:
+                            has_unique_king = True
                             uniquely_suited_cards.remove(card)
 
                     print(uniquely_suited_cards)
 
                     if uniquely_suited_cards != []:
+                        print ("found a uniquely suited card!")
                         if len(uniquely_suited_cards) > 1:
                             card_to_play = random.choice(uniquely_suited_cards)
                         else:
@@ -1018,17 +1015,26 @@ def pc_plays_a_card(position_on_table, trump, who_called, table):
             # If there wasn't a single of a suit card to get rid of 
             # then thread continues here to find lowest valued card
 
-             # default
-            min_value_cards = min(card_list, key=lambda x: x[3])
-            if len(min_value_cards) > 1:
-                card_to_play = random.choice(min_value_cards)
-            else:
-                card_to_play = min_value_cards
+            if card_to_remove != "place holder":
+            # ALSO, IF THERE'S ONLY 1 CARD REMAINING
 
-            card_to_remove = card_to_play[0]
-            hand.cards.remove(card_to_remove)
-            print(f"!_!_! This is the card_to_play, {card_to_remove} from Scenario 4")
-            return [chair, card_to_remove];
+                # default
+                min_value_cards = min(card_list, key=lambda x: x[3])
+                if len(min_value_cards) > 1:
+                    card_to_play = random.choice(min_value_cards)
+                else:
+                    card_to_play = min_value_cards
+
+                card_to_remove = card_to_play[0]
+                hand.cards.remove(card_to_remove)
+                print(f"!_!_! This is the card_to_play, {card_to_remove} from Scenario 4")
+                return [chair, card_to_remove];
+
+                                # example suits_with_only_one = ["Hearts","Spades","Clubs"]
+
+               
+               
+
 
         # NOTHING BELOW THIS LINE FOR NOW
      ####################################################################   
@@ -1832,10 +1838,6 @@ while team_ns_score < 10 and team_ew_score < 10:
         player_left_of_dealer = dealer_position+1
 
 
-
-    cards_player_counter = 0
-    table = []
-
     # do the sort one last time and have it for the round, 
     # giving a [card.rank,actual_suit,card.value] and reference that 
     # for winning or not. Also actual suit is for the left bower jumping ship  
@@ -1845,17 +1847,20 @@ while team_ns_score < 10 and team_ew_score < 10:
 
     current_player_position = -2
 
-    cards_played_counter = 0
+    
 
     tricks_played = 0
 
-    while tricks_played < 6
+    while tricks_played < 6:
 
     # # #
     # TRICK LEVEL WORK
     # # #
 
-        while cards_played_counter < 6:
+        cards_played_counter = 0
+        table = []
+
+        while cards_played_counter < 4:
 
 
             # # #
@@ -1938,25 +1943,30 @@ while team_ns_score < 10 and team_ew_score < 10:
 
 
             cards_played_counter += 1
-            # Which team won the trick
 
-            # which card won 
-            winning_chair_and_card = max(table, key=lambda x: x[1].value)
-            winning_chair = winning_chair_and_card[0]
-            winning_card = winning_chair_and_card[1]
-            # then what team were they on
-
-            if winning_chair in team_ns:
-                team_ns_tricks_won += 1
-            else:
-                team_ew_tricks_won += 1
-            # add 1 to the team trick counter
 
             # # #
             # CARD LEVEL WORK
             # # #
-
+        
+        print ("\n\n\n\n THIS IS A BIG DEAL YOU MADE IT OUT OF THE A 4 CARD ROUND, ONTO THE NEXT \n\n\n\n")
+        
         print ("\n you have exited the cardplay loop \n")
+        # Which team won the trick
+
+        # which card won 
+        winning_chair_and_card = max(table, key=lambda x: x[1].value)
+        winning_chair = winning_chair_and_card[0]
+        winning_card = winning_chair_and_card[1]
+        # then what team were they on
+
+        if winning_chair in team_ns:
+            team_ns_tricks_won += 1
+        else:
+            team_ew_tricks_won += 1
+        # add 1 to the team trick counter
+
+        
 
         tricks_played += 1
 
@@ -1968,21 +1978,25 @@ while team_ns_score < 10 and team_ew_score < 10:
 
     
     # After every trick is played we assess which team is awarded team points and how many
-
+    
     print ("\n you have exited the trickplay level loop \n")
 
     if team_ns_tricks_won > team_ew_tricks_won:
         team_ns_score += 1
-        if team_ns_tricks_won = 5:
+        if team_ns_tricks_won == 5:
             team_ns_score += 1
         if who_called in team_ew:
+            team_ns_score += 1
+        if team_ns_tricks_won == 5 and who_called in team_ew:
             team_ns_score += 1
     else:
         team_ew_score += 1
-        if team_ew_tricks_won = 5:
+        if team_ew_tricks_won == 5:
             team_ew_score += 1
-        if who_called in team_ew:
-            team_ns_score += 1
+        if who_called in team_ns:
+            team_ew_score += 1
+        if team_ew_tricks_won == 5 and who_called in team_ns:
+            team_ew_score += 1
 
 # # #
 # GAME PLAY LEVEL WORK

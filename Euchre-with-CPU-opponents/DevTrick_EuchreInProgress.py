@@ -50,8 +50,8 @@ class Dev_Card:
             old_rank = self.rank
             trump_rank = "t" + old_rank
             self.rank = trump_rank
-            print (f"old rank was {old_rank} of {self.suit}") 
-            print (f"new rank is {trump_rank} of {card.suit}")
+            # print (f"old rank was {old_rank} of {self.suit}") 
+            # print (f"new rank is {trump_rank} of {card.suit}")
             self.value = values[self.rank]
 
 
@@ -386,8 +386,8 @@ class Dev_Deck:
 
         big_list = copy_card_file.readlines()
         copy_card_file.seek(0)
-        print(copy_card_file.readlines())
-        print (big_list)
+        # print(copy_card_file.readlines())
+        # print (big_list)
         copy_card_file.close()
 
         # example from Kite, https://kite.com/python/answers/how-to-remove-newline-character-from-a-list-in-python
@@ -403,14 +403,14 @@ class Dev_Deck:
         for line in big_list:
             big_list_minus_returns.append(line.strip())
 
-        print(big_list_minus_returns)
+        # print(big_list_minus_returns)
 
         big_list_minus_ofs = []
 
         for line in big_list_minus_returns:
             big_list_minus_ofs.append(line.replace(" of",''))
 
-        print(big_list_minus_ofs)
+        # print(big_list_minus_ofs)
 
         # https://mkyong.com/python/python-how-to-split-a-string/
 
@@ -420,12 +420,12 @@ class Dev_Deck:
         for string in big_list_minus_ofs:
             big_list_final.append(string.split())
 
-        print (f"big_list_final is {len(big_list_final)}")
+        # print (f"big_list_final is {len(big_list_final)}")
 
         # big_list_final looks like [['Nine', 'Diamonds'], ['Nine', 'Clubs'],...[]]
 
         # NOW LISTED ITEMS ARE READY TO BE COMPARED TO CARD OBJECTS
-        print (f"dev_deck.deck len is {len(self.deck)}")
+        # print (f"dev_deck.deck len is {len(self.deck)}")
 
         new_deck_to_replace = []
 
@@ -437,7 +437,7 @@ class Dev_Deck:
                     position = self.deck.index(card_object)# find card in the list using index
                     card_for_new_deck = self.deck[position]
                     new_deck_to_replace.append(card_for_new_deck)
-                    print (f"found match, position {count}")
+                    # print (f"found match, position {count}")
                     # Find card, pop card, insert in list where belong
                     # position = self.deck.index(card_object)# find card in the list using index
                     # card_to_move = self.deck.pop(position)
@@ -445,26 +445,26 @@ class Dev_Deck:
                     # self.deck.append(card_to_move)
         # Deck ought to be reorganized now
         
-        print (f"new_deck_to_replace len is {len(new_deck_to_replace)}")
+        # print (f"new_deck_to_replace len is {len(new_deck_to_replace)}")
 
         
         self.deck.clear()
 
-        print (f"dev.deck len is {len(self.deck)}")
+        # print (f"dev.deck len is {len(self.deck)}")
 
         for card in new_deck_to_replace:
             self.deck.append(card)
 
-        print (f"dev.deck len is {len(self.deck)}")
+        # print (f"dev.deck len is {len(self.deck)}")
 
 
         spacing_variables = [21,10,0]
-        print ("Mainlist        dev_deck")
-        for count, card_object in enumerate(self.deck):
-            print (count)
-            # print (f" {big_list_final[count]} should be --> {self.deck[count]}" )
+        # print ("Mainlist        dev_deck")
+        # for count, card_object in enumerate(self.deck):
+        #     print (count)
+        #     # print (f" {big_list_final[count]} should be --> {self.deck[count]}" )
             
-            print("%-21s %-10s %-19s" %(big_list_final[count],"is -->",self.deck[count]))
+        #     print("%-21s %-10s %-19s" %(big_list_final[count],"is -->",self.deck[count]))
 
         counter_list_suits = [0,0,0,0]
         counter_list_ranks = [0,0,0,0,0,0]
@@ -1136,12 +1136,12 @@ def hu_plays_a_card(position_on_table, trump, who_called, table):
     acceptable_answer = list(range(1,len(card_list)+1))
     print (f"acceptable_answer = {acceptable_answer}")
     
-    card_meets_criteria = False
+    card_meets_criteria = False # we have to test if it follows the rules
     
     while card_meets_criteria == False:
         selected_number_card = -1
     
-        while selected_number_card not in acceptable_answer:
+        while selected_number_card not in acceptable_answer: # Can't pick the 5th card if you only have 4
             selected_number_card = (input("Which numbered card do you choose (ex: '2')"))
 
             if not (selected_number_card.isdigit()):
@@ -1719,7 +1719,7 @@ while team_ns_score < 10 and team_ew_score < 10:
 
     round_number +=1
 
-    print (f"This is round {round_number}")
+    print (f"\nTHIS IS ROUND NUMBER {round_number}!\n")
 
 
     team_ns = ["chair_1","chair_3"]
@@ -1742,7 +1742,7 @@ while team_ns_score < 10 and team_ew_score < 10:
 
     dev_deck.repeat_deck_from_list()
 
-    print("Out of pick_a_hand_give_cards_from_list")
+    # print("Out of pick_a_hand_give_cards_from_list")
 
     # python debugger 
     # pdb.set_trace()
@@ -1869,7 +1869,7 @@ while team_ns_score < 10 and team_ew_score < 10:
 
 
             # IF FIRST CARD
-            if cards_played_counter == 1:
+            if cards_played_counter == 0:
                 
                 chair_and_card = []
                 print (f"cards_played_counter is zero")
@@ -1899,16 +1899,18 @@ while team_ns_score < 10 and team_ew_score < 10:
                 print ("\nIn the bottom of the main while loop table print")
                 
                 # Show what's on the table
+
                 print ("\nCards on table")
+                print ("|^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^|")
                 for chair_card in table:
                     print (f"{chair_card[0]} played {chair_card[1]}")
-
+                print ("\n|______________________________|")
                 print ("\n \n")
             
             
             
             # IF NOT FIRST CARD
-            if cards_played_counter >= 2:
+            if cards_played_counter >= 1:
                 
                 print ("trick_counter is greater or equal to one")
                 # def pc_plays_a_card(position_on_table, trump, who_called, this_hand, table
@@ -1931,9 +1933,10 @@ while team_ns_score < 10 and team_ew_score < 10:
                 
                 # Show what's on the table
                 print ("\nCards on table")
+                print ("|^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^|")
                 for chair_card in table:
                     print (f"{chair_card[0]} played {chair_card[1]}")
-            
+                print ("\n|______________________________|")
                 # MOVING TO NEXT PLAYER 
                 next_player_answer = next_player(current_player_position, table_position_list)
                 current_player_position = next_player_answer
@@ -1943,6 +1946,7 @@ while team_ns_score < 10 and team_ew_score < 10:
 
 
             cards_played_counter += 1
+            print(f"\nCards played counter is {cards_played_counter}\n")
 
 
             # # #
@@ -1983,20 +1987,28 @@ while team_ns_score < 10 and team_ew_score < 10:
 
     if team_ns_tricks_won > team_ew_tricks_won:
         team_ns_score += 1
-        if team_ns_tricks_won == 5:
+        print ("Team North South won the most tricks and gets 1 team point")
+        if team_ns_tricks_won == 5 and who_called not in team_ew :
             team_ns_score += 1
+            print ("Team North South won all 5 tricks and won 2 pts total")
         if who_called in team_ew:
             team_ns_score += 1
+            print ("Team North South 'Euchred' since Team East West called trump and won 2 pts total!")
         if team_ns_tricks_won == 5 and who_called in team_ew:
-            team_ns_score += 1
+            team_ns_score += 2
+            print ("Team North South also won all 5 tricks while 'Euchreing' earning 4 Team points total! ")
     else:
         team_ew_score += 1
+        print ("Team East West won the most tricks and gets 1 team point")
         if team_ew_tricks_won == 5:
             team_ew_score += 1
+            print ("Team East West won all 5 tricks and won 2 pts total")
         if who_called in team_ns:
             team_ew_score += 1
+            print ("Team East West 'Euchred' since Team East West called trump and won 2 pts total!")
         if team_ew_tricks_won == 5 and who_called in team_ns:
             team_ew_score += 1
+            print ("Team East West also won all 5 tricks while 'Euchreing' earning 4 Team points total! ")
 
 # # #
 # GAME PLAY LEVEL WORK

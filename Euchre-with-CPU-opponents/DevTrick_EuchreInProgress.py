@@ -584,7 +584,7 @@ def left_of_dealer_plays_first(position_on_table, who_called, whats_trump, table
     print (f"this is {this_hand}")
     if table_position_dict[chair][0:2] == "pc":
         print ("chair was pc")
-        return pcPlaysACard.pc_plays_a_card(position_on_table, whats_trump, who_called,table)
+        return pcPlaysACard.pc_plays_a_card(position_on_table, whats_trump, who_called,table, table_position_list, list_of_hand_objects)
 
     else:
         print ("left_of_dealer_plays_first function says, 'chair was hu'")
@@ -609,6 +609,7 @@ def whos_winning(table_list):
 
 
 #   pc_plays_a_card(position_on_table, trump, who_called, table)
+# pc_plays_a_card(position_on_table, trump, who_called, table, table_position_list, list_of_hand_objects)
 
 
 
@@ -1501,7 +1502,7 @@ while team_ns_score < 10 and team_ew_score < 10:
                 
                 # NEXT CARD
                 if table_position_dict[table_position_list[current_player_position]][0:2] == "pc":
-                    chair_and_card = pcPlaysACard.pc_plays_a_card(current_player_position, whats_trump, who_called, table)
+                    chair_and_card = pcPlaysACard.pc_plays_a_card(current_player_position, whats_trump, who_called, table, table_position_list, list_of_hand_objects)
                 else:
                     chair_and_card = hu_plays_a_card(current_player_position, whats_trump, who_called, table) 
                 

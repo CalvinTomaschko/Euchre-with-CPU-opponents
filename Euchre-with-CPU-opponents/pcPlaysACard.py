@@ -1,4 +1,4 @@
-def pc_plays_a_card(position_on_table, trump, who_called, table):
+def pc_plays_a_card(position_on_table, trump, who_called, table, table_position_list, list_of_hand_objects):
     
 
 

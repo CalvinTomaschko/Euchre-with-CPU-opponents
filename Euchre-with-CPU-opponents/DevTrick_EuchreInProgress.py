@@ -941,7 +941,12 @@ def pc_plays_a_card(position_on_table, trump, who_called, table):
 
             # 9s=1, 10s=2, Js=3, Qs=3, Ks=4, As=5
             # Find single suits and get rid of one of those if it's not an ACE or KING
-
+           
+           
+            # python debugger 
+            
+           
+           
             # Checking for Single Suited
             # Checking for Single Suited
             
@@ -960,6 +965,7 @@ def pc_plays_a_card(position_on_table, trump, who_called, table):
             # ________Find all uniquely suited cards
 
             if len(card_list) > 2:
+                print ("\nArea 1\n")
             
                 # Step 1: add all suits that are in hand
                 
@@ -972,6 +978,7 @@ def pc_plays_a_card(position_on_table, trump, who_called, table):
                 uniquely_suited_cards = []
 
                 if len(suits_with_only_one) <= 1:
+                    print ("\nArea 2\n")
                 
                     for card in card_list:
                         if card[2] in suits_with_only_one:
@@ -985,6 +992,7 @@ def pc_plays_a_card(position_on_table, trump, who_called, table):
                 # check for aces first maybe?
                 
                 if uniquely_suited_cards != []:
+                    print ("\nArea 3\n")
                 
                     for card in uniquely_suited_cards:
 
@@ -998,7 +1006,7 @@ def pc_plays_a_card(position_on_table, trump, who_called, table):
                     print(uniquely_suited_cards)
 
                     if uniquely_suited_cards != []:
-                        print ("found a uniquely suited card!")
+                        print ("\nfound a uniquely suited card!\n")
                         if len(uniquely_suited_cards) > 1:
                             card_to_play = random.choice(uniquely_suited_cards)
                         else:
@@ -1011,24 +1019,41 @@ def pc_plays_a_card(position_on_table, trump, who_called, table):
 
                     # END of checking for single suited, non Ace or King
                     # END of checking for single suited, non Ace or King
-            
+                
             # If there wasn't a single of a suit card to get rid of 
             # then thread continues here to find lowest valued card
-
-            if card_to_remove != "place holder":
+            print ("\nArea 4\n")
+            print (card_to_remove)
+            if card_to_remove == "place holder":
             # ALSO, IF THERE'S ONLY 1 CARD REMAINING
+                print ("\nArea 7\n")
 
+                pdb.set_trace()
                 # default
-                min_value_cards = min(card_list, key=lambda x: x[3])
-                if len(min_value_cards) > 1:
-                    card_to_play = random.choice(min_value_cards)
+                card_details_of_min_value = (min(card_list, key=lambda x: x[3])) 
+                # this finds only 1 min so you must find others if they match
+                min_value = card_details_of_min_value[3]
+                
+                # find all cards with that low value, poss multiples
+                # for card in hand if value == min_value
+                cards_with_min_value = []
+                
+                for card in card_list:
+                    if card[3]==min_value:
+                        cards_with_min_value.append(card)
+
+                if len(cards_with_min_value) > 1:
+                    card_to_play = random.choice(cards_with_min_value)
                 else:
-                    card_to_play = min_value_cards
+                    card_to_play = cards_with_min_value[0]
+
 
                 card_to_remove = card_to_play[0]
                 hand.cards.remove(card_to_remove)
                 print(f"!_!_! This is the card_to_play, {card_to_remove} from Scenario 4")
                 return [chair, card_to_remove];
+            
+            print ("\nArea 5\n")
 
                                 # example suits_with_only_one = ["Hearts","Spades","Clubs"]
 

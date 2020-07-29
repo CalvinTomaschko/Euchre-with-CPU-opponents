@@ -584,7 +584,7 @@ def left_of_dealer_plays_first(position_on_table, who_called, whats_trump, table
     print (f"this is {this_hand}")
     if table_position_dict[chair][0:2] == "pc":
         print ("chair was pc")
-        return pcPlaysACard.pc_plays_a_card(position_on_table, whats_trump, who_called,table, table_position_list, list_of_hand_objects)
+        return pcPlaysACard.pc_plays_a_card(position_on_table, whats_trump, who_called,table, table_position_list, list_of_hand_objects, team_that_called)
 
     else:
         print ("left_of_dealer_plays_first function says, 'chair was hu'")
@@ -1368,7 +1368,10 @@ while team_ns_score < 10 and team_ew_score < 10:
     print (f"what_trump is --> {whats_trump}")
     print (f"who_called is --> {who_called}")
 
-
+    if who_called in team_ns:
+        team_that_called = team_ns
+    else:
+        team_that_called = team_ew
 
     # NOTE: may have to add in that when dealer is screwed their team is the one that called
 
@@ -1475,8 +1478,7 @@ while team_ns_score < 10 and team_ew_score < 10:
                 print (f"B. and now, after func next_player,is {current_player_position}")    
                 
                 
-                # python debugger 
-                # pdb.set_trace()
+                
                 
                 # NOTE: do I want this to be whocalled or which team called?
                 print ("\nIn the bottom of the main while loop table print")
@@ -1502,7 +1504,7 @@ while team_ns_score < 10 and team_ew_score < 10:
                 
                 # NEXT CARD
                 if table_position_dict[table_position_list[current_player_position]][0:2] == "pc":
-                    chair_and_card = pcPlaysACard.pc_plays_a_card(current_player_position, whats_trump, who_called, table, table_position_list, list_of_hand_objects)
+                    chair_and_card = pcPlaysACard.pc_plays_a_card(current_player_position, whats_trump, who_called, table, table_position_list, list_of_hand_objects, team_that_called)
                 else:
                     chair_and_card = hu_plays_a_card(current_player_position, whats_trump, who_called, table) 
                 

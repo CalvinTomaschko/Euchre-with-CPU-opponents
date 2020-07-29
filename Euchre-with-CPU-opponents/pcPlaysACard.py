@@ -1,4 +1,8 @@
-def pc_plays_a_card(position_on_table, trump, who_called, table, table_position_list, list_of_hand_objects):
+import pdb
+
+
+
+def pc_plays_a_card(position_on_table, trump, who_called, table, table_position_list, list_of_hand_objects, team_that_called):
     
 
 
@@ -14,14 +18,15 @@ def pc_plays_a_card(position_on_table, trump, who_called, table, table_position_
     # else:
     #     print ("\ntable is empty")
 
-    if who_called in team_ns:
-        team_that_called = team_ns
-    else:
-        team_that_called = team_ew
+
     
     print (f"\nthis is 'team that called' -->{team_that_called}")
     print (f"This is who called, {who_called}")
     
+    # python debugger 
+    pdb.set_trace()
+
+
     # Making the card list to work with
     
     card_list = []

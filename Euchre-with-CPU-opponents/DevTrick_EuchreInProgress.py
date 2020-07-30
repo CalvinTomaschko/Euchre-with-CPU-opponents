@@ -504,6 +504,15 @@ class Dev_Hand:
     def add_card(self,card):
         self.cards.append(card)
 
+class Playset:
+    def __init__(self, name, who_called, trump, card_values, teams):
+        self.name = name
+        self.who_called = who_called
+        self.trump = trump
+        self.card_values = card_values
+        self.teams = teams
+
+
 
 ### Classes ###
 ### Classes ###
@@ -1278,7 +1287,7 @@ print_teams(table_position_dict)
 dealers_turn = "chair_1"
 
 list_of_hand_objects = []
-
+# call below "chair" chair_spot instead, as chair variable is used again
 for chair in table_position_list:
     # CHECK print (f"here's chair: {chair}")
     name = str(chair)
@@ -1303,10 +1312,15 @@ while team_ns_score < 10 and team_ew_score < 10:
     round_number +=1
 
     print (f"\nTHIS IS ROUND NUMBER {round_number}!\n")
+    print (f"\nTHIS IS ROUND NUMBER {round_number}!\n")
+    print (f"\nTHIS IS ROUND NUMBER {round_number}!\n")
+    print (f"\nTHIS IS ROUND NUMBER {round_number}!\n")
 
 
     team_ns = ["chair_1","chair_3"]
     team_ew = ["chair_2","chair_4"]
+
+    teams_ns_ew = [team_ns, team_ew]
 
     dev_deck = Dev_Deck() 
 
@@ -1375,6 +1389,14 @@ while team_ns_score < 10 and team_ew_score < 10:
 
     # NOTE: may have to add in that when dealer is screwed their team is the one that called
 
+
+
+ 
+ 
+ 
+ 
+ 
+ 
     ## TRUMP SELECTION ##
     ## TRUMP SELECTION ##
 
@@ -1402,13 +1424,19 @@ while team_ns_score < 10 and team_ew_score < 10:
 
     trump_color = colors[whats_trump]
 
+    list_of_cards_in_hands = []
+
     for hand in list_of_hand_objects:
         for card in hand.cards:
-
+            # changing ranks
             if card.suit == whats_trump:
                 card.make_rank_trump()
+            # The "Jick"
             if card.rank == "Jack" and colors[card.suit] == trump_color and card.suit != whats_trump:
                 card.make_rank_trump(True)
+            # For playset_round objects each card object has suit, rank, and value accurate to the round now
+            list_of_cards_in_hands.append(card)
+            
 
 
     team_ew_tricks_won = 0 # Both teams start at 0 tricks won
@@ -1437,6 +1465,20 @@ while team_ns_score < 10 and team_ew_score < 10:
 
     tricks_played = 0
 
+    
+    
+    # Call on Class Playset
+
+    # class Playset:
+    # def __init__(self, name, who_called, trump, card_values, teams):
+    #     self.name = name
+    #     self.who_called = who_called
+    #     self.trump = trump
+    #     self.card_values = card_values
+    #     self.teams = teams
+    playset_name = "playset_" + str(round_number)
+    playset_name = Playset(playset_name, who_called, whats_trump, list_of_cards_in_hands, teams_ns_ew )
+
     while tricks_played < 6:
 
     # # #
@@ -1447,6 +1489,15 @@ while team_ns_score < 10 and team_ew_score < 10:
         table = []
 
         while cards_played_counter < 4:
+
+
+            ### Call on GameStatus Class
+            
+            ### July 28th 2020, making a class of game status here that 
+            # will contain things like card values and who called, what's trump
+            # a new one will be made for each round to be called upon later
+            # yay!
+            # ### 
 
 
             # # #

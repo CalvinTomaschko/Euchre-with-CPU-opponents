@@ -593,7 +593,9 @@ def left_of_dealer_plays_first(position_on_table, who_called, whats_trump, table
     print (f"this is {this_hand}")
     if table_position_dict[chair][0:2] == "pc":
         print ("chair was pc")
-        return pcPlaysACard.pc_plays_a_card(position_on_table, whats_trump, who_called,table, table_position_list, list_of_hand_objects, team_that_called)
+        # playset_round_1 --> self, name, who_called, trump, card_values, teams_ns_ew
+        # table_position_list? list_of_had_objects?
+        return pcPlaysACard.pc_plays_a_card(position_on_table, table, , list_of_hand_objects, team_that_called)
 
     else:
         print ("left_of_dealer_plays_first function says, 'chair was hu'")
@@ -1470,14 +1472,14 @@ while team_ns_score < 10 and team_ew_score < 10:
     # Call on Class Playset
 
     # class Playset:
-    # def __init__(self, name, who_called, trump, card_values, teams):
+    # def __init__(self, name, who_called, trump, card_values, teams_ns_ew):
     #     self.name = name
     #     self.who_called = who_called
     #     self.trump = trump
     #     self.card_values = card_values
     #     self.teams = teams
-    playset_name = "playset_" + str(round_number)
-    playset_name = Playset(playset_name, who_called, whats_trump, list_of_cards_in_hands, teams_ns_ew )
+    playset_name = "playset_round_" + str(round_number)
+    playset_name = Playset("round "+ str(round_number), who_called, whats_trump, list_of_cards_in_hands, teams_ns_ew )
 
     while tricks_played < 6:
 

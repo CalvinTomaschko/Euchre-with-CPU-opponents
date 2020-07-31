@@ -3,7 +3,7 @@ import random
 
 def pc_plays_a_card(position_on_table, table, list_of_hand_objects, current_playset):
     
-        
+    print ("\nIn function pc_plays_a_card" )    
         # object variables in current_playset
         
         # self.name = name
@@ -25,7 +25,7 @@ def pc_plays_a_card(position_on_table, table, list_of_hand_objects, current_play
     else:
         team_that_called = team_ew 
     
-    print ("\nIn function pc_plays_a_card" )
+    
 
     # if len(table) != 0:
     #     print ("\nCards on table")
@@ -144,7 +144,6 @@ def pc_plays_a_card(position_on_table, table, list_of_hand_objects, current_play
             # print ("\nend of, this PC's team did not call trump")
             return [chair, card_to_play];
     
-        print ("!_!_! First cards coming as of empty table")
 
     else:  # TABLE [] is NOT EMPTY, previous cards have been played __________
         print ("\nTable is not empty, decide with other cards in mind\n")
@@ -279,7 +278,7 @@ def pc_plays_a_card(position_on_table, table, list_of_hand_objects, current_play
             card_to_remove = card_to_play[0]
             # this card to play is in [card, rank, card.suit, value] format
             hand.cards.remove(card_to_remove)
-            print(f"!_!_! This is the card_to_play, {card_to_remove} from Scenario 1")
+            
             return [chair, card_to_remove];
 
 
@@ -306,7 +305,6 @@ def pc_plays_a_card(position_on_table, table, list_of_hand_objects, current_play
             
             card_to_remove = card_to_play[0]
             hand.cards.remove(card_to_remove)
-            print(f"!_!_! This is the card_to_play, {card_to_remove} from Scenario 2")
             return [chair, card_to_remove];
 
 
@@ -331,7 +329,7 @@ def pc_plays_a_card(position_on_table, table, list_of_hand_objects, current_play
             # hand.cards.remove(card_to_play)
             card_to_remove = card_to_play[0]
             hand.cards.remove(card_to_remove)
-            print(f"!_!_! This is the card_to_play, {card_to_remove} from Scenario 3")
+
             return [chair, card_to_remove];
 
 
@@ -381,7 +379,6 @@ def pc_plays_a_card(position_on_table, table, list_of_hand_objects, current_play
             # ________Find all uniquely suited cards
 
             if len(card_list) > 2:
-                print ("\nArea 1\n")
             
                 # Step 1: add all suits that are in hand
                 
@@ -394,7 +391,6 @@ def pc_plays_a_card(position_on_table, table, list_of_hand_objects, current_play
                 uniquely_suited_cards = []
 
                 if len(suits_with_only_one) <= 1:
-                    print ("\nArea 2\n")
                 
                     for card in card_list:
                         if card[2] in suits_with_only_one:
@@ -408,7 +404,6 @@ def pc_plays_a_card(position_on_table, table, list_of_hand_objects, current_play
                 # check for aces first maybe?
                 
                 if uniquely_suited_cards != []:
-                    print ("\nArea 3\n")
                 
                     for card in uniquely_suited_cards:
 
@@ -430,7 +425,7 @@ def pc_plays_a_card(position_on_table, table, list_of_hand_objects, current_play
                         
                         card_to_remove = card_to_play[0]
                         hand.cards.remove(card_to_remove)
-                        print(f"!_!_! This is the card_to_play, {card_to_remove} from Scenario 4")
+                        
                         return [chair, card_to_remove];
 
                     # END of checking for single suited, non Ace or King
@@ -438,11 +433,10 @@ def pc_plays_a_card(position_on_table, table, list_of_hand_objects, current_play
                 
             # If there wasn't a single of a suit card to get rid of 
             # then thread continues here to find lowest valued card
-            print ("\nArea 4\n")
+
             print (card_to_remove)
             if card_to_remove == "place holder":
             # ALSO, IF THERE'S ONLY 1 CARD REMAINING
-                print ("\nArea 7\n")
 
                 pdb.set_trace()
                 # default
@@ -466,10 +460,11 @@ def pc_plays_a_card(position_on_table, table, list_of_hand_objects, current_play
 
                 card_to_remove = card_to_play[0]
                 hand.cards.remove(card_to_remove)
-                print(f"!_!_! This is the card_to_play, {card_to_remove} from Scenario 4")
+            
                 return [chair, card_to_remove];
             
-            print ("\nArea 5\n")
+ 
 
-    # python debugger 
-    pdb.set_trace()
+    # # python debugger 
+    # pdb.set_trace()
+    print ("\nNow leaving function pc_plays_a_card\n" )

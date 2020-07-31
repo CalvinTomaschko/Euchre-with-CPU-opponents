@@ -429,7 +429,7 @@ class Dev_Deck:
 
         new_deck_to_replace = []
 
-        print ("organizing deck now")
+        
         for count, card_deets in enumerate(big_list_final):
             for card_object in self.deck:
                 if card_object.rank == card_deets[0] and card_object.suit == card_deets[1]:
@@ -478,8 +478,8 @@ class Dev_Deck:
             for card in self.deck:
                 if card.rank == rank:
                     counter_list_ranks[count] = counter_list_ranks[count] + 1
-        print (counter_list_suits)
-        print (counter_list_ranks)
+        # print (counter_list_suits)
+        # print (counter_list_ranks)
 
     def deal(self):
         single_card = self.deck.pop(0)
@@ -720,6 +720,7 @@ def hu_plays_a_card(position_on_table, trump, who_called, table):
     print ("Choose a card to play by it's number")
 
     print (f"\nThis chairs--> {chair} <--cards")
+
     for count, card in enumerate(hand.cards,1):
         print (f"#{count} {card}")
 
@@ -780,6 +781,16 @@ def hu_plays_a_card(position_on_table, trump, who_called, table):
     return [chair,card_to_return];
 
    
+def print_table(table):
+    print ("\n\nTable")
+    print ("|^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^|")
+    for i in range(4):
+        if i >= len(table):
+            print ("\n")
+        else:
+            print (f"{table[i][0]} played {table[i][1]}")
+    print ("\n|______________________________|")
+    print ("\n \n")
 
 
 
@@ -1072,25 +1083,22 @@ while team_ns_score < 10 and team_ew_score < 10:
     playset_name = Playset("round "+ str(round_number),  who_called,  whats_trump, list_of_cards_in_hands,  teams_ns_ew , table_position_list)
     current_playset = playset_name
 
+
+
+
     while tricks_played < 6:
 
     # # #
     # TRICK LEVEL WORK
     # # #
 
+        print (f"\nNumber of hands played is {tricks_played}\n")
+
         cards_played_counter = 0
         table = []
 
         while cards_played_counter < 4:
 
-
-            ### Call on GameStatus Class
-            
-            ### July 28th 2020, making a class of game status here that 
-            # will contain things like card values and who called, what's trump
-            # a new one will be made for each round to be called upon later
-            # yay!
-            # ### 
 
 
             # # #
@@ -1102,39 +1110,36 @@ while team_ns_score < 10 and team_ew_score < 10:
             if cards_played_counter == 0:
                 
                 chair_and_card = []
-                print (f"cards_played_counter is zero")
                 
                 # FIRST CARD
                 
                 chair_and_card = left_of_dealer_plays_first(player_left_of_dealer, who_called, whats_trump, table)
                 who_played_it = chair_and_card[0]
                 one_selected = chair_and_card[1]
-                print (f"\nthis is the returned chair, {who_played_it}, and card, {one_selected}")
                 table.append(chair_and_card) # table = chair_and_card[2]
                 
                 # MOVING TO NEXT PLAYER
 
                 current_player_position = player_left_of_dealer
-                print (f"A. current player position is now {current_player_position}")
+                
                 # Next player x3
                 next_player_answer = next_player(current_player_position, table_position_list)
                 current_player_position = next_player_answer
-                print (f"B. and now, after func next_player,is {current_player_position}")    
                 
                 
                 
                 
                 # NOTE: do I want this to be whocalled or which team called?
-                print ("\nIn the bottom of the main while loop table print")
+               
                 
                 # Show what's on the table
-
-                print ("\nCards on table")
-                print ("|^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^|")
-                for chair_card in table:
-                    print (f"{chair_card[0]} played {chair_card[1]}")
-                print ("\n|______________________________|")
-                print ("\n \n")
+                print_table(table)
+                # print ("\nCards on table")
+                # print ("|^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^|")
+                # for chair_card in table:
+                #     print (f"{chair_card[0]} played {chair_card[1]}")
+                # print ("\n|______________________________|")
+                # print ("\n \n")
             
             
             
@@ -1156,17 +1161,14 @@ while team_ns_score < 10 and team_ew_score < 10:
                 who_played_it = chair_and_card[0]
                 one_selected = chair_and_card[1]
                 
-                print (f"\nthis is the returned chair, {who_played_it}, and card, {one_selected}")
+              
                 
                 table.append(chair_and_card)
-                print ("\nIn the bottom of the main while loop table print")
+               
                 
                 # Show what's on the table
-                print ("\nCards on table")
-                print ("|^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^|")
-                for chair_card in table:
-                    print (f"{chair_card[0]} played {chair_card[1]}")
-                print ("\n|______________________________|")
+                
+                print_table(table)
                 # MOVING TO NEXT PLAYER 
                 next_player_answer = next_player(current_player_position, table_position_list)
                 current_player_position = next_player_answer
@@ -1183,9 +1185,8 @@ while team_ns_score < 10 and team_ew_score < 10:
             # CARD LEVEL WORK
             # # #
         
-        print ("\n\n\n\n THIS IS A BIG DEAL YOU MADE IT OUT OF THE A 4 CARD ROUND, ONTO THE NEXT \n\n\n\n")
         
-        print ("\n you have exited the cardplay loop \n")
+        print ("\n All 4 cards have been played \n")
         # Which team won the trick
 
         # which card won 
@@ -1200,7 +1201,12 @@ while team_ns_score < 10 and team_ew_score < 10:
             team_ew_tricks_won += 1
         # add 1 to the team trick counter
 
+        print (f"\n Team NS {team_ns_tricks_won} tricks" )
+        print (f"Team EW {team_ew_tricks_won} tricks" )
         
+        winning_chair_position = table_position_list.index(winning_chair)
+        print (f"{winning_chair} won the last hand and gets to lead the next hand")
+        current_player_position = winning_chair_position
 
         tricks_played += 1
 

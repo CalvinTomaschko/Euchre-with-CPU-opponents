@@ -505,12 +505,13 @@ class Dev_Hand:
         self.cards.append(card)
 
 class Playset:
-    def __init__(self, name, who_called, trump, card_values, teams):
+    def __init__(self, name, who_called, trump, card_values, teams, table_position_list):
         self.name = name
         self.who_called = who_called
         self.trump = trump
         self.card_values = card_values
         self.teams = teams
+        self.table_position_list = table_position_list
 
 
 
@@ -595,7 +596,7 @@ def left_of_dealer_plays_first(position_on_table, who_called, whats_trump, table
         print ("chair was pc")
         # playset_round_1 --> self, name, who_called, trump, card_values, teams_ns_ew
         # table_position_list? list_of_had_objects?
-        return pcPlaysACard.pc_plays_a_card(position_on_table, table, , list_of_hand_objects, team_that_called)
+        return pcPlaysACard.pc_plays_a_card(position_on_table, table, list_of_hand_objects, current_playset)
 
     else:
         print ("left_of_dealer_plays_first function says, 'chair was hu'")
@@ -1471,6 +1472,8 @@ while team_ns_score < 10 and team_ew_score < 10:
     
     # Call on Class Playset
 
+    # position_on_table, table, list_of_hand_objects, current_playset
+
     # class Playset:
     # def __init__(self, name, who_called, trump, card_values, teams_ns_ew):
     #     self.name = name
@@ -1479,7 +1482,8 @@ while team_ns_score < 10 and team_ew_score < 10:
     #     self.card_values = card_values
     #     self.teams = teams
     playset_name = "playset_round_" + str(round_number)
-    playset_name = Playset("round "+ str(round_number), who_called, whats_trump, list_of_cards_in_hands, teams_ns_ew )
+    playset_name = Playset("round "+ str(round_number),  who_called,  whats_trump, list_of_cards_in_hands,  teams_ns_ew , table_position_list)
+    current_playset = playset_name
 
     while tricks_played < 6:
 
@@ -1522,7 +1526,7 @@ while team_ns_score < 10 and team_ew_score < 10:
                 table.append(chair_and_card) # table = chair_and_card[2]
                 
                 # MOVING TO NEXT PLAYER
-                print (f"current player position starts as {current_player_position}")
+
                 current_player_position = player_left_of_dealer
                 print (f"A. current player position is now {current_player_position}")
                 # Next player x3
@@ -1554,10 +1558,11 @@ while team_ns_score < 10 and team_ew_score < 10:
                 # def pc_plays_a_card(position_on_table, trump, who_called, this_hand, table
                 
                 print (f"\nC. current player position is now {current_player_position}")
-                
+
                 # NEXT CARD
                 if table_position_dict[table_position_list[current_player_position]][0:2] == "pc":
-                    chair_and_card = pcPlaysACard.pc_plays_a_card(current_player_position, whats_trump, who_called, table, table_position_list, list_of_hand_objects, team_that_called)
+
+                    chair_and_card = pcPlaysACard.pc_plays_a_card(current_player_position, table, list_of_hand_objects, current_playset)
                 else:
                     chair_and_card = hu_plays_a_card(current_player_position, whats_trump, who_called, table) 
                 

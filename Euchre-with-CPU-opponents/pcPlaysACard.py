@@ -1,13 +1,29 @@
 import pdb
+import random
 
-
-
-def pc_plays_a_card(position_on_table, trump, who_called, table, table_position_list, list_of_hand_objects, team_that_called):
+def pc_plays_a_card(position_on_table, table, list_of_hand_objects, current_playset):
     
+        
+        # object variables in current_playset
+        
+        # self.name = name
+        # self.who_called = who_called
+        # self.trump = trump
+        # self.card_values = card_values
+        # self.teams = teams
+        # self.table_position_list = table_position_list
 
-
-    chair = table_position_list[position_on_table]
+    chair = current_playset.table_position_list[position_on_table]
     hand = list_of_hand_objects[position_on_table]
+    
+    who_called = current_playset.who_called
+
+    team_ns = current_playset.teams[0]
+    team_ew = current_playset.teams[1]
+    if who_called in team_ns:
+        team_that_called = team_ns
+    else:
+        team_that_called = team_ew 
     
     print ("\nIn function pc_plays_a_card" )
 
@@ -23,8 +39,7 @@ def pc_plays_a_card(position_on_table, trump, who_called, table, table_position_
     print (f"\nthis is 'team that called' -->{team_that_called}")
     print (f"This is who called, {who_called}")
     
-    # python debugger 
-    pdb.set_trace()
+
 
 
     # Making the card list to work with
@@ -32,7 +47,7 @@ def pc_plays_a_card(position_on_table, trump, who_called, table, table_position_
     card_list = []
     for card in hand.cards:
             rank = card.rank
-            value = values[rank]
+            value = card.value
             card_list.append([card, rank, card.suit, value])
 
     print (f"\nThis chairs--> {chair} <--cards")
@@ -191,7 +206,7 @@ def pc_plays_a_card(position_on_table, trump, who_called, table, table_position_
         # F> LEAD SUIT WAS TRUMP Y/N
 
         lead_suit_was_trump = False
-        if suit_to_follow == trump:
+        if suit_to_follow == current_playset.trump:
             lead_suit_was_trump = True
         print (f"Lead suit was trump?-->{lead_suit_was_trump}<--")
 
@@ -211,7 +226,7 @@ def pc_plays_a_card(position_on_table, trump, who_called, table, table_position_
         # F> CARDS IN HAND OF TRUMP
 
         has_trump = True
-        cards_in_hand_of_trump = list(filter(lambda x: x[2] == trump, card_list))
+        cards_in_hand_of_trump = list(filter(lambda x: x[2] == current_playset.trump, card_list))
         if len(cards_in_hand_of_trump) == 0:
             has_trump = False
         print (f"Has_trump? is -->{has_trump}<--")
@@ -245,7 +260,7 @@ def pc_plays_a_card(position_on_table, trump, who_called, table, table_position_
         # SCENARIO 1. Follow suit
         # Lead suit not trump, PC has lead suit
         # if lead suit != trump and PC has trump
-        if suit_to_follow != trump and pc_has_lead_suit == True:
+        if suit_to_follow != current_playset.trump and pc_has_lead_suit == True:
             print ("\n_!_!_SCENARIO 1: Lead is not trump, pc has that suit, follow suit")
             
             max_card_to_play = max(cards_in_hand_of_lead_suit, key=lambda x: x[3])
@@ -270,7 +285,7 @@ def pc_plays_a_card(position_on_table, trump, who_called, table, table_position_
 
         # SCENARIO 2. Could Trump!
         # Lead suit not trump, PC does not have lead suit
-        if suit_to_follow != trump and pc_has_lead_suit == False:
+        if suit_to_follow != current_playset.trump and pc_has_lead_suit == False:
             print ("\n_!_!_SCENARIO 2: Lead is not trump, pc does not have that suit")
             
             # default
@@ -297,7 +312,7 @@ def pc_plays_a_card(position_on_table, trump, who_called, table, table_position_
 
         # SCENARIO 3. Who has higher trump?
         # lead suit is trump, PC has
-        if suit_to_follow == trump and pc_has_lead_suit == True:
+        if suit_to_follow == current_playset.trump and pc_has_lead_suit == True:
             print ("\n_!_!_SCENARIO 3: Lead is indeed trump, pc has that suit")
 
             max_card_to_play = max(cards_in_hand_of_lead_suit, key=lambda x: x[3])
@@ -337,7 +352,7 @@ def pc_plays_a_card(position_on_table, trump, who_called, table, table_position_
 
         # SCENARIO 4. You lose, play a low card, narrow amount of suits, keep aces
         # lead suit is trump, PC does not have
-        if suit_to_follow == trump and pc_has_lead_suit == False:
+        if suit_to_follow == current_playset.trump and pc_has_lead_suit == False:
             print ("\n_!_!_SCENARIO 4 Lead is indeed trump, pc does not have that suit")
 
             # 9s=1, 10s=2, Js=3, Qs=3, Ks=4, As=5
@@ -455,3 +470,6 @@ def pc_plays_a_card(position_on_table, trump, who_called, table, table_position_
                 return [chair, card_to_remove];
             
             print ("\nArea 5\n")
+
+    # python debugger 
+    pdb.set_trace()

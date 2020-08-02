@@ -956,13 +956,7 @@ while team_ns_score < 10 and team_ew_score < 10:
     for player_hand in list_of_hand_objects:
         deal_cards(player_hand,dev_deck)
         
-    # for player_hand in list_of_hand_objects:
-    #     print("\n")
-    #     # print (table_position_dict[str(player_hand)])
-    #     # print (f"Cards in {player_hand}'s hand")
-    #     for card in player_hand.cards:
-    #         # print (card)
-    # # print ("\n")
+
     one_and_done_suit = top_card_suit(dev_deck)
 
 
@@ -1092,7 +1086,7 @@ while team_ns_score < 10 and team_ew_score < 10:
     # TRICK LEVEL WORK
     # # #
 
-        print (f"\nNumber of hands played is {tricks_played}\n")
+        print (f"\nDDDDDDDD  Number of hands played is {tricks_played}\n")
 
         cards_played_counter = 0
         table = []
@@ -1106,8 +1100,9 @@ while team_ns_score < 10 and team_ew_score < 10:
             # # #
 
 
-            # IF FIRST CARD
-            if cards_played_counter == 0:
+            # IF FIRST CARD   !!!!!ONLY FIRST ROUND!!!!!!
+            if tricks_played == 0 and cards_played_counter == 0:
+                
                 
                 chair_and_card = []
                 
@@ -1119,10 +1114,9 @@ while team_ns_score < 10 and team_ew_score < 10:
                 table.append(chair_and_card) # table = chair_and_card[2]
                 
                 # MOVING TO NEXT PLAYER
-
-                current_player_position = player_left_of_dealer
                 
-                # Next player x3
+                current_player_position = player_left_of_dealer
+
                 next_player_answer = next_player(current_player_position, table_position_list)
                 current_player_position = next_player_answer
                 
@@ -1140,16 +1134,18 @@ while team_ns_score < 10 and team_ew_score < 10:
                 #     print (f"{chair_card[0]} played {chair_card[1]}")
                 # print ("\n|______________________________|")
                 # print ("\n \n")
+
+                # END OF IF
             
             
             
             # IF NOT FIRST CARD
             if cards_played_counter >= 1:
                 
-                print ("trick_counter is greater or equal to one")
+                
                 # def pc_plays_a_card(position_on_table, trump, who_called, this_hand, table
                 
-                print (f"\nC. current player position is now {current_player_position}")
+                
 
                 # NEXT CARD
                 if table_position_dict[table_position_list[current_player_position]][0:2] == "pc":
@@ -1176,10 +1172,16 @@ while team_ns_score < 10 and team_ew_score < 10:
 
                 print ("\n \n")
 
+                # END OF IF
+
 
             cards_played_counter += 1
-            print(f"\nCards played counter is {cards_played_counter}\n")
 
+            # python debugger 
+            pdb.set_trace()
+
+
+            # END OF WHILE cards_played_counter < 4
 
             # # #
             # CARD LEVEL WORK
@@ -1251,6 +1253,7 @@ while team_ns_score < 10 and team_ew_score < 10:
 # # #
 
 print ("\n you have exited the gameplay loop \n")
+print ("\n a team has won! \n")
 
 
 

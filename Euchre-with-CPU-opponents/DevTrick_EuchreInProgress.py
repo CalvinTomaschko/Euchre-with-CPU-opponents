@@ -700,21 +700,32 @@ def hu_plays_a_card(position_on_table, trump, who_called, table):
             value = values[rank]
             card_list.append([card, rank, card.suit, value])
 
-    # suit to follow
-    first_card_played = table[0][1]
-    print (f"-->{first_card_played}<-- was first card")
-    suit_to_follow = first_card_played.suit # suit to follow, if player has it
-
-
-    hu_has_lead_suit = False
-    cards_in_hand_of_lead_suit = list(filter(lambda x: x[2] == suit_to_follow, card_list))
-
-    if len(cards_in_hand_of_lead_suit) >= 1:
-        hu_has_lead_suit = True
-        print ("Player must follow suit")
+    table_is_empty = False
     
-    if hu_has_lead_suit == False:
-        print ("Player does not have the leading suit and can play 'off suit'")
+    # suit to follow
+    if len(table) == 0: # so if table is empty
+        table_is_empty = True
+        suit_to_follow = "There is no suit to follow, the table is empty"
+        print ("Table is empty, choose any card to lead")
+
+    if len(table) > 0: # if table is not empty
+        first_card_played = table[0][1]
+        print (f"-->{first_card_played}<-- was first card")
+        suit_to_follow = first_card_played.suit # suit to follow, if player has it
+
+
+    # does hu player need to follow suit? 
+    hu_has_lead_suit = False
+
+    if table_is_empty == False: # if there are cards to compare to
+        cards_in_hand_of_lead_suit = list(filter(lambda x: x[2] == suit_to_follow, card_list))
+
+        if len(cards_in_hand_of_lead_suit) >= 1:
+            hu_has_lead_suit = True
+            print ("Player must follow suit")
+        
+        if hu_has_lead_suit == False:
+            print ("Player does not have the leading suit and can play 'off suit'")
     
     
     print ("Choose a card to play by it's number")
@@ -732,53 +743,77 @@ def hu_plays_a_card(position_on_table, trump, who_called, table):
     acceptable_answer = list(range(1,len(card_list)+1))
     print (f"acceptable_answer = {acceptable_answer}")
     
+
+
+
     card_meets_criteria = False # we have to test if it follows the rules
-    
-    while card_meets_criteria == False:
-        selected_number_card = -1
-    
-        while selected_number_card not in acceptable_answer: # Can't pick the 5th card if you only have 4
-            selected_number_card = (input("Which numbered card do you choose (ex: '2')"))
+    selected_number_card = -1 # inialized as a not acceptable answer
+    # If hu player won last hand then they'd be starting this next one
+    if table_is_empty == True:
+        card_meets_criteria = True
 
-            if not (selected_number_card.isdigit()):
-                selected_number_card = -1
-                print ("That number is not reading right, try again please")
-   
-            else: 
-                selected_number_card = int(selected_number_card)
-
-            if selected_number_card not in acceptable_answer:
-                print("Looks like the number you chose was not in the acceptable range")
-            # Error exception for empty string here, can't make empty string an integer
-
-        # If they have suit to follow? did they
-        # if not then card meets criteria is False
+        # Repeat of text could be made into a function call! Aug 2nd 2020 (below)
         
-        card_check_good = True
+        while selected_number_card not in acceptable_answer: # Can't pick the 5th card if you only have 4
+                selected_number_card = (input("Which numbered card do you choose ex: '2'"))
 
-        if hu_has_lead_suit == True:
-            if card_list[selected_number_card-1][2] != suit_to_follow:
-                print ("Selected card is not the correct suit, please choose a card that follows suit")
-                card_check_good = False
+                if not (selected_number_card.isdigit()):
+                    selected_number_card = -1
+                    print ("That number is not reading right, try again please")
+    
+                else: 
+                    selected_number_card = int(selected_number_card)
+
+                if selected_number_card not in acceptable_answer:
+                    print("Looks like the number you chose was not in the acceptable range")
+                # Error exception for empty string here, can't make empty string an integer
+        
+        card_chosen = card_list[selected_number_card-1]
+
+        card_to_return = card_chosen[0]
+
+        hand.cards.remove(card_to_return)
+        
+        return [chair,card_to_return];
+
+    if table_is_empty == False: # different rules apply than if hu player was playing the first card
+        
+        while card_meets_criteria == False:
+        
+            while selected_number_card not in acceptable_answer: # Can't pick the 5th card if you only have 4
+                selected_number_card = (input("Which numbered card do you choose (ex: '2')"))
+
+                if not (selected_number_card.isdigit()):
+                    selected_number_card = -1
+                    print ("That number is not reading right, try again please")
+    
+                else: 
+                    selected_number_card = int(selected_number_card)
+
+                if selected_number_card not in acceptable_answer:
+                    print("Looks like the number you chose was not in the acceptable range")
+                # Error exception for empty string here, can't make empty string an integer
+
+            # If they have suit to follow? did they
+            # if not then card meets criteria is False
             
-        if card_check_good == True:
-            card_meets_criteria = True    
+            card_check_good = True
 
+            if hu_has_lead_suit == True:
+                if card_list[selected_number_card-1][2] != suit_to_follow:
+                    print ("Selected card is not the correct suit, please choose a card that follows suit")
+                    card_check_good = False
+                
+            if card_check_good == True:
+                card_meets_criteria = True    
 
+        card_chosen = card_list[selected_number_card-1]
 
-        #  
+        card_to_return = card_chosen[0]
 
-    
-
-
-
-    card_chosen = card_list[selected_number_card-1]
-
-    card_to_return = card_chosen[0]
-
-    hand.cards.remove(card_to_return)
-    
-    return [chair,card_to_return];
+        hand.cards.remove(card_to_return)
+        
+        return [chair,card_to_return];
 
    
 def print_table(table):
@@ -1080,7 +1115,7 @@ while team_ns_score < 10 and team_ew_score < 10:
 
 
 
-    while tricks_played < 6:
+    while tricks_played < 5:
 
     # # #
     # TRICK LEVEL WORK
@@ -1100,7 +1135,7 @@ while team_ns_score < 10 and team_ew_score < 10:
             # # #
 
 
-            # IF FIRST CARD   !!!!!ONLY FIRST ROUND!!!!!!
+            # IF FIRST CARD   !!!!!ONLY FIRST ROUND!!!!!! BECAUSE PERSON LEFT OF DEALER MUST START
             if tricks_played == 0 and cards_played_counter == 0:
                 
                 
@@ -1119,74 +1154,57 @@ while team_ns_score < 10 and team_ew_score < 10:
 
                 next_player_answer = next_player(current_player_position, table_position_list)
                 current_player_position = next_player_answer
-                
-                
-                
-                
-                # NOTE: do I want this to be whocalled or which team called?
                
-                
                 # Show what's on the table
                 print_table(table)
-                # print ("\nCards on table")
-                # print ("|^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^|")
-                # for chair_card in table:
-                #     print (f"{chair_card[0]} played {chair_card[1]}")
-                # print ("\n|______________________________|")
-                # print ("\n \n")
 
                 # END OF IF
             
             
             
-            # IF NOT FIRST CARD
-            if cards_played_counter >= 1:
-                
+            # IF NOT THE FIRST CARD OF ENTIRE ROUND, IE START OF NEXT HAND, OR MID-HAND
+            else:   
                 
                 # def pc_plays_a_card(position_on_table, trump, who_called, this_hand, table
                 
-                
-
                 # NEXT CARD
                 if table_position_dict[table_position_list[current_player_position]][0:2] == "pc":
 
                     chair_and_card = pcPlaysACard.pc_plays_a_card(current_player_position, table, list_of_hand_objects, current_playset)
                 else:
+
+                    # Add "Playset" object here 
+
                     chair_and_card = hu_plays_a_card(current_player_position, whats_trump, who_called, table) 
                 
                 who_played_it = chair_and_card[0]
                 one_selected = chair_and_card[1]
                 
-              
-                
                 table.append(chair_and_card)
-               
                 
                 # Show what's on the table
-                
                 print_table(table)
                 # MOVING TO NEXT PLAYER 
                 next_player_answer = next_player(current_player_position, table_position_list)
                 current_player_position = next_player_answer
                 
-
                 print ("\n \n")
 
                 # END OF IF
 
 
             cards_played_counter += 1
+            print (f"IMPORTANT!!! cards_played_counter is {cards_played_counter}")
 
-            # python debugger 
-            pdb.set_trace()
-
+            
 
             # END OF WHILE cards_played_counter < 4
 
             # # #
             # CARD LEVEL WORK
             # # #
-        
+        # python debugger 
+        # pdb.set_trace()
         
         print ("\n All 4 cards have been played \n")
         # Which team won the trick
@@ -1203,7 +1221,7 @@ while team_ns_score < 10 and team_ew_score < 10:
             team_ew_tricks_won += 1
         # add 1 to the team trick counter
 
-        print (f"\n Team NS {team_ns_tricks_won} tricks" )
+        print (f"Team NS {team_ns_tricks_won} tricks" )
         print (f"Team EW {team_ew_tricks_won} tricks" )
         
         winning_chair_position = table_position_list.index(winning_chair)
@@ -1211,6 +1229,7 @@ while team_ns_score < 10 and team_ew_score < 10:
         current_player_position = winning_chair_position
 
         tricks_played += 1
+        print (f"IMPORTANT!!! tricks_played is {tricks_played}")
 
 
 

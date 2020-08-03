@@ -36,8 +36,8 @@ def pc_plays_a_card(position_on_table, table, list_of_hand_objects, current_play
 
 
     
-    print (f"\nthis is 'team that called' -->{team_that_called}")
-    print (f"This is who called, {who_called}")
+    # print (f"\nthis is 'team that called' -->{team_that_called}")
+    # print (f"This is who called, {who_called}")
     
 
 
@@ -56,7 +56,7 @@ def pc_plays_a_card(position_on_table, table, list_of_hand_objects, current_play
 
 
     if table == []:  # TABLE IS EMPTY, picks which "style" to play ___________
-        print ("\nTable is empty\n")
+        # print ("\nTable is empty\n")
         
         # Same team called
         if chair in team_that_called:
@@ -146,7 +146,7 @@ def pc_plays_a_card(position_on_table, table, list_of_hand_objects, current_play
     
 
     else:  # TABLE [] is NOT EMPTY, previous cards have been played __________
-        print ("\nTable is not empty, decide with other cards in mind\n")
+        # print ("\nTable is not empty, decide with other cards in mind\n")
 
         # Placing all potentially needed factors here (Feb 5th 2020) for now
         # then putting some behind ifs to cut back on uncessary computations
@@ -182,7 +182,7 @@ def pc_plays_a_card(position_on_table, table, list_of_hand_objects, current_play
         winning_card_value = winning_card.value
 
         print(f"This is the winning card, {winning_card}")
-        print(f"This is the winning card's value, {winning_card_value}")
+        # print(f"This is the winning card's value, {winning_card_value}")
 
         # F> WHICH TEAM IS WINNING
         # F> PARTNER_HAS_IT T/F
@@ -207,7 +207,7 @@ def pc_plays_a_card(position_on_table, table, list_of_hand_objects, current_play
         lead_suit_was_trump = False
         if suit_to_follow == current_playset.trump:
             lead_suit_was_trump = True
-        print (f"Lead suit was trump?-->{lead_suit_was_trump}<--")
+        # print (f"Lead suit was trump?-->{lead_suit_was_trump}<--")
 
         # F> PC HAS LEAD SUIT
         # F> CARDS IN HAND OF LEAD SUIT
@@ -219,7 +219,7 @@ def pc_plays_a_card(position_on_table, table, list_of_hand_objects, current_play
 
         if cards_in_hand_of_lead_suit == []:
             pc_has_lead_suit = False
-        print (f"PC has lead suit?-->{pc_has_lead_suit}<--")
+        # print (f"PC has lead suit?-->{pc_has_lead_suit}<--")
 
         # F> HAS TRUMP? T/F
         # F> CARDS IN HAND OF TRUMP
@@ -228,7 +228,7 @@ def pc_plays_a_card(position_on_table, table, list_of_hand_objects, current_play
         cards_in_hand_of_trump = list(filter(lambda x: x[2] == current_playset.trump, card_list))
         if len(cards_in_hand_of_trump) == 0:
             has_trump = False
-        print (f"Has_trump? is -->{has_trump}<--")
+        # print (f"Has_trump? is -->{has_trump}<--")
         
         
 
@@ -414,10 +414,10 @@ def pc_plays_a_card(position_on_table, table, list_of_hand_objects, current_play
                             has_unique_king = True
                             uniquely_suited_cards.remove(card)
 
-                    print(uniquely_suited_cards)
+                    # print(uniquely_suited_cards)
 
                     if uniquely_suited_cards != []:
-                        print ("\nfound a uniquely suited card!\n")
+                        # print ("\nfound a uniquely suited card!\n")
                         if len(uniquely_suited_cards) > 1:
                             card_to_play = random.choice(uniquely_suited_cards)
                         else:
@@ -438,7 +438,6 @@ def pc_plays_a_card(position_on_table, table, list_of_hand_objects, current_play
             if card_to_remove == "place holder":
             # ALSO, IF THERE'S ONLY 1 CARD REMAINING
 
-                pdb.set_trace()
                 # default
                 card_details_of_min_value = (min(card_list, key=lambda x: x[3])) 
                 # this finds only 1 min so you must find others if they match
@@ -467,4 +466,4 @@ def pc_plays_a_card(position_on_table, table, list_of_hand_objects, current_play
 
     # # python debugger 
     # pdb.set_trace()
-    print ("\nNow leaving function pc_plays_a_card\n" )
+    

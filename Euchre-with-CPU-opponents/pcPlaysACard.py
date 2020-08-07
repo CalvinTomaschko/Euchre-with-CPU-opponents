@@ -287,17 +287,35 @@ def pc_plays_a_card(position_on_table, table, list_of_hand_objects, current_play
         if suit_to_follow != current_playset.trump and pc_has_lead_suit == False:
             print ("\n_!_!_SCENARIO 2: Lead is not trump, pc does not have that suit")
             
+            
+            
+
+            # a_card_with_lowest_value = list(min(list_of_cards, key=lambda x: x[3]))
+            # # then filter based on that? 
+
+            # all_cards_with_lowest_value = list(filter(lambda x: x[3] == a_card_with_lowest_value[3],list_of_cards))
+                                                    
+            # print (a_card_with_lowest_value)
+            # print(all_cards_with_lowest_value)
+
+            a_min_value_card = list(min(card_list, key=lambda x: x[3]))
+
+            all_cards_with_min_value = list(filter(lambda x: x[3] == a_min_value_card[3], card_list))
             # default
-            min_value_cards = min(card_list, key=lambda x: x[3])
-            if len(min_value_cards) > 1:
-                card_to_play = random.choice(min_value_cards)
+            # min_value_cards = min(card_list, key=lambda x: x[3])
+
+                # # python debugger 
+            pdb.set_trace()
+
+            if len(all_cards_with_min_value) > 1:
+                card_to_play = random.choice(all_cards_with_min_value)
             else:
-                card_to_play = min_value_cards[0]
+                card_to_play = all_cards_with_min_value[0]
 
 
             # NOTE: belowin cards_in_hand_of_trump here's the problem
 
-            if has_trump == True: 
+            if has_trump == True:
                 max_card_to_play = max(cards_in_hand_of_trump, key=lambda x: x[3])
                 card_to_play = max_card_to_play
             
@@ -464,6 +482,5 @@ def pc_plays_a_card(position_on_table, table, list_of_hand_objects, current_play
             
  
 
-    # # python debugger 
-    # pdb.set_trace()
+
     

@@ -755,17 +755,23 @@ def hu_plays_a_card(position_on_table, trump, who_called, table):
         # Repeat of text could be made into a function call! Aug 2nd 2020 (below)
         
         while selected_number_card not in acceptable_answer: # Can't pick the 5th card if you only have 4
-                selected_number_card = (input("Which numbered card do you choose ex: '2'"))
+                # selected_number_card = (input("Which numbered card do you choose ex: '2'"))
+                
+                # placed in to speed up play and test if the rounds work aug 7th 2020
+                
+                selected_number_card = random.choice(acceptable_answer)
 
-                if not (selected_number_card.isdigit()):
-                    selected_number_card = -1
-                    print ("That number is not reading right, try again please")
+                ######## commented for testing aug 7th 2020
+                # if not (selected_number_card.isdigit()):
+                #     selected_number_card = -1
+                #     print ("That number is not reading right, try again please")
     
-                else: 
-                    selected_number_card = int(selected_number_card)
+                # else: 
+                #     selected_number_card = int(selected_number_card)
 
-                if selected_number_card not in acceptable_answer:
-                    print("Looks like the number you chose was not in the acceptable range")
+                # if selected_number_card not in acceptable_answer:
+                #     print("Looks like the number you chose was not in the acceptable range")
+                
                 # Error exception for empty string here, can't make empty string an integer
         
         card_chosen = card_list[selected_number_card-1]
@@ -781,17 +787,25 @@ def hu_plays_a_card(position_on_table, trump, who_called, table):
         while card_meets_criteria == False:
         
             while selected_number_card not in acceptable_answer: # Can't pick the 5th card if you only have 4
-                selected_number_card = (input("Which numbered card do you choose (ex: '2')"))
-
-                if not (selected_number_card.isdigit()):
-                    selected_number_card = -1
-                    print ("That number is not reading right, try again please")
+                # selected_number_card = (input("Which numbered card do you choose (ex: '2')"))
+                
+                # placed in to speed up play and test if the rounds work aug 7th 2020
+                
+                selected_number_card = random.choice(acceptable_answer)
+                print (selected_number_card)
+                
+                ######## commented for testing aug 7th 2020
+                
+                # if not (selected_number_card.isdigit()):
+                #     selected_number_card = -1
+                #     print ("That number is not reading right, try again please")
     
-                else: 
-                    selected_number_card = int(selected_number_card)
+                # else: 
+                #     selected_number_card = int(selected_number_card)
 
-                if selected_number_card not in acceptable_answer:
-                    print("Looks like the number you chose was not in the acceptable range")
+                # if selected_number_card not in acceptable_answer:
+                #     print("Looks like the number you chose was not in the acceptable range")
+
                 # Error exception for empty string here, can't make empty string an integer
 
             # If they have suit to follow? did they
@@ -803,6 +817,9 @@ def hu_plays_a_card(position_on_table, trump, who_called, table):
                 if card_list[selected_number_card-1][2] != suit_to_follow:
                     print ("Selected card is not the correct suit, please choose a card that follows suit")
                     card_check_good = False
+                    print ("shuffling random choice again")
+                    selected_number_card = random.choice(acceptable_answer)
+                    print (selected_number_card)
                 
             if card_check_good == True:
                 card_meets_criteria = True    
@@ -945,6 +962,9 @@ round_number = 0
 
 while team_ns_score < 10 and team_ew_score < 10: 
 
+    # # python debugger 
+    pdb.set_trace()
+
     round_number +=1
 
     print (f"\nTHIS IS ROUND NUMBER {round_number}!\n")
@@ -952,6 +972,8 @@ while team_ns_score < 10 and team_ew_score < 10:
     print (f"\nTHIS IS ROUND NUMBER {round_number}!\n")
     print (f"\nTHIS IS ROUND NUMBER {round_number}!\n")
 
+    print (team_ew_score)
+    print (team_ns_score)
 
     team_ns = ["chair_1","chair_3"]
     team_ew = ["chair_2","chair_4"]
@@ -1121,8 +1143,6 @@ while team_ns_score < 10 and team_ew_score < 10:
     # TRICK LEVEL WORK
     # # #
 
-        print (f"\nDDDDDDDD  Number of hands played is {tricks_played}\n")
-
         cards_played_counter = 0
         table = []
 
@@ -1188,13 +1208,14 @@ while team_ns_score < 10 and team_ew_score < 10:
                 next_player_answer = next_player(current_player_position, table_position_list)
                 current_player_position = next_player_answer
                 
-                print ("\n \n")
+                print ("\n")
 
                 # END OF IF
 
 
             cards_played_counter += 1
-            print (f"IMPORTANT!!! cards_played_counter is {cards_played_counter}")
+            print (f"cards played counter is {cards_played_counter}")
+        
 
             
 
@@ -1225,11 +1246,15 @@ while team_ns_score < 10 and team_ew_score < 10:
         print (f"Team EW {team_ew_tricks_won} tricks" )
         
         winning_chair_position = table_position_list.index(winning_chair)
-        print (f"{winning_chair} won the last hand and gets to lead the next hand")
+        print (f"{winning_chair} won the last hand and gets to lead the next hand \n")
         current_player_position = winning_chair_position
 
         tricks_played += 1
-        print (f"IMPORTANT!!! tricks_played is {tricks_played}")
+        print (f"tricks_played is {tricks_played}")
+        # print (f"IMPORTANT!!! tricks_played is {tricks_played}")
+
+        
+
 
 
 
@@ -1238,6 +1263,10 @@ while team_ns_score < 10 and team_ew_score < 10:
     # # #
 
     
+
+
+
+
     # After every trick is played we assess which team is awarded team points and how many
     
     print ("\n you have exited the trickplay level loop \n")
@@ -1266,10 +1295,24 @@ while team_ns_score < 10 and team_ew_score < 10:
         if team_ew_tricks_won == 5 and who_called in team_ns:
             team_ew_score += 1
             print ("Team East West also won all 5 tricks while 'Euchreing' earning 4 Team points total! ")
+    
+    
 
-# # #
+    print (f"team_ew_score is now {team_ew_score}")
+    print (f"team_ns_score is now {team_ns_score}")
+
+    if team_ew_score >= 10:
+        print (f"\n We \n   Have \n       A \n            WINNER! \n                  Team EW with a score of {team_ew_score} ")
+
+    if team_ew_score >= 10:
+        print (f"\n We \n   Have \n       A \n            WINNER! \n                  Team NS with a score of {team_ns_score} ")
+
 # GAME PLAY LEVEL WORK
 # # #
+
+# team_ns_score < 10 and team_ew_score < 10: 
+
+
 
 print ("\n you have exited the gameplay loop \n")
 print ("\n a team has won! \n")

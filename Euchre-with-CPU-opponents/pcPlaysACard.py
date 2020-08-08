@@ -3,7 +3,7 @@ import random
 
 def pc_plays_a_card(position_on_table, table, list_of_hand_objects, current_playset):
     
-    print ("\nIn function pc_plays_a_card" )    
+    print ("In function pc_plays_a_card" )    
         # object variables in current_playset
         
         # self.name = name
@@ -153,10 +153,10 @@ def pc_plays_a_card(position_on_table, table, list_of_hand_objects, current_play
 
         # F> WHO LEAD
         who_played_first_card = table[0][0]
-        print (f"-->{who_played_first_card}<-- played first card")
+        # print (f"-->{who_played_first_card}<-- played first card")
         # F> WHAT CARD WAS LEAD
         first_card_played = table[0][1]
-        print (f"-->{first_card_played}<-- was first card")
+        # print (f"-->{first_card_played}<-- was first card")
 
         # F> WHICH TEAM IS PC ON, help us see if partner has lead later
         
@@ -164,7 +164,7 @@ def pc_plays_a_card(position_on_table, table, list_of_hand_objects, current_play
             this_pcs_team = team_ns
         else:
             this_pcs_team = team_ew
-        print (f"-->{this_pcs_team}<-- is this pc's team")
+        # print (f"-->{this_pcs_team}<-- is this pc's team")
         
         # F> WHICH CHAIR IS WINNING 
         # F> WHAT CARD WAS PLAYED
@@ -181,7 +181,7 @@ def pc_plays_a_card(position_on_table, table, list_of_hand_objects, current_play
 
         winning_card_value = winning_card.value
 
-        print(f"This is the winning card, {winning_card}")
+        # print(f"This is the winning card, {winning_card}")
         # print(f"This is the winning card's value, {winning_card_value}")
 
         # F> WHICH TEAM IS WINNING
@@ -305,7 +305,7 @@ def pc_plays_a_card(position_on_table, table, list_of_hand_objects, current_play
             # min_value_cards = min(card_list, key=lambda x: x[3])
 
                 # # python debugger 
-            pdb.set_trace()
+            # pdb.set_trace()
 
             if len(all_cards_with_min_value) > 1:
                 card_to_play = random.choice(all_cards_with_min_value)

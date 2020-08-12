@@ -3,7 +3,7 @@ import random
 
 def pc_plays_a_card(position_on_table, table, list_of_hand_objects, current_playset):
     
-    print ("In function pc_plays_a_card" )    
+    # print ("In function pc_plays_a_card" )    
         # object variables in current_playset
         
         # self.name = name

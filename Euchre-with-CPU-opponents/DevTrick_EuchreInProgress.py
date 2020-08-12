@@ -587,7 +587,7 @@ def make_trump_card_list(trump_card_list):
 
 def left_of_dealer_plays_first(position_on_table, who_called, whats_trump, table):
     
-    print ("\n In left of dealer")
+    # print ("\n In left of dealer")
     chair = table_position_list[position_on_table]
     # the hand objects as of Jan 16, 2020 can only be called through the list_of_hand_objects
     this_hand = list_of_hand_objects[position_on_table]
@@ -669,7 +669,7 @@ def next_player(current_player_position, table_position_list):
 
 def hu_plays_a_card(position_on_table, trump, who_called, table):
     # previous arguments (trump,suit_to_follow,hand)
-    print ("\n HPAC FUNCTION")
+    # print ("\n HPAC FUNCTION")
     # make list of cards in hand, labeled 1-5(or less), have player pick one of the 5 (or less each round) 
     # must follow suit if not lead
 
@@ -677,7 +677,7 @@ def hu_plays_a_card(position_on_table, trump, who_called, table):
     chair = table_position_list[position_on_table]
     hand = list_of_hand_objects[position_on_table]
     
-    print ("\nIn function hu_plays_a_card" )
+    # print ("\nIn function hu_plays_a_card" )
 
     if who_called in team_ns:
         team_that_called = team_ns
@@ -836,6 +836,7 @@ def hu_plays_a_card(position_on_table, trump, who_called, table):
 def print_table(table):
     print ("\n\nTable")
     print ("|^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^|")
+    
     for i in range(4):
         if i >= len(table):
             print ("\n")
@@ -843,6 +844,53 @@ def print_table(table):
             print (f"{table[i][0]} played {table[i][1]}")
     print ("\n|______________________________|")
     print ("\n \n")
+
+
+def print_table_birds_eye_view(current_player_chair, table_position_list, table_position_dict):
+    # print a top down view and signify who's turn and whom their partner is
+
+    # current player chair is an int that stands for the player position
+    chair_print_list = []
+    for chair in table_position_list:
+        if table_position_list[current_player_chair] == chair:
+            chair_print_list.append(chair + " **")
+        else:
+            chair_print_list.append(chair)
+           
+
+    directions_list = ["North", "East", "South", "West"]
+    a = "       "
+    
+    # North
+    print(format(a,'10'), format(a,'10'), format (directions_list[0],'10'), format(a,'10'), format (a,'10'))
+    
+    print("\n")
+
+    #Chair 3
+    print(format(a,'10'), format(a,'10'), format (chair_print_list[2],'10'), format(a,'10'), format (a,'10'))
+    #Chair 3 name
+    print(format(a,'10'), format(a,'10'), format (table_position_dict['chair_3'],'10'), format(a,'10'), format (a,'10'))
+
+    # West to table to East
+    print(format(directions_list[3],'10'), format(chair_print_list[1],'10'), format ("[^^^^^^^^]",'10'), format(chair_print_list[3],'10'), format (directions_list[1],'10'))
+
+    #Chairs 2 and 4 name
+    print(format(a,'10'), format(table_position_dict['chair_2'],'10'), format ("[________]",'10'), format(table_position_dict['chair_4'],'10'), format (a,'10'))
+
+    
+    #Chair 1
+    print(format(a,'10'), format(a,'10'), format (chair_print_list[0],'10'), format(a,'10'), format (a,'10'))
+    #Chair 1 name
+    print(format(a,'10'), format(a,'10'), format (table_position_dict['chair_1'],'10'), format(a,'10'), format (a,'10'))
+
+    print("\n")
+
+    # South
+    print(format(a,'10'), format(a,'10'), format (directions_list[2],'10'), format(a,'10'), format (a,'10'))
+
+
+ 
+
 
 
 
@@ -1030,9 +1078,9 @@ while team_ns_score < 10 and team_ew_score < 10:
     ## TRUMP SELECTION ##
 
     whats_trump = 'Hearts'
-    who_called = 'chair 2'
+    who_called = 'chair_2'
     print (f"what_trump is --> {whats_trump}")
-    print (f"who_called is --> {who_called}")
+    print (f"who_called is --> {who_called} {table_position_dict[who_called]}")
 
     if who_called in team_ns:
         team_that_called = team_ns
@@ -1158,7 +1206,8 @@ while team_ns_score < 10 and team_ew_score < 10:
             # IF FIRST CARD   !!!!!ONLY FIRST ROUND!!!!!! BECAUSE PERSON LEFT OF DEALER MUST START
             if tricks_played == 0 and cards_played_counter == 0:
                 
-                
+                print_table_birds_eye_view(player_left_of_dealer, table_position_list, table_position_dict)
+
                 chair_and_card = []
                 
                 # FIRST CARD
@@ -1205,7 +1254,8 @@ while team_ns_score < 10 and team_ew_score < 10:
                 # Show what's on the table
                 print_table(table)
                 # MOVING TO NEXT PLAYER 
-                next_player_answer = next_player(current_player_position, table_position_list)
+                if cards_played_counter <3:
+                    next_player_answer = next_player(current_player_position, table_position_list)
                 current_player_position = next_player_answer
                 
                 print ("\n")
@@ -1215,7 +1265,10 @@ while team_ns_score < 10 and team_ew_score < 10:
 
             cards_played_counter += 1
             print (f"cards played counter is {cards_played_counter}")
-        
+            
+            
+            if cards_played_counter < 4:
+                print_table_birds_eye_view(current_player_position, table_position_list, table_position_dict)
 
             
 
@@ -1248,6 +1301,8 @@ while team_ns_score < 10 and team_ew_score < 10:
         winning_chair_position = table_position_list.index(winning_chair)
         print (f"{winning_chair} won the last hand and gets to lead the next hand \n")
         current_player_position = winning_chair_position
+
+        print_table_birds_eye_view(current_player_position, table_position_list, table_position_dict)
 
         tricks_played += 1
         print (f"tricks_played is {tricks_played}")

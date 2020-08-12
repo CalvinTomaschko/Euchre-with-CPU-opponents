@@ -616,40 +616,6 @@ def whos_winning(table_list):
 
 
 
-
-# Moved massive mega function over into 
-
-
-#   pc_plays_a_card(position_on_table, trump, who_called, table)
-# pc_plays_a_card(position_on_table, trump, who_called, table, table_position_list, list_of_hand_objects)
-
-
-
-                                # example suits_with_only_one = ["Hearts","Spades","Clubs"]
-
-               
-               
-
-
-        # NOTHING BELOW THIS LINE FOR NOW
-     ####################################################################   
-
-        # Might use later
-
-        # trump_cards_in_hand = list(filter(lambda x: x.suit == whats_trump, hand.cards))
-
-     ####################################################
-
-
-
-
-
-# Repeat Next player twice
-# Mark Trick winner
-# Trick winner plays next card
-# repeat Next player Thrice
-
-
 def next_player(current_player_position, table_position_list):
 
     print (f"last player was {current_player_position+1}")
@@ -894,34 +860,45 @@ def print_table_birds_eye_view(current_player_chair, table_position_list, table_
 
 
 
-def check_trick_for_points(who_called):
-    print ("\n CTFP FUNCTION")
-   
-    # walk through played_cards list, if rank is highest then keep otherwise
-    # move to next card, then get highest of 4 cards, what was it's position in 
-    # played_cards, if 2 for example then that was the second card after the lead
-    # so walking through table_positions starting at lead and going 1 more step gets you the team 
-    # whom won the trick. 
-    # looks at the trick and assesses in order whom won, 
-    # adding up trick_scores for each team
-    # Then assigns who leads next turn by changing whos_next variable
+def check_tricks_for_points(who_called, team_ns_tricks_won, team_ew_tricks_won):
+        # check_tricks_for_points(who_called, team_ns_tricks, team_ew_tricks_won):
+
+    # After every trick is played we assess which team is awarded team points and how many
+
+    team_ns_scores_to_add = 0
+    team_ew_scores_to_add = 0
+
+
+    if team_ns_tricks_won > team_ew_tricks_won:
+        team_ns_scores_to_add += 1
+        print ("Team North South won the most tricks and gets 1 team point")
+        if team_ns_tricks_won == 5 and who_called not in team_ew :
+            team_ns_scores_to_add += 1
+            print ("Team North South won all 5 tricks and won 2 pts total")
+        if who_called in team_ew:
+            team_ns_scores_to_add += 1
+            print ("Team North South 'Euchred' since Team East West called trump and won 2 pts total!")
+        if team_ns_tricks_won == 5 and who_called in team_ew:
+            team_ns_scores_to_add += 2
+            print ("Team North South also won all 5 tricks while 'Euchreing' earning 4 Team points total! ")
+    else:
+        team_ew_scores_to_add += 1
+        print ("Team East West won the most tricks and gets 1 team point")
+        if team_ew_tricks_won == 5:
+            team_ew_scores_to_add += 1
+            print ("Team East West won all 5 tricks and won 2 pts total")
+        if who_called in team_ns:
+            team_ew_scores_to_add += 1
+            print ("Team East West 'Euchred' since Team East West called trump and won 2 pts total!")
+        if team_ew_tricks_won == 5 and who_called in team_ns:
+            team_ew_scores_to_add += 1
+            print ("Team East West also won all 5 tricks while 'Euchreing' earning 4 Team points total! ")
     
-    pass
+    ns_ew_scores_to_add = [team_ns_scores_to_add, team_ew_scores_to_add]
+    return ns_ew_scores_to_add 
 
+   
 
-
-
-
-
-
-def check_for_team_win():
-    pass
-
-
-
-def suit_to_follow(round):
-    if 2 >1:
-        pass
 
 ## Play Phase ##
 ## Play Phase ##
@@ -1088,13 +1065,6 @@ while team_ns_score < 10 and team_ew_score < 10:
         team_that_called = team_ew
 
     # NOTE: may have to add in that when dealer is screwed their team is the one that called
-
-
-
- 
- 
- 
- 
  
  
     ## TRUMP SELECTION ##
@@ -1116,9 +1086,6 @@ while team_ns_score < 10 and team_ew_score < 10:
     # selected trump, looks like 
     # [card rank, card suit, actual value]
     # to test if a card is trump, do an if value > 6
-
-    # Needs to go through all cards in each hand, not each card in dev deck
-    # March 2020
 
     # This for loop applies the new values of the now known suit of trump
 
@@ -1152,32 +1119,11 @@ while team_ns_score < 10 and team_ew_score < 10:
         player_left_of_dealer = dealer_position+1
 
 
-    # do the sort one last time and have it for the round, 
-    # giving a [card.rank,actual_suit,card.value] and reference that 
-    # for winning or not. Also actual suit is for the left bower jumping ship  
-
-            # # python debugger 
-            # pdb.set_trace()
-
-    current_player_position = -2
-
-    
+    current_player_position = -2 
 
     tricks_played = 0
 
-    
-    
-    # Call on Class Playset
 
-    # position_on_table, table, list_of_hand_objects, current_playset
-
-    # class Playset:
-    # def __init__(self, name, who_called, trump, card_values, teams_ns_ew):
-    #     self.name = name
-    #     self.who_called = who_called
-    #     self.trump = trump
-    #     self.card_values = card_values
-    #     self.teams = teams
     playset_name = "playset_round_" + str(round_number)
     playset_name = Playset("round "+ str(round_number),  who_called,  whats_trump, list_of_cards_in_hands,  teams_ns_ew , table_position_list)
     current_playset = playset_name
@@ -1310,48 +1256,16 @@ while team_ns_score < 10 and team_ew_score < 10:
 
         
 
-
-
-
     # # #
     # TRICK LEVEL WORK
     # # #
 
     
+    scores_to_add_ns_ew = check_tricks_for_points(who_called, team_ns_tricks_won, team_ew_tricks_won)
 
+    team_ns_score += scores_to_add_ns_ew[0]
+    team_ew_score += scores_to_add_ns_ew[1]
 
-
-
-    # After every trick is played we assess which team is awarded team points and how many
-    
-    print ("\n you have exited the trickplay level loop \n")
-
-    if team_ns_tricks_won > team_ew_tricks_won:
-        team_ns_score += 1
-        print ("Team North South won the most tricks and gets 1 team point")
-        if team_ns_tricks_won == 5 and who_called not in team_ew :
-            team_ns_score += 1
-            print ("Team North South won all 5 tricks and won 2 pts total")
-        if who_called in team_ew:
-            team_ns_score += 1
-            print ("Team North South 'Euchred' since Team East West called trump and won 2 pts total!")
-        if team_ns_tricks_won == 5 and who_called in team_ew:
-            team_ns_score += 2
-            print ("Team North South also won all 5 tricks while 'Euchreing' earning 4 Team points total! ")
-    else:
-        team_ew_score += 1
-        print ("Team East West won the most tricks and gets 1 team point")
-        if team_ew_tricks_won == 5:
-            team_ew_score += 1
-            print ("Team East West won all 5 tricks and won 2 pts total")
-        if who_called in team_ns:
-            team_ew_score += 1
-            print ("Team East West 'Euchred' since Team East West called trump and won 2 pts total!")
-        if team_ew_tricks_won == 5 and who_called in team_ns:
-            team_ew_score += 1
-            print ("Team East West also won all 5 tricks while 'Euchreing' earning 4 Team points total! ")
-    
-    
 
     print (f"team_ew_score is now {team_ew_score}")
     print (f"team_ns_score is now {team_ns_score}")

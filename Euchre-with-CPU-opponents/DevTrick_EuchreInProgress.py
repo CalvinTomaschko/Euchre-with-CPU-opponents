@@ -721,24 +721,33 @@ def hu_plays_a_card(position_on_table, trump, who_called, table):
         # Repeat of text could be made into a function call! Aug 2nd 2020 (below)
         
         while selected_number_card not in acceptable_answer: # Can't pick the 5th card if you only have 4
-                # selected_number_card = (input("Which numbered card do you choose ex: '2'"))
+                
+                #####
+                ## ## AUTOMATE HUMAN PLAYER TO RANDOM UNTIL CORRECT SUIT
+                #   #
                 
                 # placed in to speed up play and test if the rounds work aug 7th 2020
-                
-                selected_number_card = random.choice(acceptable_answer)
+                # selected_number_card = random.choice(acceptable_answer)
 
-                ######## commented for testing aug 7th 2020
-                # if not (selected_number_card.isdigit()):
-                #     selected_number_card = -1
-                #     print ("That number is not reading right, try again please")
+                #   #
+                ## ## AUTOMATE HUMAN PLAYER TO RANDOM UNTIL CORRECT SUIT
+                #####
+                
+                selected_number_card = (input("Which numbered card do you choose ex: '2'"))
+
+                ####### commented for testing aug 7th 2020, below
+                if not (selected_number_card.isdigit()):
+                    selected_number_card = -1
+                    print ("That number is not reading right, try again please")
     
-                # else: 
-                #     selected_number_card = int(selected_number_card)
+                else: 
+                    selected_number_card = int(selected_number_card)
 
-                # if selected_number_card not in acceptable_answer:
-                #     print("Looks like the number you chose was not in the acceptable range")
+                if selected_number_card not in acceptable_answer:
+                    print("Looks like the number you chose was not in the acceptable range")
+                ###### commented out for automateing ^
                 
-                # Error exception for empty string here, can't make empty string an integer
+                # NOTE Error exception for empty string here, can't make empty string an integer
         
         card_chosen = card_list[selected_number_card-1]
 
@@ -1016,11 +1025,11 @@ while team_ns_score < 10 and team_ew_score < 10:
 
     ## dev_deck.hearts_for_2nd()
 
-    dev_deck.hearts_for_2nd_and_one_off_suited()
+    # dev_deck.hearts_for_2nd_and_one_off_suited()
 
     # dev_deck.pick_a_hand_give_cards_from_list()
 
-    dev_deck.repeat_deck_from_list()
+    # dev_deck.repeat_deck_from_list()
 
     # print("Out of pick_a_hand_give_cards_from_list")
 
@@ -1032,7 +1041,7 @@ while team_ns_score < 10 and team_ew_score < 10:
     # The below is if you want to only shuffle from a certain number down in the deck
     # dev_deck.shuffle_bottom()
     # print ("2")
-    # print (dev_deck)
+    print (dev_deck)
 
 
     for player_hand in list_of_hand_objects:

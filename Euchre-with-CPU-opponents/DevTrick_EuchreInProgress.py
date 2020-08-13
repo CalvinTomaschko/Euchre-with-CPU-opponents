@@ -746,7 +746,7 @@ def hu_plays_a_card(position_on_table, trump, who_called, table):
                 if selected_number_card not in acceptable_answer:
                     print("Looks like the number you chose was not in the acceptable range")
                 ###### commented out for automateing ^
-                
+
                 # NOTE Error exception for empty string here, can't make empty string an integer
         
         card_chosen = card_list[selected_number_card-1]
@@ -762,26 +762,36 @@ def hu_plays_a_card(position_on_table, trump, who_called, table):
         while card_meets_criteria == False:
         
             while selected_number_card not in acceptable_answer: # Can't pick the 5th card if you only have 4
-                # selected_number_card = (input("Which numbered card do you choose (ex: '2')"))
+                
+                
+                
+                #####
+                ## ## AUTOMATE HUMAN PLAYER TO RANDOM UNTIL CORRECT SUIT
+                #   #
                 
                 # placed in to speed up play and test if the rounds work aug 7th 2020
+                # selected_number_card = random.choice(acceptable_answer)
+                # print (selected_number_card)
                 
-                selected_number_card = random.choice(acceptable_answer)
-                print (selected_number_card)
-                
+                #   #
+                ## ## AUTOMATE HUMAN PLAYER TO RANDOM UNTIL CORRECT SUIT
+                #####
+
                 ######## commented for testing aug 7th 2020
                 
-                # if not (selected_number_card.isdigit()):
-                #     selected_number_card = -1
-                #     print ("That number is not reading right, try again please")
+                selected_number_card = (input("Which numbered card do you choose (ex: '2')"))
+
+                if not (selected_number_card.isdigit()):
+                    selected_number_card = -1
+                    print ("That number is not reading right, try again please")
     
-                # else: 
-                #     selected_number_card = int(selected_number_card)
+                else: 
+                    selected_number_card = int(selected_number_card)
 
-                # if selected_number_card not in acceptable_answer:
-                #     print("Looks like the number you chose was not in the acceptable range")
+                if selected_number_card not in acceptable_answer:
+                    print("Looks like the number you chose was not in the acceptable range")
 
-                # Error exception for empty string here, can't make empty string an integer
+                # NOTE Error exception for empty string here, can't make empty string an integer
 
             # If they have suit to follow? did they
             # if not then card meets criteria is False

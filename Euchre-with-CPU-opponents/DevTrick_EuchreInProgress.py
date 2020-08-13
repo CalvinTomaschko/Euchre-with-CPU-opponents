@@ -1233,6 +1233,7 @@ while team_ns_score < 10 and team_ew_score < 10:
         winning_chair_and_card = max(table, key=lambda x: x[1].value)
         winning_chair = winning_chair_and_card[0]
         winning_card = winning_chair_and_card[1]
+        print (f"{winning_card} wins \n")
         # then what team were they on
 
         if winning_chair in team_ns:

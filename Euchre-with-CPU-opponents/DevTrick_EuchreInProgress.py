@@ -12,7 +12,7 @@ import pdb
 from collections import Counter
 
 
-
+import pcPlaysACard
 
 
 ################################
@@ -429,7 +429,7 @@ class Dev_Deck:
 
         new_deck_to_replace = []
 
-        print ("organizing deck now")
+        
         for count, card_deets in enumerate(big_list_final):
             for card_object in self.deck:
                 if card_object.rank == card_deets[0] and card_object.suit == card_deets[1]:
@@ -478,8 +478,8 @@ class Dev_Deck:
             for card in self.deck:
                 if card.rank == rank:
                     counter_list_ranks[count] = counter_list_ranks[count] + 1
-        print (counter_list_suits)
-        print (counter_list_ranks)
+        # print (counter_list_suits)
+        # print (counter_list_ranks)
 
     def deal(self):
         single_card = self.deck.pop(0)
@@ -503,6 +503,16 @@ class Dev_Hand:
     
     def add_card(self,card):
         self.cards.append(card)
+
+class Playset:
+    def __init__(self, name, who_called, trump, card_values, teams, table_position_list):
+        self.name = name
+        self.who_called = who_called
+        self.trump = trump
+        self.card_values = card_values
+        self.teams = teams
+        self.table_position_list = table_position_list
+
 
 
 ### Classes ###
@@ -577,14 +587,16 @@ def make_trump_card_list(trump_card_list):
 
 def left_of_dealer_plays_first(position_on_table, who_called, whats_trump, table):
     
-    print ("\n In left of dealer")
+    # print ("\n In left of dealer")
     chair = table_position_list[position_on_table]
     # the hand objects as of Jan 16, 2020 can only be called through the list_of_hand_objects
     this_hand = list_of_hand_objects[position_on_table]
     print (f"this is {this_hand}")
     if table_position_dict[chair][0:2] == "pc":
         print ("chair was pc")
-        return pc_plays_a_card(position_on_table, whats_trump, who_called,table)
+        # playset_round_1 --> self, name, who_called, trump, card_values, teams_ns_ew
+        # table_position_list? list_of_had_objects?
+        return pcPlaysACard.pc_plays_a_card(position_on_table, table, list_of_hand_objects, current_playset)
 
     else:
         print ("left_of_dealer_plays_first function says, 'chair was hu'")
@@ -602,482 +614,6 @@ def whos_winning(table_list):
 
 
 
-def pc_plays_a_card(position_on_table, trump, who_called, table):
-    
-
-
-    chair = table_position_list[position_on_table]
-    hand = list_of_hand_objects[position_on_table]
-    
-    print ("\nIn function pc_plays_a_card" )
-
-    # if len(table) != 0:
-    #     print ("\nCards on table")
-    #     for card in table:
-    #         print (card[1])
-    # else:
-    #     print ("\ntable is empty")
-
-    if who_called in team_ns:
-        team_that_called = team_ns
-    else:
-        team_that_called = team_ew
-    
-    print (f"\nthis is 'team that called' -->{team_that_called}")
-    print (f"This is who called, {who_called}")
-    
-    # Making the card list to work with
-    
-    card_list = []
-    for card in hand.cards:
-            rank = card.rank
-            value = values[rank]
-            card_list.append([card, rank, card.suit, value])
-
-    print (f"\nThis chairs--> {chair} <--cards")
-    for card in hand.cards:
-        print (card)
-
-
-    if table == []:  # TABLE IS EMPTY, picks which "style" to play ___________
-        print ("\nTable is empty\n")
-        
-        # Same team called
-        if chair in team_that_called:
-                    
-            if chair == who_called: # This PC called
-
-                # play aggressive, this ordered up or called and wants to take the lead
-                
-                    # found this amazing max for given element of list
-                    # https://dbader.org/blog/python-min-max-and-nested-lists
-                    # max(nested_list, key=lambda x: x[1])
-                    # max(nested_list, key=lambda x: (position, len(), or other attribute))
-                
-                highest_value_card_block = max(card_list, key=lambda x: x[3])
-                
-                highest_value = highest_value_card_block[3]
-                choices_for_card_to_play = []
-    
-                for card in card_list:
-                    if card[3] == highest_value:
-                        choices_for_card_to_play.append(card)
-                if len(choices_for_card_to_play) == 1:
-                    highest_value_card = choices_for_card_to_play[0]
-                    card_to_play = highest_value_card[0]
-                else:
-                    selected_highest_value_card = random.choice(choices_for_card_to_play)
-                    card_to_play = selected_highest_value_card[0]
-                
-                hand.cards.remove(card_to_play)
-                
-                # return [chair, card_to_play, table];
-                # print ("\nend of, this PC called trump")
-                return [chair, card_to_play];
-                
-            else:  # this pc's partner called trump
-                # play conservative (off but high)
-                highest_value_card_block = max(card_list, key=lambda x: x[3] and x[3] <=6)
-                
-                highest_value = highest_value_card_block[3]
-                choices_for_card_to_play = []
-                for card in card_list:
-                    if card[3] == highest_value:
-                        choices_for_card_to_play.append(card)
-                if len(choices_for_card_to_play) == 1:
-                    highest_value_card = choices_for_card_to_play[0]
-                    card_to_play = highest_value_card[0]
-                if len(choices_for_card_to_play) == 0:
-                    highest_value_card_block = max(card_list, key=lambda x: x[3])
-                    card_to_play = highest_value_card_block[0]
-                else:
-                    selected_highest_value_card = random.choice(choices_for_card_to_play)
-                    card_to_play = selected_highest_value_card[0]
-                
-                # table.append(card_to_play)
-                hand.cards.remove(card_to_play)
-
-                # return [chair, card_to_play, table];
-                # print ("\nend of, this pc's partner called trump")
-                return [chair, card_to_play];
-
-
-        else: # THIS PC'S TEAM DID NOT CALL trump, the opponents did __________
-            # play conservative (off but high)
-            highest_value_card_block = max(card_list, key=lambda x: x[3] and x[3] <=6)
-            
-            highest_value = highest_value_card_block[3]
-            choices_for_card_to_play = []
-            for card in card_list:
-                if card[3] == highest_value:
-                    choices_for_card_to_play.append(card)
-            if len(choices_for_card_to_play) == 1:
-                highest_value_card = choices_for_card_to_play[0]
-                card_to_play = highest_value_card[0]
-            if len(choices_for_card_to_play) == 0:
-                highest_value_card_block = max(card_list, key=lambda x: x[3])
-                card_to_play = highest_value_card_block[0]
-            else:
-                selected_highest_value_card = random.choice(choices_for_card_to_play)
-                card_to_play = selected_highest_value_card[0]
-            
-            # table.append(card_to_play)
-            hand.cards.remove(card_to_play)
-
-            # return [chair, card_to_play, table];
-            # print ("\nend of, this PC's team did not call trump")
-            return [chair, card_to_play];
-    
-        print ("!_!_! First cards coming as of empty table")
-
-    else:  # TABLE [] is NOT EMPTY, previous cards have been played __________
-        print ("\nTable is not empty, decide with other cards in mind\n")
-
-        # Placing all potentially needed factors here (Feb 5th 2020) for now
-        # then putting some behind ifs to cut back on uncessary computations
-
-        # F> WHO LEAD
-        who_played_first_card = table[0][0]
-        print (f"-->{who_played_first_card}<-- played first card")
-        # F> WHAT CARD WAS LEAD
-        first_card_played = table[0][1]
-        print (f"-->{first_card_played}<-- was first card")
-
-        # F> WHICH TEAM IS PC ON, help us see if partner has lead later
-        
-        if chair in team_ns:
-            this_pcs_team = team_ns
-        else:
-            this_pcs_team = team_ew
-        print (f"-->{this_pcs_team}<-- is this pc's team")
-        
-        # F> WHICH CHAIR IS WINNING 
-        # F> WHAT CARD WAS PLAYED
-        
-        if len(table) == 1:
-            winning_chair = who_played_first_card
-            winning_card = first_card_played
-        else: 
-            winning_chair_and_card = max(table, key=lambda x: x[1].value)
-            winning_chair = winning_chair_and_card[0]
-            winning_card = winning_chair_and_card[1]
-
-        # F> WINNING CARD SCORE
-
-        winning_card_value = winning_card.value
-
-        print(f"This is the winning card, {winning_card}")
-        print(f"This is the winning card's value, {winning_card_value}")
-
-        # F> WHICH TEAM IS WINNING
-        # F> PARTNER_HAS_IT T/F
-
-        partner_has_it = False
-        if winning_chair in this_pcs_team:
-            partner_has_it = True
-        
-        # Come back to!
-        # if partner_has_it == True:
-        #     partner_chair_and_card = lamba x: x[0] == 
-            # Do a check if they used trump to do so
-            # when lead is off and they used trump, then they "trumped"
-            # when lead is trump then they just followed suit
-
-        # F> SUIT TO FOLLOW
-        
-        suit_to_follow = first_card_played.suit # suit to follow, if player has it
-        
-        # F> LEAD SUIT WAS TRUMP Y/N
-
-        lead_suit_was_trump = False
-        if suit_to_follow == trump:
-            lead_suit_was_trump = True
-        print (f"Lead suit was trump?-->{lead_suit_was_trump}<--")
-
-        # F> PC HAS LEAD SUIT
-        # F> CARDS IN HAND OF LEAD SUIT
-
-        # card_list.append([card, rank, card.suit, value])
-
-        pc_has_lead_suit = True
-        cards_in_hand_of_lead_suit = list(filter(lambda x: x[2] == suit_to_follow, card_list))
-
-        if cards_in_hand_of_lead_suit == []:
-            pc_has_lead_suit = False
-        print (f"PC has lead suit?-->{pc_has_lead_suit}<--")
-
-        # F> HAS TRUMP? T/F
-        # F> CARDS IN HAND OF TRUMP
-
-        has_trump = True
-        cards_in_hand_of_trump = list(filter(lambda x: x[2] == trump, card_list))
-        if len(cards_in_hand_of_trump) == 0:
-            has_trump = False
-        print (f"Has_trump? is -->{has_trump}<--")
-        
-        
-
-
-        # Instances to call for 
-        # These will all be made for if there is only 1 other card on the table, meaning it's simplified
-        # No need to calibrate if partner has it or not
-        # variables are:
-        #  
-        #   who_played_first_card
-        #   first_card_played
-        #   winning_chair
-        #   winning_card   &&&   winning_card_value
-        #   suit_to_follow
-        #   pc_has_lead_suit t/f
-        #   cards_in_hand_of_lead_suit [list]
-        #   lead_suit_was_trump t/f
-        #   partner_has_it t/f
-        #   partner_trumped t/f
-        #   has_trump
-        #   cards_in_hand_of_trump 
-
-        # card_list is build with these ([card, rank, card.suit, value])
-
-
-        # IF LEN(TABLE) == 1:  ____________________________________
-
-        # SCENARIO 1. Follow suit
-        # Lead suit not trump, PC has lead suit
-        # if lead suit != trump and PC has trump
-        if suit_to_follow != trump and pc_has_lead_suit == True:
-            print ("\n_!_!_SCENARIO 1: Lead is not trump, pc has that suit, follow suit")
-            
-            max_card_to_play = max(cards_in_hand_of_lead_suit, key=lambda x: x[3])
-            min_card_to_play = min(cards_in_hand_of_lead_suit, key=lambda x: x[3])
-            
-            # default play lowest
-            card_to_play = min_card_to_play
-            
-            # unless they have more than one?
-            if len(cards_in_hand_of_lead_suit) > 1:
-                
-            # if yes, can you beat the winning card?
-                if max_card_to_play[3] > winning_card_value:
-                    card_to_play = max_card_to_play 
-
-            card_to_remove = card_to_play[0]
-            # this card to play is in [card, rank, card.suit, value] format
-            hand.cards.remove(card_to_remove)
-            print(f"!_!_! This is the card_to_play, {card_to_remove} from Scenario 1")
-            return [chair, card_to_remove];
-
-
-        # SCENARIO 2. Could Trump!
-        # Lead suit not trump, PC does not have lead suit
-        if suit_to_follow != trump and pc_has_lead_suit == False:
-            print ("\n_!_!_SCENARIO 2: Lead is not trump, pc does not have that suit")
-            
-            # default
-            min_value_cards = min(card_list, key=lambda x: x[3])
-            if len(min_value_cards) > 1:
-                card_to_play = random.choice(min_value_cards)
-            else:
-                card_to_play = min_value_cards[0]
-
-
-            # NOTE: belowin cards_in_hand_of_trump here's the problem
-
-            if has_trump == True: 
-                max_card_to_play = max(cards_in_hand_of_trump, key=lambda x: x[3])
-                card_to_play = max_card_to_play
-            
-            # this card to play is in [card, rank, card.suit, value] format
-            
-            card_to_remove = card_to_play[0]
-            hand.cards.remove(card_to_remove)
-            print(f"!_!_! This is the card_to_play, {card_to_remove} from Scenario 2")
-            return [chair, card_to_remove];
-
-
-        # SCENARIO 3. Who has higher trump?
-        # lead suit is trump, PC has
-        if suit_to_follow == trump and pc_has_lead_suit == True:
-            print ("\n_!_!_SCENARIO 3: Lead is indeed trump, pc has that suit")
-
-            max_card_to_play = max(cards_in_hand_of_lead_suit, key=lambda x: x[3])
-            min_card_to_play = min(cards_in_hand_of_lead_suit, key=lambda x: x[3])
-            # do you have more than one?
-            # if yes, can you beat the winning card?
-
-            # default play lowest
-            card_to_play = min_card_to_play    
-            
-            # can you beat the winning card?
-            if max_card_to_play[3] > winning_card_value:
-                card_to_play = max_card_to_play 
-
-            
-            # hand.cards.remove(card_to_play)
-            card_to_remove = card_to_play[0]
-            hand.cards.remove(card_to_remove)
-            print(f"!_!_! This is the card_to_play, {card_to_remove} from Scenario 3")
-            return [chair, card_to_remove];
-
-
-   #   who_played_first_card
-        #   first_card_played
-        #   winning_chair
-        #   winning_card   &&&   winning_card_value
-        #   suit_to_follow
-        #   pc_has_lead_suit t/f
-        #   cards_in_hand_of_lead_suit [list]
-        #   lead_suit_was_trump t/f
-        #   partner_has_it t/f
-        #   partner_trumped t/f
-        #   has_trump
-        #   cards_in_hand_of_trump 
-
-        # card_list is build with these ([card, rank, card.suit, value])
-
-        # SCENARIO 4. You lose, play a low card, narrow amount of suits, keep aces
-        # lead suit is trump, PC does not have
-        if suit_to_follow == trump and pc_has_lead_suit == False:
-            print ("\n_!_!_SCENARIO 4 Lead is indeed trump, pc does not have that suit")
-
-            # 9s=1, 10s=2, Js=3, Qs=3, Ks=4, As=5
-            # Find single suits and get rid of one of those if it's not an ACE or KING
-           
-           
-            # python debugger 
-            
-           
-           
-            # Checking for Single Suited
-            # Checking for Single Suited
-            
-            # Guide for effective card to card checking
-
-            # for i in range(len(card_list)):
-            #     for j in range(i+1,len(card_list)):
-            #         print (f"'i'&'j' is --> {i},{j}")
-
-            card_to_remove = "place holder"
-            
-            has_unique_ace = False
-            has_unique_king = False
-            
-            
-            # ________Find all uniquely suited cards
-
-            if len(card_list) > 2:
-                print ("\nArea 1\n")
-            
-                # Step 1: add all suits that are in hand
-                
-                suits_with_only_one = [] # Think "Hearts" and "Spades"
-
-                for card in card_list:
-                    if card[2] not in suits_with_only_one:
-                        suits_with_only_one.append(card[2])
-
-                uniquely_suited_cards = []
-
-                if len(suits_with_only_one) <= 1:
-                    print ("\nArea 2\n")
-                
-                    for card in card_list:
-                        if card[2] in suits_with_only_one:
-                            uniquely_suited_cards.append(card)
-
-                #_______ Uniquely suited cards found, if any
-
-
-                #________ Now if there are uniquely suited cards, check if they're aces or kings
-                # remove if so becaue generally you want to keep those
-                # check for aces first maybe?
-                
-                if uniquely_suited_cards != []:
-                    print ("\nArea 3\n")
-                
-                    for card in uniquely_suited_cards:
-
-                        if card[3] == 6:
-                            has_unique_ace = True
-                            uniquely_suited_cards.remove(card)
-                        if card[3] == 5:
-                            has_unique_king = True
-                            uniquely_suited_cards.remove(card)
-
-                    print(uniquely_suited_cards)
-
-                    if uniquely_suited_cards != []:
-                        print ("\nfound a uniquely suited card!\n")
-                        if len(uniquely_suited_cards) > 1:
-                            card_to_play = random.choice(uniquely_suited_cards)
-                        else:
-                            card_to_play = uniquely_suited_cards[0]
-                        
-                        card_to_remove = card_to_play[0]
-                        hand.cards.remove(card_to_remove)
-                        print(f"!_!_! This is the card_to_play, {card_to_remove} from Scenario 4")
-                        return [chair, card_to_remove];
-
-                    # END of checking for single suited, non Ace or King
-                    # END of checking for single suited, non Ace or King
-                
-            # If there wasn't a single of a suit card to get rid of 
-            # then thread continues here to find lowest valued card
-            print ("\nArea 4\n")
-            print (card_to_remove)
-            if card_to_remove == "place holder":
-            # ALSO, IF THERE'S ONLY 1 CARD REMAINING
-                print ("\nArea 7\n")
-
-                pdb.set_trace()
-                # default
-                card_details_of_min_value = (min(card_list, key=lambda x: x[3])) 
-                # this finds only 1 min so you must find others if they match
-                min_value = card_details_of_min_value[3]
-                
-                # find all cards with that low value, poss multiples
-                # for card in hand if value == min_value
-                cards_with_min_value = []
-                
-                for card in card_list:
-                    if card[3]==min_value:
-                        cards_with_min_value.append(card)
-
-                if len(cards_with_min_value) > 1:
-                    card_to_play = random.choice(cards_with_min_value)
-                else:
-                    card_to_play = cards_with_min_value[0]
-
-
-                card_to_remove = card_to_play[0]
-                hand.cards.remove(card_to_remove)
-                print(f"!_!_! This is the card_to_play, {card_to_remove} from Scenario 4")
-                return [chair, card_to_remove];
-            
-            print ("\nArea 5\n")
-
-                                # example suits_with_only_one = ["Hearts","Spades","Clubs"]
-
-               
-               
-
-
-        # NOTHING BELOW THIS LINE FOR NOW
-     ####################################################################   
-
-        # Might use later
-
-        # trump_cards_in_hand = list(filter(lambda x: x.suit == whats_trump, hand.cards))
-
-     ####################################################
-
-
-
-
-
-# Repeat Next player twice
-# Mark Trick winner
-# Trick winner plays next card
-# repeat Next player Thrice
 
 
 def next_player(current_player_position, table_position_list):
@@ -1099,7 +635,7 @@ def next_player(current_player_position, table_position_list):
 
 def hu_plays_a_card(position_on_table, trump, who_called, table):
     # previous arguments (trump,suit_to_follow,hand)
-    print ("\n HPAC FUNCTION")
+    # print ("\n HPAC FUNCTION")
     # make list of cards in hand, labeled 1-5(or less), have player pick one of the 5 (or less each round) 
     # must follow suit if not lead
 
@@ -1107,7 +643,7 @@ def hu_plays_a_card(position_on_table, trump, who_called, table):
     chair = table_position_list[position_on_table]
     hand = list_of_hand_objects[position_on_table]
     
-    print ("\nIn function hu_plays_a_card" )
+    # print ("\nIn function hu_plays_a_card" )
 
     if who_called in team_ns:
         team_that_called = team_ns
@@ -1130,26 +666,38 @@ def hu_plays_a_card(position_on_table, trump, who_called, table):
             value = values[rank]
             card_list.append([card, rank, card.suit, value])
 
-    # suit to follow
-    first_card_played = table[0][1]
-    print (f"-->{first_card_played}<-- was first card")
-    suit_to_follow = first_card_played.suit # suit to follow, if player has it
-
-
-    hu_has_lead_suit = False
-    cards_in_hand_of_lead_suit = list(filter(lambda x: x[2] == suit_to_follow, card_list))
-
-    if len(cards_in_hand_of_lead_suit) >= 1:
-        hu_has_lead_suit = True
-        print ("Player must follow suit")
+    table_is_empty = False
     
-    if hu_has_lead_suit == False:
-        print ("Player does not have the leading suit and can play 'off suit'")
+    # suit to follow
+    if len(table) == 0: # so if table is empty
+        table_is_empty = True
+        suit_to_follow = "There is no suit to follow, the table is empty"
+        print ("Table is empty, choose any card to lead")
+
+    if len(table) > 0: # if table is not empty
+        first_card_played = table[0][1]
+        print (f"-->{first_card_played}<-- was first card")
+        suit_to_follow = first_card_played.suit # suit to follow, if player has it
+
+
+    # does hu player need to follow suit? 
+    hu_has_lead_suit = False
+
+    if table_is_empty == False: # if there are cards to compare to
+        cards_in_hand_of_lead_suit = list(filter(lambda x: x[2] == suit_to_follow, card_list))
+
+        if len(cards_in_hand_of_lead_suit) >= 1:
+            hu_has_lead_suit = True
+            print ("Player must follow suit")
+        
+        if hu_has_lead_suit == False:
+            print ("Player does not have the leading suit and can play 'off suit'")
     
     
     print ("Choose a card to play by it's number")
 
     print (f"\nThis chairs--> {chair} <--cards")
+
     for count, card in enumerate(hand.cards,1):
         print (f"#{count} {card}")
 
@@ -1161,499 +709,196 @@ def hu_plays_a_card(position_on_table, trump, who_called, table):
     acceptable_answer = list(range(1,len(card_list)+1))
     print (f"acceptable_answer = {acceptable_answer}")
     
+
+
+
     card_meets_criteria = False # we have to test if it follows the rules
-    
-    while card_meets_criteria == False:
-        selected_number_card = -1
-    
+    selected_number_card = -1 # inialized as a not acceptable answer
+    # If hu player won last hand then they'd be starting this next one
+    if table_is_empty == True:
+        card_meets_criteria = True
+
+        # Repeat of text could be made into a function call! Aug 2nd 2020 (below)
+        
         while selected_number_card not in acceptable_answer: # Can't pick the 5th card if you only have 4
-            selected_number_card = (input("Which numbered card do you choose (ex: '2')"))
+                # selected_number_card = (input("Which numbered card do you choose ex: '2'"))
+                
+                # placed in to speed up play and test if the rounds work aug 7th 2020
+                
+                selected_number_card = random.choice(acceptable_answer)
 
-            if not (selected_number_card.isdigit()):
-                selected_number_card = -1
-                print ("That number is not reading right, try again please")
+                ######## commented for testing aug 7th 2020
+                # if not (selected_number_card.isdigit()):
+                #     selected_number_card = -1
+                #     print ("That number is not reading right, try again please")
+    
+                # else: 
+                #     selected_number_card = int(selected_number_card)
+
+                # if selected_number_card not in acceptable_answer:
+                #     print("Looks like the number you chose was not in the acceptable range")
+                
+                # Error exception for empty string here, can't make empty string an integer
+        
+        card_chosen = card_list[selected_number_card-1]
+
+        card_to_return = card_chosen[0]
+
+        hand.cards.remove(card_to_return)
+        
+        return [chair,card_to_return];
+
+    if table_is_empty == False: # different rules apply than if hu player was playing the first card
+        
+        while card_meets_criteria == False:
+        
+            while selected_number_card not in acceptable_answer: # Can't pick the 5th card if you only have 4
+                # selected_number_card = (input("Which numbered card do you choose (ex: '2')"))
+                
+                # placed in to speed up play and test if the rounds work aug 7th 2020
+                
+                selected_number_card = random.choice(acceptable_answer)
+                print (selected_number_card)
+                
+                ######## commented for testing aug 7th 2020
+                
+                # if not (selected_number_card.isdigit()):
+                #     selected_number_card = -1
+                #     print ("That number is not reading right, try again please")
+    
+                # else: 
+                #     selected_number_card = int(selected_number_card)
+
+                # if selected_number_card not in acceptable_answer:
+                #     print("Looks like the number you chose was not in the acceptable range")
+
+                # Error exception for empty string here, can't make empty string an integer
+
+            # If they have suit to follow? did they
+            # if not then card meets criteria is False
+            
+            card_check_good = True
+
+            if hu_has_lead_suit == True:
+                if card_list[selected_number_card-1][2] != suit_to_follow:
+                    print ("Selected card is not the correct suit, please choose a card that follows suit")
+                    card_check_good = False
+                    print ("shuffling random choice again")
+                    selected_number_card = random.choice(acceptable_answer)
+                    print (selected_number_card)
+                
+            if card_check_good == True:
+                card_meets_criteria = True    
+
+        card_chosen = card_list[selected_number_card-1]
+
+        card_to_return = card_chosen[0]
+
+        hand.cards.remove(card_to_return)
+        
+        return [chair,card_to_return];
+
    
-            else: 
-                selected_number_card = int(selected_number_card)
-
-            if selected_number_card not in acceptable_answer:
-                print("Looks like the number you chose was not in the acceptable range")
-            # Error exception for empty string here, can't make empty string an integer
-
-        # If they have suit to follow? did they
-        # if not then card meets criteria is False
-        
-        card_check_good = True
-
-        if hu_has_lead_suit == True:
-            if card_list[selected_number_card-1][2] != suit_to_follow:
-                print ("Selected card is not the correct suit, please choose a card that follows suit")
-                card_check_good = False
-            
-        if card_check_good == True:
-            card_meets_criteria = True    
+def print_table(table):
+    print ("\n\nTable")
+    print ("|^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^|")
+    
+    for i in range(4):
+        if i >= len(table):
+            print ("\n")
+        else:
+            print (f"{table[i][0]} played {table[i][1]}")
+    print ("\n|______________________________|")
+    print ("\n \n")
 
 
+def print_table_birds_eye_view(current_player_chair, table_position_list, table_position_dict):
+    # print a top down view and signify who's turn and whom their partner is
 
-        #  
+    # current player chair is an int that stands for the player position
+    chair_print_list = []
+    for chair in table_position_list:
+        if table_position_list[current_player_chair] == chair:
+            chair_print_list.append(chair + " **")
+        else:
+            chair_print_list.append(chair)
+           
+
+    directions_list = ["North", "East", "South", "West"]
+    a = "       "
+    
+    # North
+    print(format(a,'10'), format(a,'10'), format (directions_list[0],'10'), format(a,'10'), format (a,'10'))
+    
+    print("\n")
+
+    #Chair 3
+    print(format(a,'10'), format(a,'10'), format (chair_print_list[2],'10'), format(a,'10'), format (a,'10'))
+    #Chair 3 name
+    print(format(a,'10'), format(a,'10'), format (table_position_dict['chair_3'],'10'), format(a,'10'), format (a,'10'))
+
+    # West to table to East
+    print(format(directions_list[3],'10'), format(chair_print_list[1],'10'), format ("[^^^^^^^^]",'10'), format(chair_print_list[3],'10'), format (directions_list[1],'10'))
+
+    #Chairs 2 and 4 name
+    print(format(a,'10'), format(table_position_dict['chair_2'],'10'), format ("[________]",'10'), format(table_position_dict['chair_4'],'10'), format (a,'10'))
 
     
+    #Chair 1
+    print(format(a,'10'), format(a,'10'), format (chair_print_list[0],'10'), format(a,'10'), format (a,'10'))
+    #Chair 1 name
+    print(format(a,'10'), format(a,'10'), format (table_position_dict['chair_1'],'10'), format(a,'10'), format (a,'10'))
+
+    print("\n")
+
+    # South
+    print(format(a,'10'), format(a,'10'), format (directions_list[2],'10'), format(a,'10'), format (a,'10'))
+
+
+ 
 
 
 
-    card_chosen = card_list[selected_number_card-1]
 
-    card_to_return = card_chosen[0]
+def check_tricks_for_points(who_called, team_ns_tricks_won, team_ew_tricks_won):
+        # check_tricks_for_points(who_called, team_ns_tricks, team_ew_tricks_won):
 
-    hand.cards.remove(card_to_return)
+    # After every trick is played we assess which team is awarded team points and how many
+
+    team_ns_scores_to_add = 0
+    team_ew_scores_to_add = 0
+
+
+    if team_ns_tricks_won > team_ew_tricks_won:
+        team_ns_scores_to_add += 1
+        print ("Team North South won the most tricks and gets 1 team point")
+        if team_ns_tricks_won == 5 and who_called not in team_ew :
+            team_ns_scores_to_add += 1
+            print ("Team North South won all 5 tricks and won 2 pts total")
+        if who_called in team_ew:
+            team_ns_scores_to_add += 1
+            print ("Team North South 'Euchred' since Team East West called trump and won 2 pts total!")
+        if team_ns_tricks_won == 5 and who_called in team_ew:
+            team_ns_scores_to_add += 2
+            print ("Team North South also won all 5 tricks while 'Euchreing' earning 4 Team points total! ")
+    else:
+        team_ew_scores_to_add += 1
+        print ("Team East West won the most tricks and gets 1 team point")
+        if team_ew_tricks_won == 5:
+            team_ew_scores_to_add += 1
+            print ("Team East West won all 5 tricks and won 2 pts total")
+        if who_called in team_ns:
+            team_ew_scores_to_add += 1
+            print ("Team East West 'Euchred' since Team East West called trump and won 2 pts total!")
+        if team_ew_tricks_won == 5 and who_called in team_ns:
+            team_ew_scores_to_add += 1
+            print ("Team East West also won all 5 tricks while 'Euchreing' earning 4 Team points total! ")
     
-    return [chair,card_to_return];
+    ns_ew_scores_to_add = [team_ns_scores_to_add, team_ew_scores_to_add]
+    return ns_ew_scores_to_add 
 
    
-   
-    
-    
-    ################
-    ################
 
-    # BELOW IS COPIED FROM PC_PLAYS_A_CAR FOR REFERENCE
-
-    ################
-    ################
-
-#     if table == []:  # TABLE IS EMPTY, picks which "style" to play ___________
-#         print ("\nTable is empty\n")
-        
-#         # Same team called
-#         if chair in team_that_called:
-                    
-#             if chair == who_called: # This PC called
-
-#                 # play aggressive, this ordered up or called and wants to take the lead
-                
-#                     # found this amazing max for given element of list
-#                     # https://dbader.org/blog/python-min-max-and-nested-lists
-#                     # max(nested_list, key=lambda x: x[1])
-#                     # max(nested_list, key=lambda x: (position, len(), or other attribute))
-                
-#                 highest_value_card_block = max(card_list, key=lambda x: x[3])
-                
-#                 highest_value = highest_value_card_block[3]
-#                 choices_for_card_to_play = []
-    
-#                 for card in card_list:
-#                     if card[3] == highest_value:
-#                         choices_for_card_to_play.append(card)
-#                 if len(choices_for_card_to_play) == 1:
-#                     highest_value_card = choices_for_card_to_play[0]
-#                     card_to_play = highest_value_card[0]
-#                 else:
-#                     selected_highest_value_card = random.choice(choices_for_card_to_play)
-#                     card_to_play = selected_highest_value_card[0]
-                
-#                 hand.cards.remove(card_to_play)
-                
-#                 # return [chair, card_to_play, table];
-#                 # print ("\nend of, this PC called trump")
-#                 return [chair, card_to_play];
-                
-#             else:  # this pc's partner called trump
-#                 # play conservative (off but high)
-#                 highest_value_card_block = max(card_list, key=lambda x: x[3] and x[3] <=6)
-                
-#                 highest_value = highest_value_card_block[3]
-#                 choices_for_card_to_play = []
-#                 for card in card_list:
-#                     if card[3] == highest_value:
-#                         choices_for_card_to_play.append(card)
-#                 if len(choices_for_card_to_play) == 1:
-#                     highest_value_card = choices_for_card_to_play[0]
-#                     card_to_play = highest_value_card[0]
-#                 if len(choices_for_card_to_play) == 0:
-#                     highest_value_card_block = max(card_list, key=lambda x: x[3])
-#                     card_to_play = highest_value_card_block[0]
-#                 else:
-#                     selected_highest_value_card = random.choice(choices_for_card_to_play)
-#                     card_to_play = selected_highest_value_card[0]
-                
-#                 # table.append(card_to_play)
-#                 hand.cards.remove(card_to_play)
-
-#                 # return [chair, card_to_play, table];
-#                 # print ("\nend of, this pc's partner called trump")
-#                 return [chair, card_to_play];
-
-
-#         else: # THIS PC'S TEAM DID NOT CALL trump, the opponents did __________
-#             # play conservative (off but high)
-#             highest_value_card_block = max(card_list, key=lambda x: x[3] and x[3] <=6)
-            
-#             highest_value = highest_value_card_block[3]
-#             choices_for_card_to_play = []
-#             for card in card_list:
-#                 if card[3] == highest_value:
-#                     choices_for_card_to_play.append(card)
-#             if len(choices_for_card_to_play) == 1:
-#                 highest_value_card = choices_for_card_to_play[0]
-#                 card_to_play = highest_value_card[0]
-#             if len(choices_for_card_to_play) == 0:
-#                 highest_value_card_block = max(card_list, key=lambda x: x[3])
-#                 card_to_play = highest_value_card_block[0]
-#             else:
-#                 selected_highest_value_card = random.choice(choices_for_card_to_play)
-#                 card_to_play = selected_highest_value_card[0]
-            
-#             # table.append(card_to_play)
-#             hand.cards.remove(card_to_play)
-
-#             # return [chair, card_to_play, table];
-#             # print ("\nend of, this PC's team did not call trump")
-#             return [chair, card_to_play];
-    
-#         print ("!_!_! First cards coming as of empty table")
-
-#     else:  # TABLE [] is NOT EMPTY, previous cards have been played __________
-#         print ("\nTable is not empty, decide with other cards in mind\n")
-
-#         # Placing all potentially needed factors here (Feb 5th 2020) for now
-#         # then putting some behind ifs to cut back on uncessary computations
-
-#         # F> WHO LEAD
-#         who_played_first_card = table[0][0]
-#         print (f"-->{who_played_first_card}<-- played first card")
-#         # F> WHAT CARD WAS LEAD
-#         first_card_played = table[0][1]
-#         print (f"-->{first_card_played}<-- was first card")
-
-#         # F> WHICH TEAM IS PC ON, help us see if partner has lead later
-        
-#         if chair in team_ns:
-#             this_pcs_team = team_ns
-#         else:
-#             this_pcs_team = team_ew
-#         print (f"-->{this_pcs_team}<-- is this pc's team")
-        
-#         # F> WHICH CHAIR IS WINNING 
-#         # F> WHAT CARD WAS PLAYED
-        
-#         if len(table) == 1:
-#             winning_chair = who_played_first_card
-#             winning_card = first_card_played
-#         else: 
-#             winning_chair_and_card = max(table, key=lambda x: x[1].value)
-#             winning_chair = winning_chair_and_card[0]
-#             winning_card = winning_chair_and_card[1]
-
-#         # F> WINNING CARD SCORE
-
-#         winning_card_value = winning_card.value
-
-#         print(f"This is the winning card, {winning_card}")
-#         print(f"This is the winning card's value, {winning_card_value}")
-
-#         # F> WHICH TEAM IS WINNING
-#         # F> PARTNER_HAS_IT T/F
-
-#         partner_has_it = False
-#         if winning_chair in this_pcs_team:
-#             partner_has_it = True
-        
-#         # Come back to!
-#         # if partner_has_it == True:
-#         #     partner_chair_and_card = lamba x: x[0] == 
-#             # Do a check if they used trump to do so
-#             # when lead is off and they used trump, then they "trumped"
-#             # when lead is trump then they just followed suit
-
-#         # F> SUIT TO FOLLOW
-        
-#         suit_to_follow = first_card_played.suit # suit to follow, if player has it
-        
-#         # F> LEAD SUIT WAS TRUMP Y/N
-
-#         lead_suit_was_trump = False
-#         if suit_to_follow == trump:
-#             lead_suit_was_trump = True
-#         print (f"Lead suit was trump?-->{lead_suit_was_trump}<--")
-
-#         # F> PC HAS LEAD SUIT
-#         # F> CARDS IN HAND OF LEAD SUIT
-
-#         # card_list.append([card, rank, card.suit, value])
-
-#         pc_has_lead_suit = True
-#         cards_in_hand_of_lead_suit = list(filter(lambda x: x[2] == suit_to_follow, card_list))
-
-#         if cards_in_hand_of_lead_suit == []:
-#             pc_has_lead_suit = False
-#         print (f"PC has lead suit?-->{pc_has_lead_suit}<--")
-
-#         # F> HAS TRUMP? T/F
-#         # F> CARDS IN HAND OF TRUMP
-
-#         has_trump = True
-#         cards_in_hand_of_trump = list(filter(lambda x: x[2] == trump, card_list))
-#         if len(cards_in_hand_of_trump) == 0:
-#             has_trump = False
-#         print (f"Has_trump? is -->{has_trump}<--")
-        
-        
-
-
-#         # Instances to call for 
-#         # These will all be made for if there is only 1 other card on the table, meaning it's simplified
-#         # No need to calibrate if partner has it or not
-#         # variables are:
-#         #  
-#         #   who_played_first_card
-#         #   first_card_played
-#         #   winning_chair
-#         #   winning_card   &&&   winning_card_value
-#         #   suit_to_follow
-#         #   pc_has_lead_suit t/f
-#         #   cards_in_hand_of_lead_suit [list]
-#         #   lead_suit_was_trump t/f
-#         #   partner_has_it t/f
-#         #   partner_trumped t/f
-#         #   has_trump
-#         #   cards_in_hand_of_trump 
-
-#         # card_list is build with these ([card, rank, card.suit, value])
-
-
-#         # IF LEN(TABLE) == 1:  ____________________________________
-
-#         # SCENARIO 1. Follow suit
-#         # Lead suit not trump, PC has lead suit
-#         # if lead suit != trump and PC has trump
-#         if suit_to_follow != trump and pc_has_lead_suit == True:
-#             print ("\n_!_!_SCENARIO 1: Lead is not trump, pc has that suit, follow suit")
-            
-#             max_card_to_play = max(cards_in_hand_of_lead_suit, key=lambda x: x[3])
-#             min_card_to_play = min(cards_in_hand_of_lead_suit, key=lambda x: x[3])
-            
-#             # default play lowest
-#             card_to_play = min_card_to_play
-            
-#             # unless they have more than one?
-#             if len(cards_in_hand_of_lead_suit) > 1:
-                
-#             # if yes, can you beat the winning card?
-#                 if max_card_to_play[3] > winning_card_value:
-#                     card_to_play = max_card_to_play 
-
-#             card_to_remove = card_to_play[0]
-#             # this card to play is in [card, rank, card.suit, value] format
-#             hand.cards.remove(card_to_remove)
-#             print(f"!_!_! This is the card_to_play, {card_to_remove} from Scenario 1")
-#             return [chair, card_to_remove];
-
-
-#         # SCENARIO 2. Could Trump!
-#         # Lead suit not trump, PC does not have lead suit
-#         if suit_to_follow != trump and pc_has_lead_suit == False:
-#             print ("\n_!_!_SCENARIO 2: Lead is not trump, pc does not have that suit")
-            
-#             # default
-#             min_value_cards = min(card_list, key=lambda x: x[3])
-#             if len(min_value_cards) > 1:
-#                 card_to_play = random.choice(min_value_cards)
-#             else:
-#                 card_to_play = min_value_cards[0]
-
-
-#             # NOTE: belowin cards_in_hand_of_trump here's the problem
-
-#             if has_trump == True: 
-#                 max_card_to_play = max(cards_in_hand_of_trump, key=lambda x: x[3])
-#                 card_to_play = max_card_to_play
-            
-#             # this card to play is in [card, rank, card.suit, value] format
-            
-#             card_to_remove = card_to_play[0]
-#             hand.cards.remove(card_to_remove)
-#             print(f"!_!_! This is the card_to_play, {card_to_remove} from Scenario 2")
-#             return [chair, card_to_remove];
-
-
-#         # SCENARIO 3. Who has higher trump?
-#         # lead suit is trump, PC has
-#         if suit_to_follow == trump and pc_has_lead_suit == True:
-#             print ("\n_!_!_SCENARIO 3: Lead is indeed trump, pc has that suit")
-
-#             max_card_to_play = max(cards_in_hand_of_lead_suit, key=lambda x: x[3])
-#             min_card_to_play = min(cards_in_hand_of_lead_suit, key=lambda x: x[3])
-#             # do you have more than one?
-#             # if yes, can you beat the winning card?
-
-#             # default play lowest
-#             card_to_play = min_card_to_play    
-            
-#             # can you beat the winning card?
-#             if max_card_to_play[3] > winning_card_value:
-#                 card_to_play = max_card_to_play 
-
-            
-#             # hand.cards.remove(card_to_play)
-#             card_to_remove = card_to_play[0]
-#             hand.cards.remove(card_to_remove)
-#             print(f"!_!_! This is the card_to_play, {card_to_remove} from Scenario 3")
-#             return [chair, card_to_remove];
-
-
-#    #   who_played_first_card
-#         #   first_card_played
-#         #   winning_chair
-#         #   winning_card   &&&   winning_card_value
-#         #   suit_to_follow
-#         #   pc_has_lead_suit t/f
-#         #   cards_in_hand_of_lead_suit [list]
-#         #   lead_suit_was_trump t/f
-#         #   partner_has_it t/f
-#         #   partner_trumped t/f
-#         #   has_trump
-#         #   cards_in_hand_of_trump 
-
-#         # card_list is build with these ([card, rank, card.suit, value])
-
-#         # SCENARIO 4. You lose, play a low card, narrow amount of suits, keep aces
-#         # lead suit is trump, PC does not have
-#         if suit_to_follow == trump and pc_has_lead_suit == False:
-#             print ("\n_!_!_SCENARIO 4 Lead is indeed trump, pc does not have that suit")
-
-#             # 9s=1, 10s=2, Js=3, Qs=3, Ks=4, As=5
-#             # Find single suits and get rid of one of those if it's not an ACE or KING
-
-#             # Checking for Single Suited
-#             # Checking for Single Suited
-            
-#             # Guide for effective card to card checking
-
-#             # for i in range(len(card_list)):
-#             #     for j in range(i+1,len(card_list)):
-#             #         print (f"'i'&'j' is --> {i},{j}")
-
-#             if len(card_list) > 2:
-            
-#                 # Step 1: add all suits that are in hand
-                
-#                 suits_with_only_one = [] # Think "Hearts" and "Spades"
-
-#                 for card in card_list:
-#                     if card[2] not in suits_in_hand:
-#                         suits_with_only_one.append(a_card[2])
-
-                
-
-#                 # example suits_with_only_one = ["Hearts","Spades","Clubs"]
-
-#                 # Step 2: Compare cards, if one card matches another, remove that suit from suit_in_hand
-                
-
-#                 # go through each card to look at each card info block
-#                 for i in range(len(card_list)):
-#                     # look at each other card info block
-#                     for j in range(i+1,len(card_list)):
-#                         # if card info block [2] matches
-#                         if card_list[i][2] == card_list[j][2]:
-#                             # if card info block [2] is in suits_with_only_one
-#                             if card_list[i][2] in suits_with_only_one:
-#                                 print (card_list[i][2],card_list[j][2])
-#                                 suits_with_only_one.remove(card_list[i][2])
-#                                 # delete
-                
-#                 if suits_with_only_one != []:
-#                     print(suits_with_only_one)
-
-#                     # Step: 3: go through cards in hand, grab the one with suits in suit_with_only_one 
-                    
-#                     uniquely_suited_cards = []
-                   
-#                     for card in card_list:
-#                         if card[2] in suits_with_only_one:
-#                             uniquely_suited_cards.append(card)
-
-#                     print (uniquely_suited_cards)
-
-#                     # Step 4: take out Aces as 
-#                     for card in uniquely_suited_cards:
-
-#                         if card[3] == 6 or card[3] == 5:
-#                             uniquely_suited_cards.remove(card)
-
-#                     print(uniquely_suited_cards)
-
-#                     if uniquely_suited_cards != []:
-#                         if len(uniquely_suited_cards) > 1:
-#                             card_to_play = random.choice(uniquely_suited_cards)
-#                         else:
-#                             card_to_play = uniquely_suited_cards[0]
-                        
-#                         card_to_remove = card_to_play[0]
-#                         hand.cards.remove(card_to_remove)
-#                         print(f"!_!_! This is the card_to_play, {card_to_remove} from Scenario 4")
-#                         return [chair, card_to_remove];
-
-#                     # END of checking for single suited, non Ace or King
-#                     # END of checking for single suited, non Ace or King
-            
-#             # If there wasn't a single of a suit card to get rid of 
-#             # then thread continues here to find lowest valued card
-
-#              # default
-#             min_value_cards = min(card_list, key=lambda x: x[3])
-#             if len(min_value_cards) > 1:
-#                 card_to_play = random.choice(min_value_cards)
-#             else:
-#                 card_to_play = min_value_cards
-
-#             card_to_remove = card_to_play[0]
-#             hand.cards.remove(card_to_remove)
-#             print(f"!_!_! This is the card_to_play, {card_to_remove} from Scenario 4")
-#             return [chair, card_to_remove];
-    
-#     pass
-
-
-################
-################
-
-# ABOVE WAS ALL COPIED FROM PC PLAYS A CARD FOR REFERENCE
-# DELETE ONCE COMPLETED
-
-
-############
-##########
-
-
-def check_trick_for_points(who_called):
-    print ("\n CTFP FUNCTION")
-   
-    # walk through played_cards list, if rank is highest then keep otherwise
-    # move to next card, then get highest of 4 cards, what was it's position in 
-    # played_cards, if 2 for example then that was the second card after the lead
-    # so walking through table_positions starting at lead and going 1 more step gets you the team 
-    # whom won the trick. 
-    # looks at the trick and assesses in order whom won, 
-    # adding up trick_scores for each team
-    # Then assigns who leads next turn by changing whos_next variable
-    
-    pass
-
-
-
-
-
-
-
-def check_for_team_win():
-    pass
-
-
-
-def suit_to_follow(round):
-    if 2 >1:
-        pass
 
 ## Play Phase ##
 ## Play Phase ##
@@ -1720,7 +965,7 @@ print_teams(table_position_dict)
 dealers_turn = "chair_1"
 
 list_of_hand_objects = []
-
+# call below "chair" chair_spot instead, as chair variable is used again
 for chair in table_position_list:
     # CHECK print (f"here's chair: {chair}")
     name = str(chair)
@@ -1742,13 +987,23 @@ round_number = 0
 
 while team_ns_score < 10 and team_ew_score < 10: 
 
+    # # python debugger 
+    pdb.set_trace()
+
     round_number +=1
 
     print (f"\nTHIS IS ROUND NUMBER {round_number}!\n")
+    print (f"\nTHIS IS ROUND NUMBER {round_number}!\n")
+    print (f"\nTHIS IS ROUND NUMBER {round_number}!\n")
+    print (f"\nTHIS IS ROUND NUMBER {round_number}!\n")
 
+    print (team_ew_score)
+    print (team_ns_score)
 
     team_ns = ["chair_1","chair_3"]
     team_ew = ["chair_2","chair_4"]
+
+    teams_ns_ew = [team_ns, team_ew]
 
     dev_deck = Dev_Deck() 
 
@@ -1783,13 +1038,7 @@ while team_ns_score < 10 and team_ew_score < 10:
     for player_hand in list_of_hand_objects:
         deal_cards(player_hand,dev_deck)
         
-    # for player_hand in list_of_hand_objects:
-    #     print("\n")
-    #     # print (table_position_dict[str(player_hand)])
-    #     # print (f"Cards in {player_hand}'s hand")
-    #     for card in player_hand.cards:
-    #         # print (card)
-    # # print ("\n")
+
     one_and_done_suit = top_card_suit(dev_deck)
 
 
@@ -1806,14 +1055,18 @@ while team_ns_score < 10 and team_ew_score < 10:
     ## TRUMP SELECTION ##
 
     whats_trump = 'Hearts'
-    who_called = 'chair 2'
+    who_called = 'chair_2'
     print (f"what_trump is --> {whats_trump}")
-    print (f"who_called is --> {who_called}")
+    print (f"who_called is --> {who_called} {table_position_dict[who_called]}")
 
-
+    if who_called in team_ns:
+        team_that_called = team_ns
+    else:
+        team_that_called = team_ew
 
     # NOTE: may have to add in that when dealer is screwed their team is the one that called
-
+ 
+ 
     ## TRUMP SELECTION ##
     ## TRUMP SELECTION ##
 
@@ -1834,20 +1087,23 @@ while team_ns_score < 10 and team_ew_score < 10:
     # [card rank, card suit, actual value]
     # to test if a card is trump, do an if value > 6
 
-    # Needs to go through all cards in each hand, not each card in dev deck
-    # March 2020
-
     # This for loop applies the new values of the now known suit of trump
 
     trump_color = colors[whats_trump]
 
+    list_of_cards_in_hands = []
+
     for hand in list_of_hand_objects:
         for card in hand.cards:
-
+            # changing ranks
             if card.suit == whats_trump:
                 card.make_rank_trump()
+            # The "Jick"
             if card.rank == "Jack" and colors[card.suit] == trump_color and card.suit != whats_trump:
                 card.make_rank_trump(True)
+            # For playset_round objects each card object has suit, rank, and value accurate to the round now
+            list_of_cards_in_hands.append(card)
+            
 
 
     team_ew_tricks_won = 0 # Both teams start at 0 tricks won
@@ -1863,20 +1119,19 @@ while team_ns_score < 10 and team_ew_score < 10:
         player_left_of_dealer = dealer_position+1
 
 
-    # do the sort one last time and have it for the round, 
-    # giving a [card.rank,actual_suit,card.value] and reference that 
-    # for winning or not. Also actual suit is for the left bower jumping ship  
-
-            # # python debugger 
-            # pdb.set_trace()
-
-    current_player_position = -2
-
-    
+    current_player_position = -2 
 
     tricks_played = 0
 
-    while tricks_played < 6:
+
+    playset_name = "playset_round_" + str(round_number)
+    playset_name = Playset("round "+ str(round_number),  who_called,  whats_trump, list_of_cards_in_hands,  teams_ns_ew , table_position_list)
+    current_playset = playset_name
+
+
+
+
+    while tricks_played < 5:
 
     # # #
     # TRICK LEVEL WORK
@@ -1888,99 +1143,90 @@ while team_ns_score < 10 and team_ew_score < 10:
         while cards_played_counter < 4:
 
 
+
             # # #
             # CARD LEVEL WORK
             # # #
 
 
-            # IF FIRST CARD
-            if cards_played_counter == 0:
+            # IF FIRST CARD   !!!!!ONLY FIRST ROUND!!!!!! BECAUSE PERSON LEFT OF DEALER MUST START
+            if tricks_played == 0 and cards_played_counter == 0:
                 
+                print_table_birds_eye_view(player_left_of_dealer, table_position_list, table_position_dict)
+
                 chair_and_card = []
-                print (f"cards_played_counter is zero")
                 
                 # FIRST CARD
                 
                 chair_and_card = left_of_dealer_plays_first(player_left_of_dealer, who_called, whats_trump, table)
                 who_played_it = chair_and_card[0]
                 one_selected = chair_and_card[1]
-                print (f"\nthis is the returned chair, {who_played_it}, and card, {one_selected}")
                 table.append(chair_and_card) # table = chair_and_card[2]
                 
                 # MOVING TO NEXT PLAYER
-                print (f"current player position starts as {current_player_position}")
+                
                 current_player_position = player_left_of_dealer
-                print (f"A. current player position is now {current_player_position}")
-                # Next player x3
+
                 next_player_answer = next_player(current_player_position, table_position_list)
                 current_player_position = next_player_answer
-                print (f"B. and now, after func next_player,is {current_player_position}")    
-                
-                
-                # python debugger 
-                # pdb.set_trace()
-                
-                # NOTE: do I want this to be whocalled or which team called?
-                print ("\nIn the bottom of the main while loop table print")
-                
+               
                 # Show what's on the table
+                print_table(table)
 
-                print ("\nCards on table")
-                print ("|^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^|")
-                for chair_card in table:
-                    print (f"{chair_card[0]} played {chair_card[1]}")
-                print ("\n|______________________________|")
-                print ("\n \n")
+                # END OF IF
             
             
             
-            # IF NOT FIRST CARD
-            if cards_played_counter >= 1:
+            # IF NOT THE FIRST CARD OF ENTIRE ROUND, IE START OF NEXT HAND, OR MID-HAND
+            else:   
                 
-                print ("trick_counter is greater or equal to one")
                 # def pc_plays_a_card(position_on_table, trump, who_called, this_hand, table
-                
-                print (f"\nC. current player position is now {current_player_position}")
                 
                 # NEXT CARD
                 if table_position_dict[table_position_list[current_player_position]][0:2] == "pc":
-                    chair_and_card = pc_plays_a_card(current_player_position, whats_trump, who_called, table)
+
+                    chair_and_card = pcPlaysACard.pc_plays_a_card(current_player_position, table, list_of_hand_objects, current_playset)
                 else:
+
+                    # Add "Playset" object here 
+
                     chair_and_card = hu_plays_a_card(current_player_position, whats_trump, who_called, table) 
                 
                 who_played_it = chair_and_card[0]
                 one_selected = chair_and_card[1]
                 
-                print (f"\nthis is the returned chair, {who_played_it}, and card, {one_selected}")
-                
                 table.append(chair_and_card)
-                print ("\nIn the bottom of the main while loop table print")
                 
                 # Show what's on the table
-                print ("\nCards on table")
-                print ("|^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^|")
-                for chair_card in table:
-                    print (f"{chair_card[0]} played {chair_card[1]}")
-                print ("\n|______________________________|")
+                print_table(table)
                 # MOVING TO NEXT PLAYER 
-                next_player_answer = next_player(current_player_position, table_position_list)
+                if cards_played_counter <3:
+                    next_player_answer = next_player(current_player_position, table_position_list)
                 current_player_position = next_player_answer
                 
+                print ("\n")
 
-                print ("\n \n")
+                # END OF IF
 
 
             cards_played_counter += 1
-            print(f"\nCards played counter is {cards_played_counter}\n")
+            print (f"cards played counter is {cards_played_counter}")
+            
+            
+            if cards_played_counter < 4:
+                print_table_birds_eye_view(current_player_position, table_position_list, table_position_dict)
 
+            
+
+            # END OF WHILE cards_played_counter < 4
 
             # # #
             # CARD LEVEL WORK
             # # #
+        # python debugger 
+        # pdb.set_trace()
         
-        print ("\n\n\n\n THIS IS A BIG DEAL YOU MADE IT OUT OF THE A 4 CARD ROUND, ONTO THE NEXT \n\n\n\n")
-        
-        print ("\n you have exited the cardplay loop \n")
+        print ("\n All 4 cards have been played \n")
         # Which team won the trick
 
         # which card won 
@@ -1995,51 +1241,50 @@ while team_ns_score < 10 and team_ew_score < 10:
             team_ew_tricks_won += 1
         # add 1 to the team trick counter
 
+        print (f"Team NS {team_ns_tricks_won} tricks" )
+        print (f"Team EW {team_ew_tricks_won} tricks" )
         
+        winning_chair_position = table_position_list.index(winning_chair)
+        print (f"{winning_chair} won the last hand and gets to lead the next hand \n")
+        current_player_position = winning_chair_position
+
+        print_table_birds_eye_view(current_player_position, table_position_list, table_position_dict)
 
         tricks_played += 1
+        print (f"tricks_played is {tricks_played}")
+        # print (f"IMPORTANT!!! tricks_played is {tricks_played}")
 
-
+        
 
     # # #
     # TRICK LEVEL WORK
     # # #
 
     
-    # After every trick is played we assess which team is awarded team points and how many
-    
-    print ("\n you have exited the trickplay level loop \n")
+    scores_to_add_ns_ew = check_tricks_for_points(who_called, team_ns_tricks_won, team_ew_tricks_won)
 
-    if team_ns_tricks_won > team_ew_tricks_won:
-        team_ns_score += 1
-        print ("Team North South won the most tricks and gets 1 team point")
-        if team_ns_tricks_won == 5 and who_called not in team_ew :
-            team_ns_score += 1
-            print ("Team North South won all 5 tricks and won 2 pts total")
-        if who_called in team_ew:
-            team_ns_score += 1
-            print ("Team North South 'Euchred' since Team East West called trump and won 2 pts total!")
-        if team_ns_tricks_won == 5 and who_called in team_ew:
-            team_ns_score += 2
-            print ("Team North South also won all 5 tricks while 'Euchreing' earning 4 Team points total! ")
-    else:
-        team_ew_score += 1
-        print ("Team East West won the most tricks and gets 1 team point")
-        if team_ew_tricks_won == 5:
-            team_ew_score += 1
-            print ("Team East West won all 5 tricks and won 2 pts total")
-        if who_called in team_ns:
-            team_ew_score += 1
-            print ("Team East West 'Euchred' since Team East West called trump and won 2 pts total!")
-        if team_ew_tricks_won == 5 and who_called in team_ns:
-            team_ew_score += 1
-            print ("Team East West also won all 5 tricks while 'Euchreing' earning 4 Team points total! ")
+    team_ns_score += scores_to_add_ns_ew[0]
+    team_ew_score += scores_to_add_ns_ew[1]
 
-# # #
+
+    print (f"team_ew_score is now {team_ew_score}")
+    print (f"team_ns_score is now {team_ns_score}")
+
+    if team_ew_score >= 10:
+        print (f"\n We \n   Have \n       A \n            WINNER! \n                  Team EW with a score of {team_ew_score} ")
+
+    if team_ew_score >= 10:
+        print (f"\n We \n   Have \n       A \n            WINNER! \n                  Team NS with a score of {team_ns_score} ")
+
 # GAME PLAY LEVEL WORK
 # # #
 
+# team_ns_score < 10 and team_ew_score < 10: 
+
+
+
 print ("\n you have exited the gameplay loop \n")
+print ("\n a team has won! \n")
 
 
 

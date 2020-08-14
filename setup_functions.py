@@ -54,16 +54,6 @@ def table_positions(output_num):
     return (table_position_dict)
 
 
-def print_teams(table_position_dict):
-    tdict = table_position_dict
-    south = tdict["chair_1"]
-    north = tdict["chair_3"]
-    west = tdict["chair_2"]
-    east = tdict["chair_4"]
-    print (f"Team North & South is {south} and {north}")
-    print (f"Team East & West is {west} and {east}")
-
-
 # who's dealer, randomly pick a dealer
 
 def whos_first_dealer():
@@ -75,3 +65,13 @@ def whos_first_dealer():
 
 
 # Deal out 5 cards
+
+
+def print_teams(table_position_dict):
+    tdict = table_position_dict
+    south = tdict["chair_1"]
+    north = tdict["chair_3"]
+    west = tdict["chair_2"]
+    east = tdict["chair_4"]
+    print (f"Team North & South is {south} and {north}")
+    print (f"Team East & West is {west} and {east}")

@@ -1657,7 +1657,11 @@ for chair in table_position_dict:
 
 print_teams(table_position_dict)
 
-dealers_turn = "chair_1"
+dealers_turn = whos_first_dealer()
+print (f"dealer is, {dealers_turn}")
+
+
+# dealers_turn = "chair_1"
 
 list_of_hand_objects = []
 
@@ -1666,6 +1670,23 @@ for chair in table_position_list:
     name = str(chair)
     chair = Dev_Hand(name)
     list_of_hand_objects.append(chair)
+
+euchre_deck = Deck()
+print ("1")
+print (euchre_deck)
+euchre_deck.shuffle()
+print("2")
+print (euchre_deck)
+
+for player_hand in list_of_hand_objects:
+    deal_cards(player_hand,euchre_deck)
+    
+for player_hand in list_of_hand_objects:
+    print (f"Cards in {player_hand}'s hand")
+    for card in player_hand.cards:
+        print (card)
+
+one_and_done_suit = top_card_suit(euchre_deck)
 
 
 dev_deck = Dev_Deck() 

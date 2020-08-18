@@ -285,6 +285,26 @@ def table_positions(output_num):
             print("This is the reset dict")
             print(table_position_dict)
     return (table_position_dict)
+    
+# who's dealer, randomly pick a dealer
+
+def whos_first_dealer():
+    choice = random.randint(1,4)
+    first_dealer = "chair_"+ str(choice)
+    player = table_position_dict[first_dealer]
+    print (f'First deal is {player}')
+    return first_dealer   
+
+
+def print_teams(table_position_dict):
+    tdict = table_position_dict
+    south = tdict["chair_1"]
+    north = tdict["chair_3"]
+    west = tdict["chair_2"]
+    east = tdict["chair_4"]
+    print (f"Team North & South is {south} and {north}")
+    print (f"Team East & West is {west} and {east}")  
+        
 
 def table_positions_auto(output_num):
     table_position_dict = table_position_dict_default.copy()
@@ -299,24 +319,8 @@ def table_positions_auto(output_num):
     return (table_position_dict)
         
 
-def print_teams(table_position_dict):
-    tdict = table_position_dict
-    south = tdict["chair_1"]
-    north = tdict["chair_3"]
-    west = tdict["chair_2"]
-    east = tdict["chair_4"]
-    print (f"Team North & South is {south} and {north}")
-    print (f"Team East & West is {west} and {east}")  
-    
-    
-# who's dealer, randomly pick a dealer
 
-def whos_first_dealer():
-    choice = random.randint(1,4)
-    first_dealer = "chair_"+ str(choice)
-    player = table_position_dict[first_dealer]
-    print (f'First deal is {player}')
-    return first_dealer   
+
 
 # Deal out 5 cards 
     

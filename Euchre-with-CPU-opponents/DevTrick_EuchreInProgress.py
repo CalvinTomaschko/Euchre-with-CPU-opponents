@@ -1555,6 +1555,9 @@ colors = {"Hearts":"red", "Diamonds":"red", "Clubs":"black", "Spades":"black"}
 table_position_dict_default = {'chair_1':'pc South', 'chair_2':'pc West', 'chair_3':'pc North', 'chair_4':'pc East'}
 # table_position_dict = {'chair_1':'pc South', 'chair_2':'pc West', 'chair_3':'pc North', 'chair_4':'pc East'} # default all pcs
 
+team_ns = ["chair_1","chair_3"]
+team_ew = ["chair_2","chair_4"]
+
 # Once trump is decided then values can be assigned more permanently
 
 
@@ -1609,11 +1612,17 @@ for chair in table_position_list:
     chair = Dev_Hand(name)
     list_of_hand_objects.append(chair)
 
-euchre_deck = Deck()
-print ("1")
+
+# The Great Divide! ______________________________________
+
+
+
+
+
+euchre_deck = Dev_Deck()
 print (euchre_deck)
 euchre_deck.shuffle()
-print("2")
+
 print (euchre_deck)
 
 for player_hand in list_of_hand_objects:
@@ -1627,32 +1636,8 @@ for player_hand in list_of_hand_objects:
 one_and_done_suit = top_card_suit(euchre_deck)
 
 
-dev_deck = Dev_Deck() 
-### euchre_deck.
-# print ("1")
-# print (dev_deck)
-
-dev_deck.shuffle()
-
-### DEV NOTE: Below is where I stack the deck for a particular chair based on
-### which method I call from the dev classes
-
-# dev_deck.hearts_for_dealer()
-
-## dev_deck.hearts_for_2nd()
-
-dev_deck.hearts_for_2nd_and_one_off_suited()
-
-# print (f"printing dev_deck{dev_deck}")
-
-# The below is if you want to only shuffle from a certain number down in the deck
-# dev_deck.shuffle_bottom()
-# print ("2")
-# print (dev_deck)
-
-
 for player_hand in list_of_hand_objects:
-    deal_cards(player_hand,dev_deck)
+    deal_cards(player_hand,euchre_deck)
     
 for player_hand in list_of_hand_objects:
     print("\n")
@@ -1661,7 +1646,7 @@ for player_hand in list_of_hand_objects:
     for card in player_hand.cards:
         print (card)
 print ("\n")
-one_and_done_suit = top_card_suit(dev_deck)
+one_and_done_suit = top_card_suit(euchre_deck)
 
 
 ## TRUMP SELECTION ##
@@ -1678,15 +1663,14 @@ if who_called[0].lower() == 'c':
    
     print (dealers_turn)
     print (one_and_done_suit)
-## TESTING HERE
-    pick_up_and_switch(dealers_turn,dealers_turn,one_and_done_suit,dev_deck,card = '')
+
+    pick_up_and_switch(dealers_turn,dealers_turn,one_and_done_suit,euchre_deck,card = '')
     whats_trump = one_and_done_suit
     ### Hidden pass along to grab_top_card
-### TESTING HERE
+
 
 else:
     print(f"Who ordered up? --> {who_called} ")
-
 
 
 if not ordered_up_qm: 
@@ -1696,32 +1680,20 @@ if not ordered_up_qm:
     print (f"what_trump is --> {whats_trump}")
     print (f"who_called is --> {who_called}")
 
-team_ns = ["chair_1","chair_3"]
-team_ew = ["chair_2","chair_4"]
 
 # NOTE: may have to add in that when dealer is screwed their team is the one that called
 
 ## TRUMP SELECTION ##
 ## TRUMP SELECTION ##
 
+
 ########################
-
-## Trick play ##
-## Trick play ##
-
-# trump_card_list will hold all the cards and their current value based on the 
-# selected trump, looks like 
-# [card rank, card suit, actual value]
-# to test if a card is trump, do an if value > 6
 
 
 # # python debugger 
 # pdb.set_trace()
 
 # This for loop applies the new values of the now known suit of trump
-
-# Needs to go through all cards in each hand, not each card in dev deck
-# March 2020
 
 trump_color = colors[whats_trump]
 
@@ -1732,14 +1704,6 @@ for hand in list_of_hand_objects:
         if card.rank == "Jack" and colors[card.suit] == trump_color and card.suit != whats_trump:
             card.make_rank_trump(True)
 
-# trump_card_list = []
-# make_trump_card_list(trump_card_list) # old method as of Jan 27th 2020
-
-# # print([x for x in a_list])
-
-# print ([x for x in trump_card_list])
-
-# point to left of dealer
 
 # the position in the table_position_list
 dealer_position = table_position_list.index(dealers_turn)
@@ -1752,55 +1716,15 @@ else:
 trick_counter = 0
 table = []
 
-
-
-
-# do the sort one last time and have it for the round, 
-# giving a [card.rank,actual_suit,card.value] and reference that 
-# for winning or not. Also actual suit is for the left bower jumping ship  
-
-
-while trick_counter < 6:
-
-
-
-    if trick_counter == 0:
-        chair_and_card = []
-        print ("trick_counter is zero")
-        chair_and_card = left_of_dealer_plays_first(player_left_of_dealer, who_called, whats_trump, table)
-        print (f"this is the returned {chair_and_card}")
-        who_played_it = chair_and_card[0]
-        one_selected = chair_and_card[1]
-        table.append(chair_and_card)
-        # table = chair_and_card[2]
-        print (one_selected)
-        print (table)
-        current_player_position = player_left_of_dealer
-         # Next player x3
-        next_player(current_player_position, table_position_list)
-
-        trick_counter += 1
-        # NOTE: do I want this to be whocalled or which team called?
-       
-        # which team won the trick, add 
-    if trick_counter >= 1:
-        print ("trick_counter is greater or equal to one")
-        pdb.set_trace()
-        break
-        # trick_winner_plays_next_card()
-        # Next player x3
-        # which team won the trick, add
-
-
-# Dealer and left of dealer now have a position number in table_position_dict
-
-
-
-
     
 # Old GAME Execution
 # Old GAME Execution
 # Old GAME Execution
+
+
+
+
+
 
 
 

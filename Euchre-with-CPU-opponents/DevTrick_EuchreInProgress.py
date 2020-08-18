@@ -1587,6 +1587,10 @@ team_ew = ["chair_2","chair_4"]
 
 # NOTE: regular game execution moved to storage
 
+
+# python debugger 
+pdb.set_trace()
+
 # how_many_humans() -->table_positions()
 table_position_dict = how_many_humans()
 table_position_dict = table_positions_auto(1)
@@ -1690,8 +1694,7 @@ if not ordered_up_qm:
 ########################
 
 
-# # python debugger 
-# pdb.set_trace()
+
 
 # This for loop applies the new values of the now known suit of trump
 
@@ -1743,339 +1746,339 @@ table = []
 
 # how_many_humans() -->table_positions()
 
-table_position_dict = {'chair_1':'hu player 1', 'chair_2':'pc West', 'chair_3':'pc North', 'chair_4':'pc East'}
+# table_position_dict = {'chair_1':'hu player 1', 'chair_2':'pc West', 'chair_3':'pc North', 'chair_4':'pc East'}
 
-table_position_list = [] 
+# table_position_list = [] 
 
-for chair in table_position_dict:
-    table_position_list.append(chair)
+# for chair in table_position_dict:
+#     table_position_list.append(chair)
 
-print_teams(table_position_dict)
+# print_teams(table_position_dict)
 
-dealers_turn = "chair_1"
+# dealers_turn = "chair_1"
 
-list_of_hand_objects = []
-# call below "chair" chair_spot instead, as chair variable is used again
-for chair in table_position_list:
-    # CHECK print (f"here's chair: {chair}")
-    name = str(chair)
-    chair = Dev_Hand(name)
-    list_of_hand_objects.append(chair)
+# list_of_hand_objects = []
+# # call below "chair" chair_spot instead, as chair variable is used again
+# for chair in table_position_list:
+#     # CHECK print (f"here's chair: {chair}")
+#     name = str(chair)
+#     chair = Dev_Hand(name)
+#     list_of_hand_objects.append(chair)
 
-team_ns_score = 0
-team_ew_score = 0 
+# team_ns_score = 0
+# team_ew_score = 0 
 
-round_number = 0
-
-
+# round_number = 0
 
 
-# # #
-# GAME PLAY LEVEL WORK
-# # #
 
 
-while team_ns_score < 10 and team_ew_score < 10: 
-
-    # # python debugger 
-    pdb.set_trace()
-
-    round_number +=1
-
-    print (f"\nTHIS IS ROUND NUMBER {round_number}!\n")
-    print (f"\nTHIS IS ROUND NUMBER {round_number}!\n")
-    print (f"\nTHIS IS ROUND NUMBER {round_number}!\n")
-    print (f"\nTHIS IS ROUND NUMBER {round_number}!\n")
-
-    print (team_ew_score)
-    print (team_ns_score)
-
-    team_ns = ["chair_1","chair_3"]
-    team_ew = ["chair_2","chair_4"]
-
-    teams_ns_ew = [team_ns, team_ew]
-
-    dev_deck = Dev_Deck() 
-
-    dev_deck.shuffle()
-
-    ### DEV NOTE: Below is where I stack the deck for a particular chair based on
-    ### which method I call from the dev classes
-
-    # dev_deck.hearts_for_dealer()
-
-    ## dev_deck.hearts_for_2nd()
-
-    # dev_deck.hearts_for_2nd_and_one_off_suited()
-
-    # dev_deck.pick_a_hand_give_cards_from_list()
-
-    # dev_deck.repeat_deck_from_list()
-
-    # print("Out of pick_a_hand_give_cards_from_list")
-
-    # python debugger 
-    # pdb.set_trace()
-
-    # print (f"printing dev_deck{dev_deck}")
-
-    # The below is if you want to only shuffle from a certain number down in the deck
-    # dev_deck.shuffle_bottom()
-    # print ("2")
-    print (dev_deck)
+# # # #
+# # GAME PLAY LEVEL WORK
+# # # #
 
 
-    for player_hand in list_of_hand_objects:
-        deal_cards(player_hand,dev_deck)
+# while team_ns_score < 10 and team_ew_score < 10: 
+
+#     # # python debugger 
+#     pdb.set_trace()
+
+#     round_number +=1
+
+#     print (f"\nTHIS IS ROUND NUMBER {round_number}!\n")
+#     print (f"\nTHIS IS ROUND NUMBER {round_number}!\n")
+#     print (f"\nTHIS IS ROUND NUMBER {round_number}!\n")
+#     print (f"\nTHIS IS ROUND NUMBER {round_number}!\n")
+
+#     print (team_ew_score)
+#     print (team_ns_score)
+
+#     team_ns = ["chair_1","chair_3"]
+#     team_ew = ["chair_2","chair_4"]
+
+#     teams_ns_ew = [team_ns, team_ew]
+
+#     dev_deck = Dev_Deck() 
+
+#     dev_deck.shuffle()
+
+#     ### DEV NOTE: Below is where I stack the deck for a particular chair based on
+#     ### which method I call from the dev classes
+
+#     # dev_deck.hearts_for_dealer()
+
+#     ## dev_deck.hearts_for_2nd()
+
+#     # dev_deck.hearts_for_2nd_and_one_off_suited()
+
+#     # dev_deck.pick_a_hand_give_cards_from_list()
+
+#     # dev_deck.repeat_deck_from_list()
+
+#     # print("Out of pick_a_hand_give_cards_from_list")
+
+#     # python debugger 
+#     # pdb.set_trace()
+
+#     # print (f"printing dev_deck{dev_deck}")
+
+#     # The below is if you want to only shuffle from a certain number down in the deck
+#     # dev_deck.shuffle_bottom()
+#     # print ("2")
+#     print (dev_deck)
+
+
+#     for player_hand in list_of_hand_objects:
+#         deal_cards(player_hand,dev_deck)
         
 
-    one_and_done_suit = top_card_suit(dev_deck)
+#     one_and_done_suit = top_card_suit(dev_deck)
 
 
-    # DEV GAME Setup--------------------------------------------------------------------------
-    # DEV GAME Setup
-
-
-
-    ###########################
+#     # DEV GAME Setup--------------------------------------------------------------------------
+#     # DEV GAME Setup
 
 
 
-    ## TRUMP SELECTION ##
-    ## TRUMP SELECTION ##
+#     ###########################
 
-    whats_trump = 'Hearts'
-    who_called = 'chair_2'
-    print (f"what_trump is --> {whats_trump}")
-    print (f"who_called is --> {who_called} {table_position_dict[who_called]}")
 
-    if who_called in team_ns:
-        team_that_called = team_ns
-    else:
-        team_that_called = team_ew
 
-    # NOTE: may have to add in that when dealer is screwed their team is the one that called
+#     ## TRUMP SELECTION ##
+#     ## TRUMP SELECTION ##
+
+#     whats_trump = 'Hearts'
+#     who_called = 'chair_2'
+#     print (f"what_trump is --> {whats_trump}")
+#     print (f"who_called is --> {who_called} {table_position_dict[who_called]}")
+
+#     if who_called in team_ns:
+#         team_that_called = team_ns
+#     else:
+#         team_that_called = team_ew
+
+#     # NOTE: may have to add in that when dealer is screwed their team is the one that called
  
  
-    ## TRUMP SELECTION ##
-    ## TRUMP SELECTION ##
+#     ## TRUMP SELECTION ##
+#     ## TRUMP SELECTION ##
 
 
 
 
-    ########################
+#     ########################
 
 
 
 
 
-    ## Trick play ##
-    ## Trick play ##
+#     ## Trick play ##
+#     ## Trick play ##
 
-    # trump_card_list will hold all the cards and their current value based on the 
-    # selected trump, looks like 
-    # [card rank, card suit, actual value]
-    # to test if a card is trump, do an if value > 6
+#     # trump_card_list will hold all the cards and their current value based on the 
+#     # selected trump, looks like 
+#     # [card rank, card suit, actual value]
+#     # to test if a card is trump, do an if value > 6
 
-    # This for loop applies the new values of the now known suit of trump
+#     # This for loop applies the new values of the now known suit of trump
 
-    trump_color = colors[whats_trump]
+#     trump_color = colors[whats_trump]
 
-    list_of_cards_in_hands = []
+#     list_of_cards_in_hands = []
 
-    for hand in list_of_hand_objects:
-        for card in hand.cards:
-            # changing ranks
-            if card.suit == whats_trump:
-                card.make_rank_trump()
-            # The "Jick"
-            if card.rank == "Jack" and colors[card.suit] == trump_color and card.suit != whats_trump:
-                card.make_rank_trump(True)
-            # For playset_round objects each card object has suit, rank, and value accurate to the round now
-            list_of_cards_in_hands.append(card)
+#     for hand in list_of_hand_objects:
+#         for card in hand.cards:
+#             # changing ranks
+#             if card.suit == whats_trump:
+#                 card.make_rank_trump()
+#             # The "Jick"
+#             if card.rank == "Jack" and colors[card.suit] == trump_color and card.suit != whats_trump:
+#                 card.make_rank_trump(True)
+#             # For playset_round objects each card object has suit, rank, and value accurate to the round now
+#             list_of_cards_in_hands.append(card)
             
 
 
-    team_ew_tricks_won = 0 # Both teams start at 0 tricks won
-    team_ns_tricks_won = 0
+#     team_ew_tricks_won = 0 # Both teams start at 0 tricks won
+#     team_ns_tricks_won = 0
 
 
-    # the position in the table_position_list
-    dealer_position = table_position_list.index(dealers_turn)
+#     # the position in the table_position_list
+#     dealer_position = table_position_list.index(dealers_turn)
 
-    if table_position_list.index(dealers_turn) == 3:
-        player_left_of_dealer = 0
-    else:
-        player_left_of_dealer = dealer_position+1
-
-
-    current_player_position = -2 
-
-    tricks_played = 0
+#     if table_position_list.index(dealers_turn) == 3:
+#         player_left_of_dealer = 0
+#     else:
+#         player_left_of_dealer = dealer_position+1
 
 
-    playset_name = "playset_round_" + str(round_number)
-    playset_name = Playset("round "+ str(round_number),  who_called,  whats_trump, list_of_cards_in_hands,  teams_ns_ew , table_position_list)
-    current_playset = playset_name
+#     current_player_position = -2 
+
+#     tricks_played = 0
 
 
-
-
-    while tricks_played < 5:
-
-    # # #
-    # TRICK LEVEL WORK
-    # # #
-
-        cards_played_counter = 0
-        table = []
-
-        while cards_played_counter < 4:
+#     playset_name = "playset_round_" + str(round_number)
+#     playset_name = Playset("round "+ str(round_number),  who_called,  whats_trump, list_of_cards_in_hands,  teams_ns_ew , table_position_list)
+#     current_playset = playset_name
 
 
 
-            # # #
-            # CARD LEVEL WORK
-            # # #
+
+#     while tricks_played < 5:
+
+#     # # #
+#     # TRICK LEVEL WORK
+#     # # #
+
+#         cards_played_counter = 0
+#         table = []
+
+#         while cards_played_counter < 4:
 
 
-            # IF FIRST CARD   !!!!!ONLY FIRST ROUND!!!!!! BECAUSE PERSON LEFT OF DEALER MUST START
-            if tricks_played == 0 and cards_played_counter == 0:
+
+#             # # #
+#             # CARD LEVEL WORK
+#             # # #
+
+
+#             # IF FIRST CARD   !!!!!ONLY FIRST ROUND!!!!!! BECAUSE PERSON LEFT OF DEALER MUST START
+#             if tricks_played == 0 and cards_played_counter == 0:
                 
-                print_table_birds_eye_view(player_left_of_dealer, table_position_list, table_position_dict)
+#                 print_table_birds_eye_view(player_left_of_dealer, table_position_list, table_position_dict)
 
-                chair_and_card = []
+#                 chair_and_card = []
                 
-                # FIRST CARD
+#                 # FIRST CARD
                 
-                chair_and_card = left_of_dealer_plays_first(player_left_of_dealer, who_called, whats_trump, table)
-                who_played_it = chair_and_card[0]
-                one_selected = chair_and_card[1]
-                table.append(chair_and_card) # table = chair_and_card[2]
+#                 chair_and_card = left_of_dealer_plays_first(player_left_of_dealer, who_called, whats_trump, table)
+#                 who_played_it = chair_and_card[0]
+#                 one_selected = chair_and_card[1]
+#                 table.append(chair_and_card) # table = chair_and_card[2]
                 
-                # MOVING TO NEXT PLAYER
+#                 # MOVING TO NEXT PLAYER
                 
-                current_player_position = player_left_of_dealer
+#                 current_player_position = player_left_of_dealer
 
-                next_player_answer = next_player(current_player_position, table_position_list)
-                current_player_position = next_player_answer
+#                 next_player_answer = next_player(current_player_position, table_position_list)
+#                 current_player_position = next_player_answer
                
-                # Show what's on the table
-                print_table(table)
+#                 # Show what's on the table
+#                 print_table(table)
 
-                # END OF IF
+#                 # END OF IF
             
             
             
-            # IF NOT THE FIRST CARD OF ENTIRE ROUND, IE START OF NEXT HAND, OR MID-HAND
-            else:   
+#             # IF NOT THE FIRST CARD OF ENTIRE ROUND, IE START OF NEXT HAND, OR MID-HAND
+#             else:   
                 
-                # def pc_plays_a_card(position_on_table, trump, who_called, this_hand, table
+#                 # def pc_plays_a_card(position_on_table, trump, who_called, this_hand, table
                 
-                # NEXT CARD
-                if table_position_dict[table_position_list[current_player_position]][0:2] == "pc":
+#                 # NEXT CARD
+#                 if table_position_dict[table_position_list[current_player_position]][0:2] == "pc":
 
-                    chair_and_card = pcPlaysACard.pc_plays_a_card(current_player_position, table, list_of_hand_objects, current_playset)
-                else:
+#                     chair_and_card = pcPlaysACard.pc_plays_a_card(current_player_position, table, list_of_hand_objects, current_playset)
+#                 else:
 
-                    # Add "Playset" object here 
+#                     # Add "Playset" object here 
 
-                    chair_and_card = hu_plays_a_card(current_player_position, whats_trump, who_called, table) 
+#                     chair_and_card = hu_plays_a_card(current_player_position, whats_trump, who_called, table) 
                 
-                who_played_it = chair_and_card[0]
-                one_selected = chair_and_card[1]
+#                 who_played_it = chair_and_card[0]
+#                 one_selected = chair_and_card[1]
                 
-                table.append(chair_and_card)
+#                 table.append(chair_and_card)
                 
-                # Show what's on the table
-                print_table(table)
-                # MOVING TO NEXT PLAYER 
-                if cards_played_counter <3:
-                    next_player_answer = next_player(current_player_position, table_position_list)
-                current_player_position = next_player_answer
+#                 # Show what's on the table
+#                 print_table(table)
+#                 # MOVING TO NEXT PLAYER 
+#                 if cards_played_counter <3:
+#                     next_player_answer = next_player(current_player_position, table_position_list)
+#                 current_player_position = next_player_answer
                 
-                print ("\n")
+#                 print ("\n")
 
-                # END OF IF
+#                 # END OF IF
 
 
-            cards_played_counter += 1
-            print (f"cards played counter is {cards_played_counter}")
+#             cards_played_counter += 1
+#             print (f"cards played counter is {cards_played_counter}")
             
             
-            if cards_played_counter < 4:
-                print_table_birds_eye_view(current_player_position, table_position_list, table_position_dict)
+#             if cards_played_counter < 4:
+#                 print_table_birds_eye_view(current_player_position, table_position_list, table_position_dict)
 
             
 
-            # END OF WHILE cards_played_counter < 4
+#             # END OF WHILE cards_played_counter < 4
 
-            # # #
-            # CARD LEVEL WORK
-            # # #
-        # python debugger 
-        # pdb.set_trace()
+#             # # #
+#             # CARD LEVEL WORK
+#             # # #
+#         # python debugger 
+#         # pdb.set_trace()
         
-        print ("\n All 4 cards have been played \n")
-        # Which team won the trick
+#         print ("\n All 4 cards have been played \n")
+#         # Which team won the trick
 
-        # which card won 
-        winning_chair_and_card = max(table, key=lambda x: x[1].value)
-        winning_chair = winning_chair_and_card[0]
-        winning_card = winning_chair_and_card[1]
-        print (f"{winning_card} wins \n")
-        # then what team were they on
+#         # which card won 
+#         winning_chair_and_card = max(table, key=lambda x: x[1].value)
+#         winning_chair = winning_chair_and_card[0]
+#         winning_card = winning_chair_and_card[1]
+#         print (f"{winning_card} wins \n")
+#         # then what team were they on
 
-        if winning_chair in team_ns:
-            team_ns_tricks_won += 1
-        else:
-            team_ew_tricks_won += 1
-        # add 1 to the team trick counter
+#         if winning_chair in team_ns:
+#             team_ns_tricks_won += 1
+#         else:
+#             team_ew_tricks_won += 1
+#         # add 1 to the team trick counter
 
-        print (f"Team NS {team_ns_tricks_won} tricks" )
-        print (f"Team EW {team_ew_tricks_won} tricks" )
+#         print (f"Team NS {team_ns_tricks_won} tricks" )
+#         print (f"Team EW {team_ew_tricks_won} tricks" )
         
-        winning_chair_position = table_position_list.index(winning_chair)
-        print (f"{winning_chair} won the last hand and gets to lead the next hand \n")
-        current_player_position = winning_chair_position
+#         winning_chair_position = table_position_list.index(winning_chair)
+#         print (f"{winning_chair} won the last hand and gets to lead the next hand \n")
+#         current_player_position = winning_chair_position
 
-        print_table_birds_eye_view(current_player_position, table_position_list, table_position_dict)
+#         print_table_birds_eye_view(current_player_position, table_position_list, table_position_dict)
 
-        tricks_played += 1
-        print (f"tricks_played is {tricks_played}")
-        # print (f"IMPORTANT!!! tricks_played is {tricks_played}")
+#         tricks_played += 1
+#         print (f"tricks_played is {tricks_played}")
+#         # print (f"IMPORTANT!!! tricks_played is {tricks_played}")
 
         
 
-    # # #
-    # TRICK LEVEL WORK
-    # # #
+#     # # #
+#     # TRICK LEVEL WORK
+#     # # #
 
     
-    scores_to_add_ns_ew = check_tricks_for_points(who_called, team_ns_tricks_won, team_ew_tricks_won)
+#     scores_to_add_ns_ew = check_tricks_for_points(who_called, team_ns_tricks_won, team_ew_tricks_won)
 
-    team_ns_score += scores_to_add_ns_ew[0]
-    team_ew_score += scores_to_add_ns_ew[1]
-
-
-    print (f"team_ew_score is now {team_ew_score}")
-    print (f"team_ns_score is now {team_ns_score}")
-
-    if team_ew_score >= 10:
-        print (f"\n We \n   Have \n       A \n            WINNER! \n                  Team EW with a score of {team_ew_score} ")
-
-    if team_ew_score >= 10:
-        print (f"\n We \n   Have \n       A \n            WINNER! \n                  Team NS with a score of {team_ns_score} ")
-
-# GAME PLAY LEVEL WORK
-# # #
-
-# team_ns_score < 10 and team_ew_score < 10: 
+#     team_ns_score += scores_to_add_ns_ew[0]
+#     team_ew_score += scores_to_add_ns_ew[1]
 
 
+#     print (f"team_ew_score is now {team_ew_score}")
+#     print (f"team_ns_score is now {team_ns_score}")
 
-print ("\n you have exited the gameplay loop \n")
-print ("\n a team has won! \n")
+#     if team_ew_score >= 10:
+#         print (f"\n We \n   Have \n       A \n            WINNER! \n                  Team EW with a score of {team_ew_score} ")
+
+#     if team_ew_score >= 10:
+#         print (f"\n We \n   Have \n       A \n            WINNER! \n                  Team NS with a score of {team_ns_score} ")
+
+# # GAME PLAY LEVEL WORK
+# # # #
+
+# # team_ns_score < 10 and team_ew_score < 10: 
+
+
+
+# print ("\n you have exited the gameplay loop \n")
+# print ("\n a team has won! \n")
 
 
 

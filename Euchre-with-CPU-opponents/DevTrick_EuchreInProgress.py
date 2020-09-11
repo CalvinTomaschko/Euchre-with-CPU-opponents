@@ -15,7 +15,576 @@ from collections import Counter
 import pcPlaysACard
 
 
+################################
 
+### Classes ###
+### Classes ###
+### Classes ###
+
+
+
+### Main Classes ###
+### Main Classes ###
+
+
+class Card:
+    
+    def __init__(self,suit,rank):
+        self.suit = suit
+        self.rank = rank
+        
+    def __str__(self):
+        return self.rank + ' of ' + self.suit
+
+
+class Deck:
+
+    def __init__(self):
+        self.deck = []  # start with an empty list
+        for suit in suits:
+            for rank in ranks:
+                self.deck.append(Card(suit,rank))
+                
+    def __str__(self):
+        deck_comp = ''  # start with an empty string
+        for card in self.deck:
+            deck_comp += '\n '+card.__str__() # add each Card object's print string
+        return 'The deck has:' + deck_comp
+                
+    def shuffle(self):
+        random.shuffle(self.deck)
+    
+    # Future goal: Deals must be dealt by going around the table twice 
+    # giving everyone at least one card each time around   
+    
+    def deal(self):
+        single_card = self.deck.pop()
+        return single_card
+    
+    def put_back(self,card):
+        self.deck.insert(0,card)
+    
+
+class Hand:
+    
+    def __init__(self,name):
+        self.cards = []  # start with an empty list as we did in the Deck class
+        self.value = 0   # start with zero value
+        self.name = name
+        self.color = ''
+        
+    def __str__(self):
+        
+        return self.name
+    
+    def add_card(self,card):
+        self.cards.append(card)
+
+
+### Main Classes ###
+### Main Classes ###
+
+
+
+#Dev Class Definitions
+#Dev Class Definitions
+
+
+class Dev_Card:
+    
+    def __init__(self,suit,rank):
+        self.suit = suit
+        self.rank = rank
+        self.value = values[self.rank]
+        
+    def __str__(self):
+        return self.rank + ' of ' + self.suit
+    
+    def make_rank_trump(self,jick = False):
+        if jick == True:
+            old_rank = self.rank
+            self.rank = "Jick"
+            trump_rank = "t" + self.rank
+            self.rank = trump_rank
+            # print (f"old rank was {old_rank} of {self.suit}")
+            # print (f"new rank is {trump_rank} of {whats_trump}")
+            self.value = values[self.rank]    
+            self.suit = whats_trump       
+        else:
+            old_rank = self.rank
+            trump_rank = "t" + old_rank
+            self.rank = trump_rank
+            # print (f"old rank was {old_rank} of {self.suit}") 
+            # print (f"new rank is {trump_rank} of {card.suit}")
+            self.value = values[self.rank]
+
+
+class Dev_Deck:
+
+    def __init__(self):
+        self.deck = []  # start with an empty list
+        for suit in suits:
+            for rank in ranks:
+                self.deck.append(Dev_Card(suit,rank))
+                
+    def __str__(self):
+        deck_comp = ''  # start with an empty string
+        for card in self.deck:
+            deck_comp += '\n '+card.__str__() # add each Card object's print string
+        return 'The deck has:' + deck_comp
+                
+    def shuffle(self):
+        random.shuffle(self.deck)
+        
+    def shuffle_bottom(self):
+        to_shuffle = self.deck[6:]
+        random.shuffle(to_shuffle)
+        self.deck = self.deck[:6]+to_shuffle
+        
+    def hearts_for_dealer(self):
+        list_o_ranks = ["Jack","Ace","King","Queen","Ten"]
+        list_o_tcards = []
+        nine_for_top = []
+        for count,card in enumerate(self.deck):
+            if card.rank in list_o_ranks and card.suit == 'Hearts': 
+                tcard = self.deck.pop(count)  # there may be a lucky strike here with pop and insert
+                self.deck.insert(0,tcard) # this messed up the for loop observing the list in other trys
+            if card.rank == "Nine" and card.suit == 'Hearts':
+                nine_for_top = self.deck.pop(count)
+        
+        self.deck.insert(20,nine_for_top)
+        
+    def hearts_for_2nd(self):
+        
+    ## New list swapping
+        list_o_ranks = ["Jack","Ace","King","Queen","Ten"]
+        list_o_five_tcards = []
+        nine_for_top = []
+        new_list = []    
+        
+    ## Pull the desired cards   
+
+        for card in self.deck:
+            if card.rank in list_o_ranks and card.suit == 'Hearts':  
+                list_o_five_tcards.append(card)
+            if card.rank == "Nine" and card.suit == 'Hearts':
+                nine_for_top = card
+
+    ## Make new list leaving out the five tcards and the nine
+
+        for card in self.deck:
+            if card.rank == "Nine" and card.suit == 'Hearts':
+                continue
+            if card not in list_o_five_tcards:
+                new_list.append(card)
+
+
+#         print ("same list, no tcards or tnine, new_list is")
+    
+    ## quick print as objects need to be called directly for print string
+#         for card in new_list:
+#             print (card)
+
+        for card in list_o_five_tcards:
+            new_list.insert(5,card)
+
+    ## Add tNine to 4th spot
+
+        if nine_for_top != []:
+            new_list.insert(-3,nine_for_top)
+
+    ## Return final list   
+    
+    ## quick print to check, as card objects won't print unless directly called on
+#         for card in new_list:
+#             print (card)
+        
+        self.deck = new_list
+
+
+    def hearts_for_2nd_and_one_off_suited(self):
+            
+        ## New list swapping
+            list_o_ranks = ["Jack","Ace","King","Queen","Ten"]
+            list_o_five_tcards = []
+            nine_for_top = []
+            new_list = []    
+            
+        ## Pull the desired cards   
+
+            for card in self.deck:
+                if card.rank in list_o_ranks and card.suit == 'Hearts':  
+                    list_o_five_tcards.append(card)
+                if card.rank == "Nine" and card.suit == 'Hearts':
+                    nine_for_top = card
+
+        ## Make new list leaving out the five tcards and the nine
+
+            for card in self.deck:
+                if card.rank == "Nine" and card.suit == 'Hearts':
+                    continue
+                if card not in list_o_five_tcards:
+                    new_list.append(card)
+        
+        ## Here's where I pull one random card and will add it later
+            random_card = random.choice(new_list)
+            new_list.remove(random_card)
+            # list is now one shorter
+
+
+    #         print ("same list, no tcards or tnine, new_list is")
+        
+        ## quick print as objects need to be called directly for print string
+    #         for card in new_list:
+    #             print (card)
+
+            for card in list_o_five_tcards:
+                new_list.insert(5,card)
+
+        ## Now I'm adding a random card to their hand
+            new_list.insert(5,random_card)
+
+        ## Add tNine to 4th spot
+
+            if nine_for_top != []:
+                new_list.insert(-3,nine_for_top)
+
+        ## Return final list   
+        
+        ## quick print to check, as card objects won't print unless directly called on
+    #         for card in new_list:
+    #             print (card)
+            
+            self.deck = new_list
+    
+    # Future goal: Deals must be dealt by going around the table twice 
+    # giving everyone at least one card each time around   
+    
+    def pick_a_hand_give_cards_from_list(self):
+            # If a certain card arrangement causes an error we need to be able to copy and paste
+            # the results and have this method recreate it for us. So this takes the verticle unseparated result
+            # and will distribute the cards in that manner. 
+
+        # SELECT WHICH CHAIR TO BE GIVEN THE CARDS
+        chair = -1
+        acceptable_answer = [1,2,3,4]
+        while chair not in acceptable_answer:
+            chair = input("Swapping cards from text file into \nselected chair \nplease select Chair # 1,2,3,or 4")
+            if not (chair.isdigit()):
+                chair = -1
+                print ("That's not reading right, try again please")
+            else: 
+                chair = int(chair)
+            # Error exception for empty string here, can't make empty string an integer
+
+        # READ .TXT FILE WHERE OUTPUT CARDS WERE COPIED
+        # THEN BREAK DOWN THE TEXT INTO LISTED ITEMS
+
+        copy_card_file = open("Euchre-with-CPU-opponents\copyhere.txt","r")
+
+        big_list = copy_card_file.readlines()
+        copy_card_file.seek(0)
+        print(copy_card_file.readlines())
+        print (big_list)
+        copy_card_file.close()
+
+        # example from Kite, https://kite.com/python/answers/how-to-remove-newline-character-from-a-list-in-python
+
+        # sample_list = ["a", "b\n", "c\n"]
+        # converted_list = []
+        # for element in sample_list:
+        #     converted_list.append(element.strip())
+        # print(converted_list)
+
+        big_list_minus_returns = []
+
+        for line in big_list:
+            big_list_minus_returns.append(line.strip())
+
+        print(big_list_minus_returns)
+
+        big_list_minus_ofs = []
+
+        for line in big_list_minus_returns:
+            big_list_minus_ofs.append(line.replace(" of",''))
+
+        print(big_list_minus_ofs)
+
+        # https://mkyong.com/python/python-how-to-split-a-string/
+
+        big_list_final = []
+
+
+        for string in big_list_minus_ofs:
+            big_list_final.append(string.split())
+
+        print (big_list_final)
+
+        # big_list_final looks like [['Nine', 'Diamonds'], ['Nine', 'Clubs'],...[]]
+
+        # NOW LISTED ITEMS ARE READY TO BE COMPARED TO CARD OBJECTS
+
+        # find card objects that match text list parts
+        # store those objects in this players hand
+
+        ## Pull the desired cards   
+        desired_card_objects = []
+
+        for card_object in self.deck:
+            for card_deets in big_list_final:
+                if card_object.rank == card_deets[0] and card_object.suit == card_deets[1]:  
+                    desired_card_objects.append(card_object)
+
+        # WITH A LIST OF DESIRED CARDS, make place holders where the same cards are in the deck
+
+        for card in self.deck:
+            if card in desired_card_objects:
+                position = self.deck.index(card)# find card in the list using index
+                self.deck[position] = "To be replaced"
+
+       
+        print ("\n")
+
+        print (f"Length dev_deck {len(dev_deck.deck)}")
+       
+       
+        for card in self.deck:
+            print (card) 
+                
+        # Chair 1: 1-5
+        # Chair 2: 6-10
+        # Chair 3: 11-15
+        # Chair 4: 16-20
+        
+        # NOW TO REPLACE ALL THE "TO BE REPLACED" PLACE HOLDERS 
+        # take the last 5 cards and put them in
+
+        five_cards_to_put_in = []
+        five_cards_found_near_bottom = False
+        i = (len(self.deck)-1) # position of last item
+        
+        print (f"Length self.deck-1 = {i}")
+
+        print (f"Length dev_deck {len(dev_deck.deck)}")
+
+        while five_cards_found_near_bottom == False:
+            if self.deck[i] != "To be replaced":
+                print ("found a card object")
+                card_for_list = self.deck.pop(i)
+                print (f"card to add {card_for_list}")
+                five_cards_to_put_in.append(card_for_list)
+
+            i -=1
+            if len(five_cards_to_put_in) == 5:
+                five_cards_found_near_bottom = True
+
+        print ("\n")
+        # INSERT DESIRED CARDS INTO THE DECK 
+        for card in self.deck:
+            print (card)
+        print ("\n")
+        print (five_cards_to_put_in)
+        print ("\n")
+
+        print (f"Length dev_deck {len(dev_deck.deck)}")
+
+        for count,card in enumerate(self.deck):
+            print (count)
+            if card == "To be replaced":
+                print("Match found")
+                position = self.deck.index(card)# find card in the list using index
+                swap_card = five_cards_to_put_in.pop(0)
+                self.deck[position] = swap_card
+                print (f"Cards left in five card list {len(five_cards_to_put_in)}")
+        print ("\n")
+        print (f"Length dev_deck {len(dev_deck.deck)}")
+
+        for card in self.deck:
+            print (card)
+
+        insert_pos = 5*(chair-1)
+
+        for card_object in desired_card_objects:
+            self.deck.insert(insert_pos,card_object)
+        
+        print ("\n")
+        print (f"Length dev_deck {len(dev_deck.deck)}")
+
+        for card in self.deck:
+            print (card)
+
+        # print ("\ndev_deck card")
+        # for card in dev_deck.deck:
+            
+        #     print (card)
+
+        # turning this
+
+        # Nine of Diamonds
+        # Nine of Clubs
+        # King of Clubs
+        # Queen of Clubs
+        # Ten of Clubs
+
+        # into this
+
+        # [["Nine","Diamonds"],
+        # ["Nine","Clubs"],
+        # ["King","Clubs"],
+        # [Queen","Clubs],
+        # [Ten","Clubs]]
+
+
+    def repeat_deck_from_list(self):
+            # If a certain card arrangement causes an error we need to be able to copy and paste
+            # the results and have this method recreate it for us. So this takes the verticle unseparated result
+            # and will distribute the cards in that manner. 
+
+
+        # READ .TXT FILE WHERE OUTPUT CARDS WERE COPIED
+        # THEN BREAK DOWN THE TEXT INTO LISTED ITEMS
+
+        copy_card_file = open("Euchre-with-CPU-opponents\CopyDeckHere.txt","r")
+
+        big_list = copy_card_file.readlines()
+        copy_card_file.seek(0)
+        # print(copy_card_file.readlines())
+        # print (big_list)
+        copy_card_file.close()
+
+        # example from Kite, https://kite.com/python/answers/how-to-remove-newline-character-from-a-list-in-python
+
+        # sample_list = ["a", "b\n", "c\n"]
+        # converted_list = []
+        # for element in sample_list:
+        #     converted_list.append(element.strip())
+        # print(converted_list)
+
+        big_list_minus_returns = []
+
+        for line in big_list:
+            big_list_minus_returns.append(line.strip())
+
+        # print(big_list_minus_returns)
+
+        big_list_minus_ofs = []
+
+        for line in big_list_minus_returns:
+            big_list_minus_ofs.append(line.replace(" of",''))
+
+        # print(big_list_minus_ofs)
+
+        # https://mkyong.com/python/python-how-to-split-a-string/
+
+        big_list_final = []
+
+
+        for string in big_list_minus_ofs:
+            big_list_final.append(string.split())
+
+        # print (f"big_list_final is {len(big_list_final)}")
+
+        # big_list_final looks like [['Nine', 'Diamonds'], ['Nine', 'Clubs'],...[]]
+
+        # NOW LISTED ITEMS ARE READY TO BE COMPARED TO CARD OBJECTS
+        # print (f"dev_deck.deck len is {len(self.deck)}")
+
+        new_deck_to_replace = []
+
+        
+        for count, card_deets in enumerate(big_list_final):
+            for card_object in self.deck:
+                if card_object.rank == card_deets[0] and card_object.suit == card_deets[1]:
+                    # pop that card out and put in desired_order_card_objects, to be put back in deck in order later 
+                    position = self.deck.index(card_object)# find card in the list using index
+                    card_for_new_deck = self.deck[position]
+                    new_deck_to_replace.append(card_for_new_deck)
+                    # print (f"found match, position {count}")
+                    # Find card, pop card, insert in list where belong
+                    # position = self.deck.index(card_object)# find card in the list using index
+                    # card_to_move = self.deck.pop(position)
+                    # self.deck.insert(count,card_to_move)
+                    # self.deck.append(card_to_move)
+        # Deck ought to be reorganized now
+        
+        # print (f"new_deck_to_replace len is {len(new_deck_to_replace)}")
+
+        
+        self.deck.clear()
+
+        # print (f"dev.deck len is {len(self.deck)}")
+
+        for card in new_deck_to_replace:
+            self.deck.append(card)
+
+        # print (f"dev.deck len is {len(self.deck)}")
+
+
+        spacing_variables = [21,10,0]
+        # print ("Mainlist        dev_deck")
+        # for count, card_object in enumerate(self.deck):
+        #     print (count)
+        #     # print (f" {big_list_final[count]} should be --> {self.deck[count]}" )
+            
+        #     print("%-21s %-10s %-19s" %(big_list_final[count],"is -->",self.deck[count]))
+
+        counter_list_suits = [0,0,0,0]
+        counter_list_ranks = [0,0,0,0,0,0]
+
+        for count, suit in enumerate(suits):
+            for card in self.deck:
+                if card.suit == suit:
+                    counter_list_suits[count] = counter_list_suits[count] + 1
+        # for count, card_deets in enumerate(big_list_final):
+        for count,rank in enumerate(ranks): 
+            for card in self.deck:
+                if card.rank == rank:
+                    counter_list_ranks[count] = counter_list_ranks[count] + 1
+        # print (counter_list_suits)
+        # print (counter_list_ranks)
+
+    def deal(self):
+        single_card = self.deck.pop(0)
+        return single_card
+    
+    def put_back(self,card):
+        self.deck.insert(0,card)
+    
+
+class Dev_Hand:
+    
+    def __init__(self,name):
+        self.cards = []  # start with an empty list as we did in the Deck class
+        self.value = 0   # start with zero value
+        self.name = name
+        self.color = ''
+        
+    def __str__(self):
+        
+        return self.name
+    
+    def add_card(self,card):
+        self.cards.append(card)
+
+class Playset:
+    def __init__(self, name, who_called, trump, card_values, teams, table_position_list):
+        self.name = name
+        self.who_called = who_called
+        self.trump = trump
+        self.card_values = card_values
+        self.teams = teams
+        self.table_position_list = table_position_list
+
+
+#Dev Class Definitions
+#Dev Class Definitions
+
+
+### Classes ###
+### Classes ###
+### Classes ###
+
+################################
 
 ### Functions ###
 ### Functions ###
@@ -1588,8 +2157,6 @@ team_ew = ["chair_2","chair_4"]
 # NOTE: regular game execution moved to storage
 
 
-# python debugger 
-pdb.set_trace()
 
 # how_many_humans() -->table_positions()
 table_position_dict = how_many_humans()
@@ -1623,6 +2190,7 @@ for chair in table_position_list:
 
 
 
+
 euchre_deck = Dev_Deck()
 print (euchre_deck)
 euchre_deck.shuffle()
@@ -1632,16 +2200,11 @@ print (euchre_deck)
 for player_hand in list_of_hand_objects:
     deal_cards(player_hand,euchre_deck)
     
-for player_hand in list_of_hand_objects:
-    print (f"Cards in {player_hand}'s hand")
-    for card in player_hand.cards:
-        print (card)
-
-one_and_done_suit = top_card_suit(euchre_deck)
-
-
-for player_hand in list_of_hand_objects:
-    deal_cards(player_hand,euchre_deck)
+# commented out duplicate, may have value
+# for player_hand in list_of_hand_objects:
+#     print (f"Cards in {player_hand}'s hand")
+#     for card in player_hand.cards:
+#         print (card)
     
 for player_hand in list_of_hand_objects:
     print("\n")
@@ -1651,6 +2214,7 @@ for player_hand in list_of_hand_objects:
         print (card)
 print ("\n")
 one_and_done_suit = top_card_suit(euchre_deck)
+
 
 
 ## TRUMP SELECTION ##
@@ -1671,7 +2235,8 @@ if who_called[0].lower() == 'c':
     pick_up_and_switch(dealers_turn,dealers_turn,one_and_done_suit,euchre_deck,card = '')
     whats_trump = one_and_done_suit
     ### Hidden pass along to grab_top_card
-
+# python debugger 
+pdb.set_trace()   
 
 else:
     print(f"Who ordered up? --> {who_called} ")
@@ -2115,576 +2680,7 @@ table = []
 # for name in vars().keys():#     print (name)# for value in vars().values():#     print (value)
 
 
-################################
 
-### Classes ###
-### Classes ###
-### Classes ###
-
-
-
-### Main Classes ###
-### Main Classes ###
-
-
-class Card:
-    
-    def __init__(self,suit,rank):
-        self.suit = suit
-        self.rank = rank
-        
-    def __str__(self):
-        return self.rank + ' of ' + self.suit
-
-
-class Deck:
-
-    def __init__(self):
-        self.deck = []  # start with an empty list
-        for suit in suits:
-            for rank in ranks:
-                self.deck.append(Card(suit,rank))
-                
-    def __str__(self):
-        deck_comp = ''  # start with an empty string
-        for card in self.deck:
-            deck_comp += '\n '+card.__str__() # add each Card object's print string
-        return 'The deck has:' + deck_comp
-                
-    def shuffle(self):
-        random.shuffle(self.deck)
-    
-    # Future goal: Deals must be dealt by going around the table twice 
-    # giving everyone at least one card each time around   
-    
-    def deal(self):
-        single_card = self.deck.pop()
-        return single_card
-    
-    def put_back(self,card):
-        self.deck.insert(0,card)
-    
-
-class Hand:
-    
-    def __init__(self,name):
-        self.cards = []  # start with an empty list as we did in the Deck class
-        self.value = 0   # start with zero value
-        self.name = name
-        self.color = ''
-        
-    def __str__(self):
-        
-        return self.name
-    
-    def add_card(self,card):
-        self.cards.append(card)
-
-
-### Main Classes ###
-### Main Classes ###
-
-
-
-#Dev Class Definitions
-#Dev Class Definitions
-
-
-class Dev_Card:
-    
-    def __init__(self,suit,rank):
-        self.suit = suit
-        self.rank = rank
-        self.value = values[self.rank]
-        
-    def __str__(self):
-        return self.rank + ' of ' + self.suit
-    
-    def make_rank_trump(self,jick = False):
-        if jick == True:
-            old_rank = self.rank
-            self.rank = "Jick"
-            trump_rank = "t" + self.rank
-            self.rank = trump_rank
-            # print (f"old rank was {old_rank} of {self.suit}")
-            # print (f"new rank is {trump_rank} of {whats_trump}")
-            self.value = values[self.rank]    
-            self.suit = whats_trump       
-        else:
-            old_rank = self.rank
-            trump_rank = "t" + old_rank
-            self.rank = trump_rank
-            # print (f"old rank was {old_rank} of {self.suit}") 
-            # print (f"new rank is {trump_rank} of {card.suit}")
-            self.value = values[self.rank]
-
-
-class Dev_Deck:
-
-    def __init__(self):
-        self.deck = []  # start with an empty list
-        for suit in suits:
-            for rank in ranks:
-                self.deck.append(Dev_Card(suit,rank))
-                
-    def __str__(self):
-        deck_comp = ''  # start with an empty string
-        for card in self.deck:
-            deck_comp += '\n '+card.__str__() # add each Card object's print string
-        return 'The deck has:' + deck_comp
-                
-    def shuffle(self):
-        random.shuffle(self.deck)
-        
-    def shuffle_bottom(self):
-        to_shuffle = self.deck[6:]
-        random.shuffle(to_shuffle)
-        self.deck = self.deck[:6]+to_shuffle
-        
-    def hearts_for_dealer(self):
-        list_o_ranks = ["Jack","Ace","King","Queen","Ten"]
-        list_o_tcards = []
-        nine_for_top = []
-        for count,card in enumerate(self.deck):
-            if card.rank in list_o_ranks and card.suit == 'Hearts': 
-                tcard = self.deck.pop(count)  # there may be a lucky strike here with pop and insert
-                self.deck.insert(0,tcard) # this messed up the for loop observing the list in other trys
-            if card.rank == "Nine" and card.suit == 'Hearts':
-                nine_for_top = self.deck.pop(count)
-        
-        self.deck.insert(20,nine_for_top)
-        
-    def hearts_for_2nd(self):
-        
-    ## New list swapping
-        list_o_ranks = ["Jack","Ace","King","Queen","Ten"]
-        list_o_five_tcards = []
-        nine_for_top = []
-        new_list = []    
-        
-    ## Pull the desired cards   
-
-        for card in self.deck:
-            if card.rank in list_o_ranks and card.suit == 'Hearts':  
-                list_o_five_tcards.append(card)
-            if card.rank == "Nine" and card.suit == 'Hearts':
-                nine_for_top = card
-
-    ## Make new list leaving out the five tcards and the nine
-
-        for card in self.deck:
-            if card.rank == "Nine" and card.suit == 'Hearts':
-                continue
-            if card not in list_o_five_tcards:
-                new_list.append(card)
-
-
-#         print ("same list, no tcards or tnine, new_list is")
-    
-    ## quick print as objects need to be called directly for print string
-#         for card in new_list:
-#             print (card)
-
-        for card in list_o_five_tcards:
-            new_list.insert(5,card)
-
-    ## Add tNine to 4th spot
-
-        if nine_for_top != []:
-            new_list.insert(-3,nine_for_top)
-
-    ## Return final list   
-    
-    ## quick print to check, as card objects won't print unless directly called on
-#         for card in new_list:
-#             print (card)
-        
-        self.deck = new_list
-
-
-    def hearts_for_2nd_and_one_off_suited(self):
-            
-        ## New list swapping
-            list_o_ranks = ["Jack","Ace","King","Queen","Ten"]
-            list_o_five_tcards = []
-            nine_for_top = []
-            new_list = []    
-            
-        ## Pull the desired cards   
-
-            for card in self.deck:
-                if card.rank in list_o_ranks and card.suit == 'Hearts':  
-                    list_o_five_tcards.append(card)
-                if card.rank == "Nine" and card.suit == 'Hearts':
-                    nine_for_top = card
-
-        ## Make new list leaving out the five tcards and the nine
-
-            for card in self.deck:
-                if card.rank == "Nine" and card.suit == 'Hearts':
-                    continue
-                if card not in list_o_five_tcards:
-                    new_list.append(card)
-        
-        ## Here's where I pull one random card and will add it later
-            random_card = random.choice(new_list)
-            new_list.remove(random_card)
-            # list is now one shorter
-
-
-    #         print ("same list, no tcards or tnine, new_list is")
-        
-        ## quick print as objects need to be called directly for print string
-    #         for card in new_list:
-    #             print (card)
-
-            for card in list_o_five_tcards:
-                new_list.insert(5,card)
-
-        ## Now I'm adding a random card to their hand
-            new_list.insert(5,random_card)
-
-        ## Add tNine to 4th spot
-
-            if nine_for_top != []:
-                new_list.insert(-3,nine_for_top)
-
-        ## Return final list   
-        
-        ## quick print to check, as card objects won't print unless directly called on
-    #         for card in new_list:
-    #             print (card)
-            
-            self.deck = new_list
-    
-    # Future goal: Deals must be dealt by going around the table twice 
-    # giving everyone at least one card each time around   
-    
-    def pick_a_hand_give_cards_from_list(self):
-            # If a certain card arrangement causes an error we need to be able to copy and paste
-            # the results and have this method recreate it for us. So this takes the verticle unseparated result
-            # and will distribute the cards in that manner. 
-
-        # SELECT WHICH CHAIR TO BE GIVEN THE CARDS
-        chair = -1
-        acceptable_answer = [1,2,3,4]
-        while chair not in acceptable_answer:
-            chair = input("Swapping cards from text file into \nselected chair \nplease select Chair # 1,2,3,or 4")
-            if not (chair.isdigit()):
-                chair = -1
-                print ("That's not reading right, try again please")
-            else: 
-                chair = int(chair)
-            # Error exception for empty string here, can't make empty string an integer
-
-        # READ .TXT FILE WHERE OUTPUT CARDS WERE COPIED
-        # THEN BREAK DOWN THE TEXT INTO LISTED ITEMS
-
-        copy_card_file = open("Euchre-with-CPU-opponents\copyhere.txt","r")
-
-        big_list = copy_card_file.readlines()
-        copy_card_file.seek(0)
-        print(copy_card_file.readlines())
-        print (big_list)
-        copy_card_file.close()
-
-        # example from Kite, https://kite.com/python/answers/how-to-remove-newline-character-from-a-list-in-python
-
-        # sample_list = ["a", "b\n", "c\n"]
-        # converted_list = []
-        # for element in sample_list:
-        #     converted_list.append(element.strip())
-        # print(converted_list)
-
-        big_list_minus_returns = []
-
-        for line in big_list:
-            big_list_minus_returns.append(line.strip())
-
-        print(big_list_minus_returns)
-
-        big_list_minus_ofs = []
-
-        for line in big_list_minus_returns:
-            big_list_minus_ofs.append(line.replace(" of",''))
-
-        print(big_list_minus_ofs)
-
-        # https://mkyong.com/python/python-how-to-split-a-string/
-
-        big_list_final = []
-
-
-        for string in big_list_minus_ofs:
-            big_list_final.append(string.split())
-
-        print (big_list_final)
-
-        # big_list_final looks like [['Nine', 'Diamonds'], ['Nine', 'Clubs'],...[]]
-
-        # NOW LISTED ITEMS ARE READY TO BE COMPARED TO CARD OBJECTS
-
-        # find card objects that match text list parts
-        # store those objects in this players hand
-
-        ## Pull the desired cards   
-        desired_card_objects = []
-
-        for card_object in self.deck:
-            for card_deets in big_list_final:
-                if card_object.rank == card_deets[0] and card_object.suit == card_deets[1]:  
-                    desired_card_objects.append(card_object)
-
-        # WITH A LIST OF DESIRED CARDS, make place holders where the same cards are in the deck
-
-        for card in self.deck:
-            if card in desired_card_objects:
-                position = self.deck.index(card)# find card in the list using index
-                self.deck[position] = "To be replaced"
-
-       
-        print ("\n")
-
-        print (f"Length dev_deck {len(dev_deck.deck)}")
-       
-       
-        for card in self.deck:
-            print (card) 
-                
-        # Chair 1: 1-5
-        # Chair 2: 6-10
-        # Chair 3: 11-15
-        # Chair 4: 16-20
-        
-        # NOW TO REPLACE ALL THE "TO BE REPLACED" PLACE HOLDERS 
-        # take the last 5 cards and put them in
-
-        five_cards_to_put_in = []
-        five_cards_found_near_bottom = False
-        i = (len(self.deck)-1) # position of last item
-        
-        print (f"Length self.deck-1 = {i}")
-
-        print (f"Length dev_deck {len(dev_deck.deck)}")
-
-        while five_cards_found_near_bottom == False:
-            if self.deck[i] != "To be replaced":
-                print ("found a card object")
-                card_for_list = self.deck.pop(i)
-                print (f"card to add {card_for_list}")
-                five_cards_to_put_in.append(card_for_list)
-
-            i -=1
-            if len(five_cards_to_put_in) == 5:
-                five_cards_found_near_bottom = True
-
-        print ("\n")
-        # INSERT DESIRED CARDS INTO THE DECK 
-        for card in self.deck:
-            print (card)
-        print ("\n")
-        print (five_cards_to_put_in)
-        print ("\n")
-
-        print (f"Length dev_deck {len(dev_deck.deck)}")
-
-        for count,card in enumerate(self.deck):
-            print (count)
-            if card == "To be replaced":
-                print("Match found")
-                position = self.deck.index(card)# find card in the list using index
-                swap_card = five_cards_to_put_in.pop(0)
-                self.deck[position] = swap_card
-                print (f"Cards left in five card list {len(five_cards_to_put_in)}")
-        print ("\n")
-        print (f"Length dev_deck {len(dev_deck.deck)}")
-
-        for card in self.deck:
-            print (card)
-
-        insert_pos = 5*(chair-1)
-
-        for card_object in desired_card_objects:
-            self.deck.insert(insert_pos,card_object)
-        
-        print ("\n")
-        print (f"Length dev_deck {len(dev_deck.deck)}")
-
-        for card in self.deck:
-            print (card)
-
-        # print ("\ndev_deck card")
-        # for card in dev_deck.deck:
-            
-        #     print (card)
-
-        # turning this
-
-        # Nine of Diamonds
-        # Nine of Clubs
-        # King of Clubs
-        # Queen of Clubs
-        # Ten of Clubs
-
-        # into this
-
-        # [["Nine","Diamonds"],
-        # ["Nine","Clubs"],
-        # ["King","Clubs"],
-        # [Queen","Clubs],
-        # [Ten","Clubs]]
-
-
-    def repeat_deck_from_list(self):
-            # If a certain card arrangement causes an error we need to be able to copy and paste
-            # the results and have this method recreate it for us. So this takes the verticle unseparated result
-            # and will distribute the cards in that manner. 
-
-
-        # READ .TXT FILE WHERE OUTPUT CARDS WERE COPIED
-        # THEN BREAK DOWN THE TEXT INTO LISTED ITEMS
-
-        copy_card_file = open("Euchre-with-CPU-opponents\CopyDeckHere.txt","r")
-
-        big_list = copy_card_file.readlines()
-        copy_card_file.seek(0)
-        # print(copy_card_file.readlines())
-        # print (big_list)
-        copy_card_file.close()
-
-        # example from Kite, https://kite.com/python/answers/how-to-remove-newline-character-from-a-list-in-python
-
-        # sample_list = ["a", "b\n", "c\n"]
-        # converted_list = []
-        # for element in sample_list:
-        #     converted_list.append(element.strip())
-        # print(converted_list)
-
-        big_list_minus_returns = []
-
-        for line in big_list:
-            big_list_minus_returns.append(line.strip())
-
-        # print(big_list_minus_returns)
-
-        big_list_minus_ofs = []
-
-        for line in big_list_minus_returns:
-            big_list_minus_ofs.append(line.replace(" of",''))
-
-        # print(big_list_minus_ofs)
-
-        # https://mkyong.com/python/python-how-to-split-a-string/
-
-        big_list_final = []
-
-
-        for string in big_list_minus_ofs:
-            big_list_final.append(string.split())
-
-        # print (f"big_list_final is {len(big_list_final)}")
-
-        # big_list_final looks like [['Nine', 'Diamonds'], ['Nine', 'Clubs'],...[]]
-
-        # NOW LISTED ITEMS ARE READY TO BE COMPARED TO CARD OBJECTS
-        # print (f"dev_deck.deck len is {len(self.deck)}")
-
-        new_deck_to_replace = []
-
-        
-        for count, card_deets in enumerate(big_list_final):
-            for card_object in self.deck:
-                if card_object.rank == card_deets[0] and card_object.suit == card_deets[1]:
-                    # pop that card out and put in desired_order_card_objects, to be put back in deck in order later 
-                    position = self.deck.index(card_object)# find card in the list using index
-                    card_for_new_deck = self.deck[position]
-                    new_deck_to_replace.append(card_for_new_deck)
-                    # print (f"found match, position {count}")
-                    # Find card, pop card, insert in list where belong
-                    # position = self.deck.index(card_object)# find card in the list using index
-                    # card_to_move = self.deck.pop(position)
-                    # self.deck.insert(count,card_to_move)
-                    # self.deck.append(card_to_move)
-        # Deck ought to be reorganized now
-        
-        # print (f"new_deck_to_replace len is {len(new_deck_to_replace)}")
-
-        
-        self.deck.clear()
-
-        # print (f"dev.deck len is {len(self.deck)}")
-
-        for card in new_deck_to_replace:
-            self.deck.append(card)
-
-        # print (f"dev.deck len is {len(self.deck)}")
-
-
-        spacing_variables = [21,10,0]
-        # print ("Mainlist        dev_deck")
-        # for count, card_object in enumerate(self.deck):
-        #     print (count)
-        #     # print (f" {big_list_final[count]} should be --> {self.deck[count]}" )
-            
-        #     print("%-21s %-10s %-19s" %(big_list_final[count],"is -->",self.deck[count]))
-
-        counter_list_suits = [0,0,0,0]
-        counter_list_ranks = [0,0,0,0,0,0]
-
-        for count, suit in enumerate(suits):
-            for card in self.deck:
-                if card.suit == suit:
-                    counter_list_suits[count] = counter_list_suits[count] + 1
-        # for count, card_deets in enumerate(big_list_final):
-        for count,rank in enumerate(ranks): 
-            for card in self.deck:
-                if card.rank == rank:
-                    counter_list_ranks[count] = counter_list_ranks[count] + 1
-        # print (counter_list_suits)
-        # print (counter_list_ranks)
-
-    def deal(self):
-        single_card = self.deck.pop(0)
-        return single_card
-    
-    def put_back(self,card):
-        self.deck.insert(0,card)
-    
-
-class Dev_Hand:
-    
-    def __init__(self,name):
-        self.cards = []  # start with an empty list as we did in the Deck class
-        self.value = 0   # start with zero value
-        self.name = name
-        self.color = ''
-        
-    def __str__(self):
-        
-        return self.name
-    
-    def add_card(self,card):
-        self.cards.append(card)
-
-class Playset:
-    def __init__(self, name, who_called, trump, card_values, teams, table_position_list):
-        self.name = name
-        self.who_called = who_called
-        self.trump = trump
-        self.card_values = card_values
-        self.teams = teams
-        self.table_position_list = table_position_list
-
-
-#Dev Class Definitions
-#Dev Class Definitions
-
-
-### Classes ###
-### Classes ###
-### Classes ###
-
-################################
 
 
 

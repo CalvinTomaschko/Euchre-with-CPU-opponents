@@ -935,10 +935,13 @@ def pc_is_dealer_hand_value(all_card_list,hand,trump):
 
 def pc_best_playable_suit(hand,list_of_suit_values,trump_picker):
     # This function is for select_trump_after_flip only
+    # See if there's a strong suit in hand, and if it's strong enough to call trump on
+   
     print ("\n PcBestPlayableSuits FUNCTION")
     print (f"this is hand {hand}")
 
     values_by_suit_trump = list_of_suit_values
+    # a list in order hearts, diamonds, spades, clubs, and the number total of values if trump
     print(f"values by suit trump list \n -->{values_by_suit_trump}")
     chosen_suit = ''
     
@@ -1172,9 +1175,12 @@ def select_trump_after_flip():
             # call function that uses the suit to pursue to choose yay or nay and give response
 
             print (f"suit to pursue selection is --> {suit_to_pursue}")
-            value_for_this_suit = pc_hand_value(list_of_hand_objects[trump_picker-1],suit_type)
+            value_for_this_suit = pc_hand_value(list_of_hand_objects[trump_picker-1],suit_to_pursue)
+            # def pc_hand_value(which_hand,trump='off'):
             
-            
+            #NOTE: Where I left off Friday in September
+
+
             if pc_call_pick_up(list_of_hand_objects[trump_picker-1],suit_to_pursue,value_for_this_suit,trump_picker): 
                 # The arguments are "hand", maybe_trump aka 'suit',value, and trump_picker
                 trump_chosen == True
@@ -2226,7 +2232,9 @@ two_part_response = pass_or_order_up(one_and_done_suit)
 ordered_up_qm = two_part_response[0]
 who_called = two_part_response[1]
 print(f"Ordered up is --> {ordered_up_qm}")
-if who_called[0].lower() == 'c':
+
+# NOTE: changing 'c' to 'p' for 'pc player' detection
+if who_called[0].lower() == 'p': # tests if 'p'c or 'h'uman
     print(f"{table_position_dict[who_called]},{who_called}, ordered up")
    
     print (dealers_turn)
@@ -2235,12 +2243,11 @@ if who_called[0].lower() == 'c':
     pick_up_and_switch(dealers_turn,dealers_turn,one_and_done_suit,euchre_deck,card = '')
     whats_trump = one_and_done_suit
     ### Hidden pass along to grab_top_card
-# python debugger 
-pdb.set_trace()   
+ 
 
 else:
     print(f"Who ordered up? --> {who_called} ")
-
+ 
 
 if not ordered_up_qm: 
     whats_trump_who_called = select_trump_after_flip()
@@ -2249,6 +2256,8 @@ if not ordered_up_qm:
     print (f"what_trump is --> {whats_trump}")
     print (f"who_called is --> {who_called}")
 
+# python debugger 
+pdb.set_trace() 
 
 # NOTE: may have to add in that when dealer is screwed their team is the one that called
 

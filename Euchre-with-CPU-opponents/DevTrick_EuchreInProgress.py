@@ -2166,7 +2166,7 @@ team_ew = ["chair_2","chair_4"]
 
 # how_many_humans() -->table_positions()
 table_position_dict = how_many_humans()
-table_position_dict = table_positions_auto(1)
+# table_position_dict = table_positions_auto(1)
 
 table_position_list = [] 
 

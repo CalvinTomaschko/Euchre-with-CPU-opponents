@@ -776,6 +776,7 @@ def pc_is_dealer_hand_value(all_card_list,hand,trump):
     # all_card_list  -->  [ [card.rank,card.suit,temp_value] , [cr,cs,tv] , 3 more =5 cards total]
     # hand   --> 'Chair#'
     # trump  -->  string of a suit, "Spades"
+
     
     list_of_numbered_suits = pc_check_for_suits(hand)
     
@@ -940,8 +941,83 @@ def pc_best_playable_suit(hand,list_of_suit_values,trump_picker):
     print ("\n PcBestPlayableSuits FUNCTION")
     print (f"this is hand {hand}")
 
-    values_by_suit_trump = list_of_suit_values
+    # take list of suits [hearts, diamonds, spades, clubs]
+    # make list of values and order that list [[hearts,3],[diamonds,12],[spades,8],[clubs,0]]
+    # then reorder them --> [[diamonds,12],[spades,8],[hearts,3],[clubs,0]]
+    # then return top two
+
+    # list_of_suit_values
     # a list in order hearts, diamonds, spades, clubs, and the number total of values if trump
+    
+    # zip two lists together
+    suit_names = [hearts, diamonds, spades, clubs]
+    values_by_suit_trump = zip(suit_names,list_of_suit_values)
+
+    #reorder the list based on second value
+    ordered_values_by_suit_trump = sorted(values_by_suit_trump, key=lambda x: x[1])
+    # Ex: [[diamonds,12],[spades,8],[hearts,3],[clubs,0]]
+    
+    # randomize results if theirs tied entries
+    # do any scores match other scores? 
+    matching_scores = False
+    matches = []
+    for i in range(len(ordered_values_by_suit_trump)):
+        for j in range(i+1,len(ordered_values_by_suit_trump)): # compare each to others
+            # if there's a score match
+            if  ordered_values_by_suit_trump[i][1]==ordered_values_by_suit_trump[j][1]:
+                matching_scores = True
+                if matches == []:
+                    # equal to max then add to the list, otherwise leave off
+                    matches.append(ordered_values_by_suit_trump[i],ordered_values_by_suit_trump[j])
+                else:
+                    if ordered_values_by_suit_trump[i][1] == max(matches, key=lambda x: x[1].value):
+                        matches.append(ordered_values_by_suit_trump[i],ordered_values_by_suit_trump[j])
+
+   
+    # matches_suits_only
+
+    if matching_scores == True:
+        to_scramble_list = []
+        # randomize the matches
+        # pull values out of list at a spot, randomize them, then insert them back in at index
+        matches_set = set(matches) # set makes matching items unique
+        matches_set_suits_only = []
+        for x in matches_set:
+	        matches_set_suits_only.append(x[0])
+
+        # Ex [[diamonds,10],[spades,10]]
+        index_extract_point = -1
+        for spot,suit_and_score in enumerate(ordered_values_by_suit_trump):
+        # # Ex: [[diamonds,12],[spades,8],[hearts,3],[clubs,0]]
+            # NOTE: Look here again
+            the_suit = suit_and_score[0]
+            if the_suit in matches_set_suits_only:
+                # now pull how ever many matches there are scramble and put back
+                index_extract_point = spot
+                for number in range(index_extract_point,len(matches_set)):
+                    to_scramble_list.append(ordered_values_by_suit_trump.pop(index_extract_point))
+                # scramble
+               random.shuffle(to_scramble_list)
+               # now put back in
+               for scrambled_egg in to_scramble_list:
+                   ordered_values_by_suit_trump.insert(index_extract_point, scrambled_egg)
+                                        
+                break
+
+
+
+        # pulled matches = list.pop
+
+
+
+    # NOTE: a quick way to tell if there's repeats in a list is below
+    # this could be used above with a lamda function pointing to only the 2nd value
+    # a_list = [1, 2, 1]
+    # a_set = set(a_list)
+    # contains_duplicates = len(a_list) != len(a_set)
+    # print(contains_duplicates)
+
+
     print(f"values by suit trump list \n -->{values_by_suit_trump}")
     chosen_suit = ''
     
@@ -954,24 +1030,33 @@ def pc_best_playable_suit(hand,list_of_suit_values,trump_picker):
     # now choose the highest valued trump suit to pursue, 
     # if there's a tie randomly choose highest
     
+    chosen_suits = [] # returning 1st and 2nd place suits in case of suit was already flipped down
+
     check_suit_list = []
+    two_suits_not_found = True
     
     print (f"Max value in values_by_suit_trump is {max(values_by_suit_trump)}")
     
+
+    # Make first choice to add to chosen suits (or find 2 max scored suits)
     indicy_walker = 0
-    
     for val in values_by_suit_trump:
         if val == max(values_by_suit_trump):
             check_suit_list.append(indicy_walker)
         indicy_walker +=1
     
     print(f"This list is of suits (indicies) at max value h0,d1,s2,c3 {check_suit_list}")
-    
+
+
     final_check = 0 # the indicy that we will choose in suits tuple
     
-    if len(check_suit_list)>1:
+    if len(check_suit_list)>1: # there's 2 or more suits of same max value
+        two_suits_not_found = False 
+        #randomize the two suits and set as output chosen_suits
+        random.shuffle(check_suit_list)
         final_check = check_suit_list[random.randint(1,len(check_suit_list))-1]
-        chosen_suit = suits[final_check]
+        for suit in check_suit_list:
+            chosen_suits.append(suit)
     
     else:
         final_check = check_suit_list[0]
@@ -983,7 +1068,36 @@ def pc_best_playable_suit(hand,list_of_suit_values,trump_picker):
     # Now with a chosen suit we make a decision by returning the needed
     # values for call_pick_up()
     
-    return (chosen_suit)
+    # Now make second choice and it can't be the same as the already chosen suit, if needed
+    if two_suits_not_found:
+        check_second_suit_list = []
+        indicy_walker = 0
+        for val in values_by_suit_trump:
+            if not val == max(values_by_suit_trump): # adding all not max values
+                check_second_suit_list.append(indicy_walker) # example: [0,1,3] <-- indicy 2 was max            
+            indicy_walker +=1
+        
+        for indicy in check_second_suit_list
+        
+
+        
+        
+        print(f"This list is of suits (indicies) at max value h0,d1,s2,c3 {check_suit_list}")
+        
+        final_check = 0 # the indicy that we will choose in suits tuple
+        
+        if len(check_suit_list)>1:
+            final_check = check_suit_list[random.randint(1,len(check_suit_list))-1]
+            chosen_suit = suits[final_check]
+        
+        else:
+            final_check = check_suit_list[0]
+            chosen_suit = suits[final_check]
+        print (f"Here's the final suit (indicies) check chosen h0,d1,s2,c3; {final_check} !")
+
+
+
+    return (chosen_suits)
     
     # Now write program to call the suit or not like pc_call_pick_up does
     
@@ -1093,7 +1207,7 @@ def pc_single_suited(list_hand_suits):
 # who's left of the dealer
 # then player selection on puting card away if trump is called
 
-def select_trump_after_flip():
+def select_trump_after_flip(suit_flipped):
     print ("\n SELECT TRUMP AFTER FLIP FUNCTION")
     
     ## Dealers turn counts 0,1,2,3 
@@ -1102,8 +1216,15 @@ def select_trump_after_flip():
     # trump_picker represents a player to point at, there's no player 0 only 1-4
     print (f"STAF Here's trump picker {trump_picker}")
     
-    
-    
+
+    # Make list of legal answers
+    list_of_all_poss_answers = ['s','d','h','c','p']
+    list_of_legal_answers = []
+    for letter in list_of_all_poss_answers:
+        if letter == suit_flipped[0].lower() # first letter of suit_flipped:
+            pass
+        else:
+            list_of_legal_answers.append(letter)
     
     trump_picker = table_position_list.index(dealers_turn)+1 # trump picker points at a player, 
     # no player 0
@@ -1170,15 +1291,17 @@ def select_trump_after_flip():
             ### NEW THOUGHT!
             #if no value in list of values over certain number then don't bother checking:
             # else:
-            suit_to_pursue = pc_best_playable_suit(list_of_hand_objects[trump_picker-1],list_of_values,trump_picker)
+            suits_to_pursue = pc_best_playable_suit(list_of_hand_objects[trump_picker-1],list_of_values,trump_picker)
+            # NOTE Sept 18th may want to add an arguement to the function that defaults to 1st choice but then opts for second choice, or just outputs second choice too
             
             # call function that uses the suit to pursue to choose yay or nay and give response
-
+            suit_to_pursue = suits_to_pursue[0]
+            second_suit_to_pursue = suits_to_pursue[1]
             print (f"suit to pursue selection is --> {suit_to_pursue}")
             value_for_this_suit = pc_hand_value(list_of_hand_objects[trump_picker-1],suit_to_pursue)
             # def pc_hand_value(which_hand,trump='off'):
             
-            #NOTE: Where I left off Friday in September
+            
 
 
             if pc_call_pick_up(list_of_hand_objects[trump_picker-1],suit_to_pursue,value_for_this_suit,trump_picker): 
@@ -1188,7 +1311,21 @@ def select_trump_after_flip():
                 ### EXIT HERE EXIT HERE
             
             if trump_chosen == False:
-                print (f"\n{table_position_dict[chair]} chooses to pass")
+
+                if screw_dealer_counter >= 4:
+                    answer_found = False:
+                    while answer_found = False
+                        #pick the highest one
+                        #if highest suit is not in legal list
+                        #then pick the 2nd highest one
+
+                    # pick the highest one that's not the already flipped,  
+                    # return the choice just like above
+
+
+
+                else:
+                    print (f"\n{table_position_dict[chair]} chooses to pass")
 
         
         ## The ELSE is for  HU players
@@ -1214,7 +1351,7 @@ def select_trump_after_flip():
 
                 # Answer check
                 # Insisting that the answers first letter be that of a suit or to pass
-                while response[0].lower() not in ['s','d','h','c','p']:
+                while response[0].lower() not in list_of_legal_answers:
                     print ('sorry we did not understand your input')
                     response = input(f"{chair} choose trump or pass, respond with 's','d','h', or 'c', otherwise type 'p' for pass")
                     
@@ -2198,7 +2335,7 @@ for chair in table_position_list:
 
 
 euchre_deck = Dev_Deck()
-print (euchre_deck)
+# print (euchre_deck)
 euchre_deck.shuffle()
 
 print (euchre_deck)
@@ -2250,14 +2387,12 @@ else:
  
 
 if not ordered_up_qm: 
-    whats_trump_who_called = select_trump_after_flip()
+    whats_trump_who_called = select_trump_after_flip(one_and_done_suit)
     whats_trump = whats_trump_who_called[0]
     who_called = whats_trump_who_called[1]
     print (f"what_trump is --> {whats_trump}")
     print (f"who_called is --> {who_called}")
 
-# python debugger 
-pdb.set_trace() 
 
 # NOTE: may have to add in that when dealer is screwed their team is the one that called
 
@@ -2293,6 +2428,8 @@ else:
 trick_counter = 0
 table = []
 
+# python debugger 
+pdb.set_trace() 
     
 # Old GAME Execution
 # Old GAME Execution

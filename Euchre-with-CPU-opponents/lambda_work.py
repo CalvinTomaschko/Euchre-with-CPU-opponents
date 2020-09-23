@@ -11,3 +11,18 @@ all_cards_with_lowest_value = list(filter(lambda x: x[3] == a_card_with_lowest_v
 print (a_card_with_lowest_value)
 print(all_cards_with_lowest_value)
 
+
+
+sorted_list = sorted(list_to_sort, key=lambda x: (x[1], x[0]))
+
+
+new_list = sorted(old_list, key=lambda x: x[2])
+
+
+
+ls2=[[0,1,'f'],[4,2,'t'],[9,4,'afsd']]
+def thirdItem(ls):
+    #return the third item of the list
+    return ls[2]
+#Sort according to what the thirdItem function return 
+ls2.sort(key=thirdItem)

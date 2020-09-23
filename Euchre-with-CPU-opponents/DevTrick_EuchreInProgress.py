@@ -997,11 +997,10 @@ def pc_best_playable_suit(hand,list_of_suit_values,trump_picker):
                 for number in range(index_extract_point,len(matches_set)):
                     to_scramble_list.append(ordered_values_by_suit_trump.pop(index_extract_point))
                 # scramble
-               random.shuffle(to_scramble_list)
-               # now put back in
-               for scrambled_egg in to_scramble_list:
+                random.shuffle(to_scramble_list)
+                # now put back in
+                for scrambled_egg in to_scramble_list:
                    ordered_values_by_suit_trump.insert(index_extract_point, scrambled_egg)
-                                        
                 break
 
 

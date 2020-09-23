@@ -950,151 +950,82 @@ def pc_best_playable_suit(hand,list_of_suit_values,trump_picker):
     # a list in order hearts, diamonds, spades, clubs, and the number total of values if trump
     
     # zip two lists together
-    suit_names = [hearts, diamonds, spades, clubs]
-    values_by_suit_trump = zip(suit_names,list_of_suit_values)
+    suit_names = ["hearts", "diamonds", "spades", "clubs"]
+values_by_suit_trump = zip(suit_names,list_of_suit_values)
 
-    #reorder the list based on second value
-    ordered_values_by_suit_trump = sorted(values_by_suit_trump, key=lambda x: x[1])
-    # Ex: [[diamonds,12],[spades,8],[hearts,3],[clubs,0]]
-    
-    # randomize results if theirs tied entries
-    # do any scores match other scores? 
-    matching_scores = False
-    matches = []
-    for i in range(len(ordered_values_by_suit_trump)):
-        for j in range(i+1,len(ordered_values_by_suit_trump)): # compare each to others
-            # if there's a score match
-            if  ordered_values_by_suit_trump[i][1]==ordered_values_by_suit_trump[j][1]:
-                matching_scores = True
-                if matches == []:
-                    # equal to max then add to the list, otherwise leave off
-                    matches.append(ordered_values_by_suit_trump[i],ordered_values_by_suit_trump[j])
-                else:
-                    if ordered_values_by_suit_trump[i][1] == max(matches, key=lambda x: x[1].value):
-                        matches.append(ordered_values_by_suit_trump[i],ordered_values_by_suit_trump[j])
+#reorder the list based on second value
+ordered_values_by_suit_trump = sorted(values_by_suit_trump, key=lambda x: x[1], reverse = True)
+# Ex: [[diamonds,12],[spades,8],[hearts,3],[clubs,0]]
 
+# randomize results if theirs tied entries
+# do any scores match other scores? 
+matching_scores = False
+matches = []
+for i in range(len(ordered_values_by_suit_trump)):
+    for j in range(i+1,len(ordered_values_by_suit_trump)): # compare each to others
+        # if there's a score match
+        if  ordered_values_by_suit_trump[i][1]==ordered_values_by_suit_trump[j][1]:
+            matching_scores = True
+            if matches == []:
+                # equal to max then add to the list, otherwise leave off
+                matches.append(ordered_values_by_suit_trump[i])
+                print("empty add")
+                print(ordered_values_by_suit_trump[i])
+                matches.append(ordered_values_by_suit_trump[j])
+                print("empty add")
+                print(ordered_values_by_suit_trump[j])
+            else:
+                print (f"max matches x[1] {max(matches, key=lambda x: x[1])}")
+                print (f"ordered_values_by_suit_trump[][1]{ordered_values_by_suit_trump}")
+                if ordered_values_by_suit_trump[i][1] == max(matches, key=lambda x: x[1])[1]:
+                    # or ordered_values_by_suit_trump[j][1] == max(matches, key=lambda x: x[1])[1] (J being the differnece)
+                    matches.append(ordered_values_by_suit_trump[i])
+                    print("max add")
+                    print(ordered_values_by_suit_trump[i])
+                    
+                    matches.append(ordered_values_by_suit_trump[j])
+                    print("max add")
+                    print(ordered_values_by_suit_trump[j])
+                
+                    
+print(f"matches --> {matches} \n")
+
+# matches_suits_only
+
+if matching_scores == True:
+    to_scramble_list = []
+    # randomize the matches
+    # pull values out of list at a spot, randomize them, then insert them back in at index
+    matches_set = set(matches) # set makes matching items unique
+    print(f"matches_set --> {matches_set}")
+    matches_set_suits_only = []
+    for x in matches_set:
+        matches_set_suits_only.append(x[0])
+    print (ordered_values_by_suit_trump)
+    # Ex [[diamonds,10],[spades,10]]
+    index_extract_point = -1
+    for spot,suit_and_score in enumerate(ordered_values_by_suit_trump):
+    # # Ex: [[diamonds,12],[spades,8],[hearts,3],[clubs,0]]
+        # NOTE: Look here again
+        the_suit = suit_and_score[0]
+        if the_suit in matches_set_suits_only:
+            # now pull how ever many matches there are scramble and put back
+            index_extract_point = spot
+            for number in range(len(matches_set)):
+                to_scramble_list.append(ordered_values_by_suit_trump.pop(index_extract_point))
+            # scramble
+            print(f"with max repeat taken out {ordered_values_by_suit_trump}")
+            print(f"Scramble_list {to_scramble_list}")
+            random.shuffle(to_scramble_list)
+            print(f"now scrambled {to_scramble_list}")
+            print (f"insert point index {index_extract_point}")            
+            # now put back in
+            for scrambled_egg in to_scramble_list:
+                ordered_values_by_suit_trump.insert(index_extract_point, scrambled_egg)
+            # python debugger 
+            print (f"back to full list {ordered_values_by_suit_trump}")
+            break
    
-    # matches_suits_only
-
-    if matching_scores == True:
-        to_scramble_list = []
-        # randomize the matches
-        # pull values out of list at a spot, randomize them, then insert them back in at index
-        matches_set = set(matches) # set makes matching items unique
-        matches_set_suits_only = []
-        for x in matches_set:
-	        matches_set_suits_only.append(x[0])
-
-        # Ex [[diamonds,10],[spades,10]]
-        index_extract_point = -1
-        for spot,suit_and_score in enumerate(ordered_values_by_suit_trump):
-        # # Ex: [[diamonds,12],[spades,8],[hearts,3],[clubs,0]]
-            # NOTE: Look here again
-            the_suit = suit_and_score[0]
-            if the_suit in matches_set_suits_only:
-                # now pull how ever many matches there are scramble and put back
-                index_extract_point = spot
-                for number in range(index_extract_point,len(matches_set)):
-                    to_scramble_list.append(ordered_values_by_suit_trump.pop(index_extract_point))
-                # scramble
-                random.shuffle(to_scramble_list)
-                # now put back in
-                for scrambled_egg in to_scramble_list:
-                   ordered_values_by_suit_trump.insert(index_extract_point, scrambled_egg)
-                break
-
-
-
-        # pulled matches = list.pop
-
-
-
-    # NOTE: a quick way to tell if there's repeats in a list is below
-    # this could be used above with a lamda function pointing to only the 2nd value
-    # a_list = [1, 2, 1]
-    # a_set = set(a_list)
-    # contains_duplicates = len(a_list) != len(a_set)
-    # print(contains_duplicates)
-
-
-    print(f"values by suit trump list \n -->{values_by_suit_trump}")
-    chosen_suit = ''
-    
-    print (f"here's one_and_done_suit --> {one_and_done_suit}")
-    
-    # for loop to make one_and done 0 if needed lets see
-    
-    # list in order hdsc
-    
-    # now choose the highest valued trump suit to pursue, 
-    # if there's a tie randomly choose highest
-    
-    chosen_suits = [] # returning 1st and 2nd place suits in case of suit was already flipped down
-
-    check_suit_list = []
-    two_suits_not_found = True
-    
-    print (f"Max value in values_by_suit_trump is {max(values_by_suit_trump)}")
-    
-
-    # Make first choice to add to chosen suits (or find 2 max scored suits)
-    indicy_walker = 0
-    for val in values_by_suit_trump:
-        if val == max(values_by_suit_trump):
-            check_suit_list.append(indicy_walker)
-        indicy_walker +=1
-    
-    print(f"This list is of suits (indicies) at max value h0,d1,s2,c3 {check_suit_list}")
-
-
-    final_check = 0 # the indicy that we will choose in suits tuple
-    
-    if len(check_suit_list)>1: # there's 2 or more suits of same max value
-        two_suits_not_found = False 
-        #randomize the two suits and set as output chosen_suits
-        random.shuffle(check_suit_list)
-        final_check = check_suit_list[random.randint(1,len(check_suit_list))-1]
-        for suit in check_suit_list:
-            chosen_suits.append(suit)
-    
-    else:
-        final_check = check_suit_list[0]
-        chosen_suit = suits[final_check]
-    print (f"Here's the final suit (indicies) check chosen h0,d1,s2,c3; {final_check} !")
-    
-    # value = pc_hand_value(hand,chosen_suit)
-    
-    # Now with a chosen suit we make a decision by returning the needed
-    # values for call_pick_up()
-    
-    # Now make second choice and it can't be the same as the already chosen suit, if needed
-    if two_suits_not_found:
-        check_second_suit_list = []
-        indicy_walker = 0
-        for val in values_by_suit_trump:
-            if not val == max(values_by_suit_trump): # adding all not max values
-                check_second_suit_list.append(indicy_walker) # example: [0,1,3] <-- indicy 2 was max            
-            indicy_walker +=1
-        
-        for indicy in check_second_suit_list
-        
-
-        
-        
-        print(f"This list is of suits (indicies) at max value h0,d1,s2,c3 {check_suit_list}")
-        
-        final_check = 0 # the indicy that we will choose in suits tuple
-        
-        if len(check_suit_list)>1:
-            final_check = check_suit_list[random.randint(1,len(check_suit_list))-1]
-            chosen_suit = suits[final_check]
-        
-        else:
-            final_check = check_suit_list[0]
-            chosen_suit = suits[final_check]
-        print (f"Here's the final suit (indicies) check chosen h0,d1,s2,c3; {final_check} !")
-
-
 
     return (chosen_suits)
     

@@ -950,84 +950,86 @@ def pc_best_playable_suit(hand,list_of_suit_values,trump_picker):
     # a list in order hearts, diamonds, spades, clubs, and the number total of values if trump
     
     # zip two lists together
-    suit_names = ["hearts", "diamonds", "spades", "clubs"]
-values_by_suit_trump = zip(suit_names,list_of_suit_values)
+    suit_names = ["Hearts", "Diamonds", "Spades", "Clubs"]
+    values_by_suit_trump = zip(suit_names,list_of_suit_values)
 
-#reorder the list based on second value
-ordered_values_by_suit_trump = sorted(values_by_suit_trump, key=lambda x: x[1], reverse = True)
-# Ex: [[diamonds,12],[spades,8],[hearts,3],[clubs,0]]
+    #reorder the list based on second value
+    ordered_values_by_suit_trump = sorted(values_by_suit_trump, key=lambda x: x[1], reverse = True)
+    # Ex: [[diamonds,12],[spades,8],[hearts,3],[clubs,0]]
 
-# randomize results if theirs tied entries
-# do any scores match other scores? 
-matching_scores = False
-matches = []
-for i in range(len(ordered_values_by_suit_trump)):
-    for j in range(i+1,len(ordered_values_by_suit_trump)): # compare each to others
-        # if there's a score match
-        if  ordered_values_by_suit_trump[i][1]==ordered_values_by_suit_trump[j][1]:
-            matching_scores = True
-            if matches == []:
-                # equal to max then add to the list, otherwise leave off
-                matches.append(ordered_values_by_suit_trump[i])
-                print("empty add")
-                print(ordered_values_by_suit_trump[i])
-                matches.append(ordered_values_by_suit_trump[j])
-                print("empty add")
-                print(ordered_values_by_suit_trump[j])
-            else:
-                print (f"max matches x[1] {max(matches, key=lambda x: x[1])}")
-                print (f"ordered_values_by_suit_trump[][1]{ordered_values_by_suit_trump}")
-                if ordered_values_by_suit_trump[i][1] == max(matches, key=lambda x: x[1])[1]:
-                    # or ordered_values_by_suit_trump[j][1] == max(matches, key=lambda x: x[1])[1] (J being the differnece)
+    # randomize results if theirs tied entries
+    # do any scores match other scores? 
+    matching_scores = False
+    matches = []
+    for i in range(len(ordered_values_by_suit_trump)):
+        for j in range(i+1,len(ordered_values_by_suit_trump)): # compare each to others
+            # if there's a score match
+            if  ordered_values_by_suit_trump[i][1]==ordered_values_by_suit_trump[j][1]:
+                matching_scores = True
+                if matches == []:
+                    # equal to max then add to the list, otherwise leave off
                     matches.append(ordered_values_by_suit_trump[i])
-                    print("max add")
+                    print("empty add")
                     print(ordered_values_by_suit_trump[i])
-                    
                     matches.append(ordered_values_by_suit_trump[j])
-                    print("max add")
+                    print("empty add")
                     print(ordered_values_by_suit_trump[j])
-                
+                else:
+                    print (f"max matches x[1] {max(matches, key=lambda x: x[1])}")
+                    print (f"ordered_values_by_suit_trump[][1]{ordered_values_by_suit_trump}")
+                    if ordered_values_by_suit_trump[i][1] == max(matches, key=lambda x: x[1])[1]:
+                        # or ordered_values_by_suit_trump[j][1] == max(matches, key=lambda x: x[1])[1] (J being the differnece)
+                        matches.append(ordered_values_by_suit_trump[i])
+                        print("max add")
+                        print(ordered_values_by_suit_trump[i])
+                        
+                        matches.append(ordered_values_by_suit_trump[j])
+                        print("max add")
+                        print(ordered_values_by_suit_trump[j])
                     
-print(f"matches --> {matches} \n")
+                        
+    print(f"matches --> {matches} \n")
 
-# matches_suits_only
+    # matches_suits_only
 
-if matching_scores == True:
-    to_scramble_list = []
-    # randomize the matches
-    # pull values out of list at a spot, randomize them, then insert them back in at index
-    matches_set = set(matches) # set makes matching items unique
-    print(f"matches_set --> {matches_set}")
-    matches_set_suits_only = []
-    for x in matches_set:
-        matches_set_suits_only.append(x[0])
-    print (ordered_values_by_suit_trump)
-    # Ex [[diamonds,10],[spades,10]]
-    index_extract_point = -1
-    for spot,suit_and_score in enumerate(ordered_values_by_suit_trump):
-    # # Ex: [[diamonds,12],[spades,8],[hearts,3],[clubs,0]]
-        # NOTE: Look here again
-        the_suit = suit_and_score[0]
-        if the_suit in matches_set_suits_only:
-            # now pull how ever many matches there are scramble and put back
-            index_extract_point = spot
-            for number in range(len(matches_set)):
-                to_scramble_list.append(ordered_values_by_suit_trump.pop(index_extract_point))
-            # scramble
-            print(f"with max repeat taken out {ordered_values_by_suit_trump}")
-            print(f"Scramble_list {to_scramble_list}")
-            random.shuffle(to_scramble_list)
-            print(f"now scrambled {to_scramble_list}")
-            print (f"insert point index {index_extract_point}")            
-            # now put back in
-            for scrambled_egg in to_scramble_list:
-                ordered_values_by_suit_trump.insert(index_extract_point, scrambled_egg)
-            # python debugger 
-            print (f"back to full list {ordered_values_by_suit_trump}")
-            break
-   
-
-    return (chosen_suits)
+    if matching_scores == True:
+        to_scramble_list = []
+        # randomize the matches
+        # pull values out of list at a spot, randomize them, then insert them back in at index
+        matches_set = set(matches) # set makes matching items unique
+        print(f"matches_set --> {matches_set}")
+        matches_set_suits_only = []
+        for x in matches_set:
+            matches_set_suits_only.append(x[0])
+        print (ordered_values_by_suit_trump)
+        # Ex [[diamonds,10],[spades,10]]
+        index_extract_point = -1
+        for spot,suit_and_score in enumerate(ordered_values_by_suit_trump):
+        # # Ex: [[diamonds,12],[spades,8],[hearts,3],[clubs,0]]
+            # NOTE: Look here again
+            the_suit = suit_and_score[0]
+            if the_suit in matches_set_suits_only:
+                # now pull how ever many matches there are scramble and put back
+                index_extract_point = spot
+                for number in range(len(matches_set)):
+                    to_scramble_list.append(ordered_values_by_suit_trump.pop(index_extract_point))
+                # scramble
+                print(f"with max repeat taken out {ordered_values_by_suit_trump}")
+                print(f"Scramble_list {to_scramble_list}")
+                random.shuffle(to_scramble_list)
+                print(f"now scrambled {to_scramble_list}")
+                print (f"insert point index {index_extract_point}")            
+                # now put back in
+                for scrambled_egg in to_scramble_list:
+                    ordered_values_by_suit_trump.insert(index_extract_point, scrambled_egg)
+                # python debugger 
+                print (f"back to full list {ordered_values_by_suit_trump}")
+                break
+    
+    chosen_suits = []
+    chosen_suits.append(ordered_values_by_suit_trump[0])
+    chosen_suits.append(ordered_values_by_suit_trump[1])
+    return chosen_suits
     
     # Now write program to call the suit or not like pc_call_pick_up does
     
@@ -1151,7 +1153,7 @@ def select_trump_after_flip(suit_flipped):
     list_of_all_poss_answers = ['s','d','h','c','p']
     list_of_legal_answers = []
     for letter in list_of_all_poss_answers:
-        if letter == suit_flipped[0].lower() # first letter of suit_flipped:
+        if letter == suit_flipped[0].lower(): # first letter of suit_flipped:
             pass
         else:
             list_of_legal_answers.append(letter)
@@ -1225,37 +1227,39 @@ def select_trump_after_flip(suit_flipped):
             # NOTE Sept 18th may want to add an arguement to the function that defaults to 1st choice but then opts for second choice, or just outputs second choice too
             
             # call function that uses the suit to pursue to choose yay or nay and give response
-            suit_to_pursue = suits_to_pursue[0]
-            second_suit_to_pursue = suits_to_pursue[1]
+            suit_to_pursue = suits_to_pursue[0][0]
+            second_suit_to_pursue = suits_to_pursue[1][0]
             print (f"suit to pursue selection is --> {suit_to_pursue}")
+            print (f"second suit to pursue is --> {second_suit_to_pursue}")
             value_for_this_suit = pc_hand_value(list_of_hand_objects[trump_picker-1],suit_to_pursue)
             # def pc_hand_value(which_hand,trump='off'):
             
             
-
+            
 
             if pc_call_pick_up(list_of_hand_objects[trump_picker-1],suit_to_pursue,value_for_this_suit,trump_picker): 
                 # The arguments are "hand", maybe_trump aka 'suit',value, and trump_picker
-                trump_chosen == True
+        
                 return suit_to_pursue, chair;
                 ### EXIT HERE EXIT HERE
             
-            if trump_chosen == False:
+           
 
-                if screw_dealer_counter >= 4:
-                    answer_found = False:
-                    while answer_found = False
-                        #pick the highest one
-                        #if highest suit is not in legal list
-                        #then pick the 2nd highest one
-
-                    # pick the highest one that's not the already flipped,  
-                    # return the choice just like above
-
-
-
+            if screw_dealer_counter >= 4:
+            
+                print ("PC wanted to pass but 'screw the dealer'")
+                if suit_to_pursue == suit_flipped:
+                    suit_to_pursue == second_suit_to_pursue
+                    print (f"suit_to_pursue was already flipped over {suit_to_pursue}")
+                    return suit_to_pursue, chair;
                 else:
-                    print (f"\n{table_position_dict[chair]} chooses to pass")
+                    return suit_to_pursue, chair;
+                
+                    #pick the highest one
+                    #if highest suit is not in legal list
+
+            else:
+                print (f"\n{table_position_dict[chair]} chooses to pass")
 
         
         ## The ELSE is for  HU players
@@ -1518,7 +1522,7 @@ def pass_or_order_up(suit_of_up_card):
         
   
 
-def pick_up_and_switch(player,name_hand,trump,deck,card = ''):
+def pick_up_and_switch(player,name_hand,trump,trump_color,deck,card = ''):
     # the PC player or human player may have been ordered to pick it up or have chosen this on 
     # their own but either way pc must choose one card to set down and one card to pick up
     our_index = table_position_list.index(name_hand)
@@ -1534,6 +1538,8 @@ def pick_up_and_switch(player,name_hand,trump,deck,card = ''):
         decision = False
         while decision == False:
         # a decision must be made
+
+            confirmed_no_good_single = False
         
         # card_to_drop = ?
            
@@ -1584,29 +1590,21 @@ def pick_up_and_switch(player,name_hand,trump,deck,card = ''):
                     if card.suit == "Hearts":
                         if "Hearts" == trump:
                             has_trump = True
-                        elif card.rank == "Ace":
-                            pass
                         else:
                             card_count_list[0][1] += 1
                     if card.suit == "Diamonds":
                         if "Diamonds" == trump:
                             has_trump = True
-                        elif card.rank == "Ace":
-                            pass
                         else:
                             card_count_list[1][1] += 1
                     if card.suit == "Spades":
                         if "Spades" == trump:
                             has_trump = True
-                        elif card.rank == "Ace":
-                            pass
                         else:
                             card_count_list[2][1] += 1
                     if card.suit == "Clubs":
                         if "Clubs" == trump:
                             has_trump = True
-                        elif card.rank == "Ace":
-                            pass
                         else:
                             card_count_list[3][1] += 1
 
@@ -1619,7 +1617,7 @@ def pick_up_and_switch(player,name_hand,trump,deck,card = ''):
                 #  [["Hearts",2],["Diamonds",1],["Spades",1],["Clubs",1]]
                 # Going through this list for single suit checking
                 chosen_suit_to_drop = "empty"
-                if has_trump == True:
+                if has_trump == True and confirmed_no_good_single == False:
                     # if there's no trump then there's no use trying to go single suited
                     # for loop for ones! last loop took out trump cards for use in swap
                     # so now only non-trump cards are up for grabs
@@ -1637,28 +1635,31 @@ def pick_up_and_switch(player,name_hand,trump,deck,card = ''):
                     if len(suits_with_one_list) != 0:
                         if len(suits_with_one_list) == 1:
                             print ("found len of 1")
-                            chosen_suit_to_drop = suits_with_one_list[choice][0]
+                            chosen_suit_to_drop = suits_with_one_list[0]
                             clear = True
                         else:
                             print ("found not len of 1")
                             # len(suits_with_one_list) < 1
                             # there's more than 1 single suited card that not trump or an Ace
                             # so let's pick 1 randomly
-                            choice = random.randint(0,len(suits_with_one_list))
+                            choice = random.randint(0,len(suits_with_one_list)-1)
                             chosen_suit_to_drop = suits_with_one_list[choice][0]
                 
-                if chosen_suit_to_drop != "empty":
-                    # use that suit looking through hand to choose the card
-                    # return the card to drop
-                    for card in hand: # may need to be hand.cards
-                        if card.suit == chosen_suit_to_drop:
-                            chosen_card_to_drop = card
-                            print (f"chosen card at single suit section, {chosen_card_to_drop}")
-                            decision = True
+                    if chosen_suit_to_drop != []: # Check if it's an Ace                
+                        for card in hand.cards:
+                            if card.suit == chosen_suit_to_drop:
+                                if card.rank == "Ace": # leaves chosen_suit_to_drop = []
+                                    chosen_suit_to_drop = [] # pc will keep lone Aces
+                            else: 
+                                chosen_card_to_drop = card
+                                decision = True
+                        
+
+                
+                    if chosen_card_to_drop == []: # tell while loop to skip next round
+                        confirmed_no_good_single = True
         ### While loop exit, decision True
                            
-
-                # chosen_card_to_drop = ??????????
 
         ##### End: Look for Single Card of Suit section #####
 
@@ -1708,21 +1709,29 @@ def pick_up_and_switch(player,name_hand,trump,deck,card = ''):
                     if len(remain_list) >=2:
                         print ("len greater than 2")
                         choice = random.randint(0,len(remain_list))
-                        chosen_card_to_drop = remain_list[choice]
-                        print (f"chosen_card_to_drop{chosen_card_to_drop}")
+                        chosen_card_to_drop_listed = remain_list[choice]
+                        print (f"chosen_card_to_drop{chosen_card_to_drop_listed}")
+                        # Find Card object in hand that matches the "listed attributes" of chosen card, so list version to object
+                        for card in hand.cards:
+                            if card.suit == chosen_card_to_drop_listed[1] and card.rank == chosen_card_to_drop_listed[0]:
+                                chosen_card_to_drop = card
                         print (f"chosen card at lowest value section")
                         decision = True
         ### While loop exit, decision True                 
                     else:
                         print ("len of 1")
-                        chosen_card_to_drop = remain_list[0]
-                        print (f"chosen_card_to_drop{chosen_card_to_drop}")
+                        chosen_card_to_drop_listed = remain_list[0]
+                        print (f"chosen_card_to_drop{chosen_card_to_drop_listed}")
+                        # Find Card object in hand that matches the "listed attributes" of chosen card, so list version to object
+                        for card in hand.cards:
+                            if card.suit == chosen_card_to_drop_listed[1] and card.rank == chosen_card_to_drop_listed[0]:
+                                chosen_card_to_drop = card
                         print (f"chosen card at lowest value section")
                         decision = True
         ### While loop exit, decision True
         ##### End: Selecting low value card #####
-                
-                decision = True
+                # NOTE: not sure about this decision = True
+                # decision = True
         # PC DECISION TIME END -------------------------------------              
  
             else:
@@ -1760,11 +1769,11 @@ def pick_up_and_switch(player,name_hand,trump,deck,card = ''):
 #     ['Ten', 'Hearts', 8]
 #     self.rank + ' of ' + self.suit
 #     chosen_card_to_drop[0] + ' of ' + chosen_card_to_drop[1]
-    for this_card in hand.cards:
-        if this_card.rank == chosen_card_to_drop.rank and this_card.suit == chosen_card_to_drop.suit:
-            card_index = hand.cards.index(this_card)
-            card_for_deck = hand.cards.pop(card_index)
-            print (f"card to be put in deck {card_for_deck} \n")
+    # for this_card in hand.cards:
+    #     if this_card.rank == chosen_card_to_drop.rank and this_card.suit == chosen_card_to_drop.suit:
+    card_index = hand.cards.index(chosen_card_to_drop)
+    card_for_deck = hand.cards.pop(card_index)
+    print (f"card to be put in deck {card_for_deck} \n")
     new_card = deck.deal()
     deck.put_back(card_for_deck)
     hand.cards.append(new_card)
@@ -1952,8 +1961,8 @@ def hu_plays_a_card(position_on_table, trump, who_called, table):
 
     print (f"suit_to_follow is {suit_to_follow}") 
 
-    acceptable_answer = list(range(1,len(card_list)+1))
-    print (f"acceptable_answer = {acceptable_answer}")
+    applicable_answer = list(range(1,len(card_list)+1))
+    print (f"applicable_answer = {applicable_answer}")
     
 
 
@@ -1966,7 +1975,7 @@ def hu_plays_a_card(position_on_table, trump, who_called, table):
 
         # Repeat of text could be made into a function call! Aug 2nd 2020 (below)
         
-        while selected_number_card not in acceptable_answer: # Can't pick the 5th card if you only have 4
+        while selected_number_card not in applicable_answer: # Can't pick the 5th card if you only have 4
                 
                 #####
                 ## ## AUTOMATE HUMAN PLAYER TO RANDOM UNTIL CORRECT SUIT
@@ -1989,7 +1998,7 @@ def hu_plays_a_card(position_on_table, trump, who_called, table):
                 else: 
                     selected_number_card = int(selected_number_card)
 
-                if selected_number_card not in acceptable_answer:
+                if selected_number_card not in applicable_answer:
                     print("Looks like the number you chose was not in the acceptable range")
                 ###### commented out for automateing ^
 
@@ -2006,48 +2015,53 @@ def hu_plays_a_card(position_on_table, trump, who_called, table):
     if table_is_empty == False: # different rules apply than if hu player was playing the first card
         
         while card_meets_criteria == False:
-        
-            while selected_number_card not in acceptable_answer: # Can't pick the 5th card if you only have 4
-                
-                
-                
-                #####
-                ## ## AUTOMATE HUMAN PLAYER TO RANDOM UNTIL CORRECT SUIT
-                #   #
-                
-                # placed in to speed up play and test if the rounds work aug 7th 2020
-                # selected_number_card = random.choice(acceptable_answer)
-                # print (selected_number_card)
-                
-                #   #
-                ## ## AUTOMATE HUMAN PLAYER TO RANDOM UNTIL CORRECT SUIT
-                #####
+            selected_number_card = (input("Which numbered card do you choose (ex: '2')"))
 
-                ######## commented for testing aug 7th 2020
-                
-                selected_number_card = (input("Which numbered card do you choose (ex: '2')"))
+            if selected_number_card == "":
+                continue 
 
-                if not (selected_number_card.isdigit()):
-                    selected_number_card = -1
-                    print ("That number is not reading right, try again please")
-    
-                else: 
-                    selected_number_card = int(selected_number_card)
+            if selected_number_card.isdigit():
+                selected_number_card = int(selected_number_card)
+            else:
+                print ("not recognized as integer")
+                continue
 
-                if selected_number_card not in acceptable_answer:
-                    print("Looks like the number you chose was not in the acceptable range")
-
-                # NOTE Error exception for empty string here, can't make empty string an integer
-
-            # If they have suit to follow? did they
-            # if not then card meets criteria is False
             
+            if selected_number_card not in applicable_answer:
+                print ("not in applicable?")
+                continue # go back to start of while loop
+            
+            #####
+            ## ## AUTOMATE HUMAN PLAYER TO RANDOM UNTIL CORRECT SUIT
+            #   #
+            
+            # placed in to speed up play and test if the rounds work aug 7th 2020
+            # selected_number_card = random.choice(acceptable_answer)
+            # print (selected_number_card)
+            
+            #   #
+            ## ## AUTOMATE HUMAN PLAYER TO RANDOM UNTIL CORRECT SUIT
+            #####
+
+            ######## commented for testing aug 7th 2020
+            
+        
+
+            else: 
+                selected_number_card = int(selected_number_card)
+                print ("turned into integer for ya!")
+
+            # NOTE Error exception for empty string here, can't make empty string an integer
+
+        # If they have suit to follow? did they
+        # if not then card meets criteria is False
+        
             card_check_good = True
 
             if hu_has_lead_suit == True:
                 if card_list[selected_number_card-1][2] != suit_to_follow:
                     print ("Selected card is not the correct suit, please choose a card that follows suit")
-                    card_check_good = False
+                    continue
                     
                     #####
                     ## ## AUTOMATE HUMAN PLAYER TO RANDOM UNTIL CORRECT SUIT
@@ -2189,7 +2203,6 @@ def check_tricks_for_points(who_called, team_ns_tricks_won, team_ew_tricks_won):
 ### GAME SETUP perameters ###
 
 
-
 suits = ('Hearts', 'Diamonds', 'Spades', 'Clubs')
 ranks = ('Nine', 'Ten', 'Jack', 'Queen', 'King', 'Ace')
 values = {'Nine':1, 'Ten':2, 'Jack':3, 'Queen':4, 'King':5, 'Ace':6, 'tNine':7, 'tTen':8, 'tJick':12, 'tJack':13, 'tQueen': 9, 'tKing': 10, 'tAce':11}
@@ -2211,25 +2224,13 @@ team_ew = ["chair_2","chair_4"]
 ### GAME SETUP perameters ###
 ### GAME SETUP perameters ###
 
-
-
-
-
 ######################################
-
-
-
-
-
-
 
 # Old GAME Execution
 # Old GAME Execution
 # Old GAME Execution
 
 # NOTE: regular game execution moved to storage
-
-
 
 # how_many_humans() -->table_positions()
 table_position_dict = how_many_humans()
@@ -2260,93 +2261,6 @@ for chair in table_position_list:
 # The Great Divide! ______________________________________
 
 
-
-
-
-
-euchre_deck = Dev_Deck()
-# print (euchre_deck)
-euchre_deck.shuffle()
-
-print (euchre_deck)
-
-for player_hand in list_of_hand_objects:
-    deal_cards(player_hand,euchre_deck)
-    
-# commented out duplicate, may have value
-# for player_hand in list_of_hand_objects:
-#     print (f"Cards in {player_hand}'s hand")
-#     for card in player_hand.cards:
-#         print (card)
-    
-for player_hand in list_of_hand_objects:
-    print("\n")
-    print (table_position_dict[str(player_hand)])
-    print (f"Cards in {player_hand}'s hand")
-    for card in player_hand.cards:
-        print (card)
-print ("\n")
-one_and_done_suit = top_card_suit(euchre_deck)
-
-
-
-## TRUMP SELECTION ##
-## TRUMP SELECTION ##
-
-
-two_part_response = pass_or_order_up(one_and_done_suit)
-# PassOOU returns a 2 list value of [true/false,str(chair) that called]
-ordered_up_qm = two_part_response[0]
-who_called = two_part_response[1]
-print(f"Ordered up is --> {ordered_up_qm}")
-
-# NOTE: changing 'c' to 'p' for 'pc player' detection
-if who_called[0].lower() == 'p': # tests if 'p'c or 'h'uman
-    print(f"{table_position_dict[who_called]},{who_called}, ordered up")
-   
-    print (dealers_turn)
-    print (one_and_done_suit)
-
-    pick_up_and_switch(dealers_turn,dealers_turn,one_and_done_suit,euchre_deck,card = '')
-    whats_trump = one_and_done_suit
-    ### Hidden pass along to grab_top_card
- 
-
-else:
-    print(f"Who ordered up? --> {who_called} ")
- 
-
-if not ordered_up_qm: 
-    whats_trump_who_called = select_trump_after_flip(one_and_done_suit)
-    whats_trump = whats_trump_who_called[0]
-    who_called = whats_trump_who_called[1]
-    print (f"what_trump is --> {whats_trump}")
-    print (f"who_called is --> {who_called}")
-
-
-# NOTE: may have to add in that when dealer is screwed their team is the one that called
-
-## TRUMP SELECTION ##
-## TRUMP SELECTION ##
-
-
-########################
-
-
-
-
-# This for loop applies the new values of the now known suit of trump
-
-trump_color = colors[whats_trump]
-
-for hand in list_of_hand_objects:
-    for card in hand.cards:
-        if card.suit == whats_trump:
-            card.make_rank_trump()
-        if card.rank == "Jack" and colors[card.suit] == trump_color and card.suit != whats_trump:
-            card.make_rank_trump(True)
-
-
 # the position in the table_position_list
 dealer_position = table_position_list.index(dealers_turn)
 
@@ -2355,24 +2269,14 @@ if table_position_list.index(dealers_turn) == 3:
 else:
     player_left_of_dealer = table_position_list.index(dealers_turn)+ 1
 
-trick_counter = 0
-table = []
 
-# python debugger 
-pdb.set_trace() 
+
+# # python debugger 
+# pdb.set_trace() 
     
 # Old GAME Execution
 # Old GAME Execution
 # Old GAME Execution
-
-
-
-
-
-
-
-
-
 
 
 
@@ -2406,320 +2310,365 @@ pdb.set_trace()
 #     chair = Dev_Hand(name)
 #     list_of_hand_objects.append(chair)
 
-# team_ns_score = 0
-# team_ew_score = 0 
+trick_counter = 0
+table = []
+team_ns_score = 0
+team_ew_score = 0 
 
-# round_number = 0
-
-
-
-
-# # # #
-# # GAME PLAY LEVEL WORK
-# # # #
+round_number = 0
 
 
-# while team_ns_score < 10 and team_ew_score < 10: 
-
-#     # # python debugger 
-#     pdb.set_trace()
-
-#     round_number +=1
-
-#     print (f"\nTHIS IS ROUND NUMBER {round_number}!\n")
-#     print (f"\nTHIS IS ROUND NUMBER {round_number}!\n")
-#     print (f"\nTHIS IS ROUND NUMBER {round_number}!\n")
-#     print (f"\nTHIS IS ROUND NUMBER {round_number}!\n")
-
-#     print (team_ew_score)
-#     print (team_ns_score)
-
-#     team_ns = ["chair_1","chair_3"]
-#     team_ew = ["chair_2","chair_4"]
-
-#     teams_ns_ew = [team_ns, team_ew]
-
-#     dev_deck = Dev_Deck() 
-
-#     dev_deck.shuffle()
-
-#     ### DEV NOTE: Below is where I stack the deck for a particular chair based on
-#     ### which method I call from the dev classes
-
-#     # dev_deck.hearts_for_dealer()
-
-#     ## dev_deck.hearts_for_2nd()
-
-#     # dev_deck.hearts_for_2nd_and_one_off_suited()
-
-#     # dev_deck.pick_a_hand_give_cards_from_list()
-
-#     # dev_deck.repeat_deck_from_list()
-
-#     # print("Out of pick_a_hand_give_cards_from_list")
-
-#     # python debugger 
-#     # pdb.set_trace()
-
-#     # print (f"printing dev_deck{dev_deck}")
-
-#     # The below is if you want to only shuffle from a certain number down in the deck
-#     # dev_deck.shuffle_bottom()
-#     # print ("2")
-#     print (dev_deck)
 
 
-#     for player_hand in list_of_hand_objects:
-#         deal_cards(player_hand,dev_deck)
+# # #
+# GAME PLAY LEVEL WORK
+# # #
+
+
+while team_ns_score < 10 and team_ew_score < 10: 
+
+
+
+
+
+    round_number +=1
+
+    print (f"\nTHIS IS ROUND NUMBER {round_number}!\n")
+    print (f"\nTHIS IS ROUND NUMBER {round_number}!\n")
+    print (f"\nTHIS IS ROUND NUMBER {round_number}!\n")
+    print (f"\nTHIS IS ROUND NUMBER {round_number}!\n")
+
+    print (team_ew_score)
+    print (team_ns_score)
+
+    team_ns = ["chair_1","chair_3"]
+    team_ew = ["chair_2","chair_4"]
+
+    teams_ns_ew = [team_ns, team_ew]
+
+    ## TRUMP SELECTION ##
+    ## TRUMP SELECTION ##
+
+    euchre_deck = Dev_Deck()
+    # print (euchre_deck)
+    euchre_deck.shuffle()
+
+    print (euchre_deck)
+
+    for player_hand in list_of_hand_objects:
+        deal_cards(player_hand,euchre_deck)
         
+    # commented out duplicate, may have value
+    # for player_hand in list_of_hand_objects:
+    #     print (f"Cards in {player_hand}'s hand")
+    #     for card in player_hand.cards:
+    #         print (card)
+        
+    for player_hand in list_of_hand_objects:
+        print("\n")
+        print (table_position_dict[str(player_hand)])
+        print (f"Cards in {player_hand}'s hand")
+        for card in player_hand.cards:
+            print (card)
+    print ("\n")
+    one_and_done_suit = top_card_suit(euchre_deck)
 
-#     one_and_done_suit = top_card_suit(dev_deck)
 
 
-#     # DEV GAME Setup--------------------------------------------------------------------------
-#     # DEV GAME Setup
+## TRUMP SELECTION ##
+## TRUMP SELECTION ##
+
+
+    two_part_response = pass_or_order_up(one_and_done_suit)
+    # PassOOU returns a 2 list value of [true/false,str(chair) that called]
+    ordered_up_qm = two_part_response[0]
+    who_called = two_part_response[1]
+    print(f"Ordered up is --> {ordered_up_qm}")
+
+    # NOTE: May just delet the if else
+    # NOTE: changing 'c' to 'p' for 'pc player' detection
+    
+    # This is to drop one card and pick up another
+    if ordered_up_qm:
+        print(f"{table_position_dict[who_called]},{who_called}, ordered up")
+
+        print (f" dealers turn is {dealers_turn}")
+        print (one_and_done_suit)
+        whats_trump = one_and_done_suit
+        trump_color = colors[whats_trump]
+        pick_up_and_switch(dealers_turn,dealers_turn,one_and_done_suit,trump_color,euchre_deck,card = '')
+        
+        ### Hidden pass along to grab_top_card
+
+    if not ordered_up_qm: 
+        whats_trump_who_called = select_trump_after_flip(one_and_done_suit)
+        whats_trump = whats_trump_who_called[0]
+        who_called = whats_trump_who_called[1]
+        print (f"what_trump is --> {whats_trump}")
+        print (f"who_called is --> {who_called}")
+
+
+    # NOTE: may have to add in that when dealer is screwed their team is the one that called
+
+    ## TRUMP SELECTION ##
+    ## TRUMP SELECTION ##
+
+
+    ########################
 
 
 
-#     ###########################
 
+    # This for loop applies the new values of the now known suit of trump
 
+    trump_color = colors[whats_trump]
+   
 
-#     ## TRUMP SELECTION ##
-#     ## TRUMP SELECTION ##
+    # # python debugger 
+    # pdb.set_trace()
+   
 
-#     whats_trump = 'Hearts'
-#     who_called = 'chair_2'
-#     print (f"what_trump is --> {whats_trump}")
-#     print (f"who_called is --> {who_called} {table_position_dict[who_called]}")
+   # NOTE: 
+   
+    # for hand in list_of_hand_objects:
+    #     for card in hand.cards:
+    #         if card.suit == whats_trump:
+    #             card.make_rank_trump()
+    #         if card.rank == "Jack" and colors[card.suit] == trump_color and card.suit != whats_trump:
+    #             card.make_rank_trump(True)
 
-#     if who_called in team_ns:
-#         team_that_called = team_ns
-#     else:
-#         team_that_called = team_ew
+    # whats_trump = 'Hearts'
+    # who_called = 'chair_2'
+    # print (f"what_trump is --> {whats_trump}")
+    # print (f"who_called is --> {who_called} {table_position_dict[who_called]}")
 
-#     # NOTE: may have to add in that when dealer is screwed their team is the one that called
+    # if who_called in team_ns:
+    #     team_that_called = team_ns
+    # else:
+    #     team_that_called = team_ew
+
+    # NOTE: may have to add in that when dealer is screwed their team is the one that called
  
  
-#     ## TRUMP SELECTION ##
-#     ## TRUMP SELECTION ##
+    ## TRUMP SELECTION ##
+    ## TRUMP SELECTION ##
 
 
 
 
-#     ########################
+    ########################
 
 
 
 
 
-#     ## Trick play ##
-#     ## Trick play ##
+    ## Trick play ##
+    ## Trick play ##
 
-#     # trump_card_list will hold all the cards and their current value based on the 
-#     # selected trump, looks like 
-#     # [card rank, card suit, actual value]
-#     # to test if a card is trump, do an if value > 6
+    # trump_card_list will hold all the cards and their current value based on the 
+    # selected trump, looks like 
+    # [card rank, card suit, actual value]
+    # to test if a card is trump, do an if value > 6
 
-#     # This for loop applies the new values of the now known suit of trump
+    # This for loop applies the new values of the now known suit of trump
 
-#     trump_color = colors[whats_trump]
+    trump_color = colors[whats_trump]
 
-#     list_of_cards_in_hands = []
+    list_of_cards_in_hands = []
 
-#     for hand in list_of_hand_objects:
-#         for card in hand.cards:
-#             # changing ranks
-#             if card.suit == whats_trump:
-#                 card.make_rank_trump()
-#             # The "Jick"
-#             if card.rank == "Jack" and colors[card.suit] == trump_color and card.suit != whats_trump:
-#                 card.make_rank_trump(True)
-#             # For playset_round objects each card object has suit, rank, and value accurate to the round now
-#             list_of_cards_in_hands.append(card)
+    for hand in list_of_hand_objects:
+        for card in hand.cards:
+            # changing ranks
+            if card.suit == whats_trump:
+                card.make_rank_trump()
+            # The "Jick"
+            if card.rank == "Jack" and colors[card.suit] == trump_color and card.suit != whats_trump:
+                card.make_rank_trump(True)
+            # For playset_round objects each card object has suit, rank, and value accurate to the round now
+            list_of_cards_in_hands.append(card)
             
 
 
-#     team_ew_tricks_won = 0 # Both teams start at 0 tricks won
-#     team_ns_tricks_won = 0
+    team_ew_tricks_won = 0 # Both teams start at 0 tricks won
+    team_ns_tricks_won = 0
 
 
-#     # the position in the table_position_list
-#     dealer_position = table_position_list.index(dealers_turn)
+    # the position in the table_position_list
+    dealer_position = table_position_list.index(dealers_turn)
 
-#     if table_position_list.index(dealers_turn) == 3:
-#         player_left_of_dealer = 0
-#     else:
-#         player_left_of_dealer = dealer_position+1
-
-
-#     current_player_position = -2 
-
-#     tricks_played = 0
+    if table_position_list.index(dealers_turn) == 3:
+        player_left_of_dealer = 0
+    else:
+        player_left_of_dealer = dealer_position+1
 
 
-#     playset_name = "playset_round_" + str(round_number)
-#     playset_name = Playset("round "+ str(round_number),  who_called,  whats_trump, list_of_cards_in_hands,  teams_ns_ew , table_position_list)
-#     current_playset = playset_name
+    current_player_position = -2 
+
+    tricks_played = 0
 
 
-
-
-#     while tricks_played < 5:
-
-#     # # #
-#     # TRICK LEVEL WORK
-#     # # #
-
-#         cards_played_counter = 0
-#         table = []
-
-#         while cards_played_counter < 4:
+    playset_name = "playset_round_" + str(round_number)
+    playset_name = Playset("round "+ str(round_number),  who_called,  whats_trump, list_of_cards_in_hands,  teams_ns_ew , table_position_list)
+    current_playset = playset_name
 
 
 
-#             # # #
-#             # CARD LEVEL WORK
-#             # # #
+
+    while tricks_played < 5:
+
+    # # #
+    # TRICK LEVEL WORK
+    # # #
+
+        cards_played_counter = 0
+        table = []
+
+        while cards_played_counter < 4:
 
 
-#             # IF FIRST CARD   !!!!!ONLY FIRST ROUND!!!!!! BECAUSE PERSON LEFT OF DEALER MUST START
-#             if tricks_played == 0 and cards_played_counter == 0:
+
+            # # #
+            # CARD LEVEL WORK
+            # # #
+
+
+            # IF FIRST CARD   !!!!!ONLY FIRST ROUND!!!!!! BECAUSE PERSON LEFT OF DEALER MUST START
+            if tricks_played == 0 and cards_played_counter == 0:
                 
-#                 print_table_birds_eye_view(player_left_of_dealer, table_position_list, table_position_dict)
+                print_table_birds_eye_view(player_left_of_dealer, table_position_list, table_position_dict)
 
-#                 chair_and_card = []
+                chair_and_card = []
                 
-#                 # FIRST CARD
+                # FIRST CARD
                 
-#                 chair_and_card = left_of_dealer_plays_first(player_left_of_dealer, who_called, whats_trump, table)
-#                 who_played_it = chair_and_card[0]
-#                 one_selected = chair_and_card[1]
-#                 table.append(chair_and_card) # table = chair_and_card[2]
+                chair_and_card = left_of_dealer_plays_first(player_left_of_dealer, who_called, whats_trump, table)
+                who_played_it = chair_and_card[0]
+                one_selected = chair_and_card[1]
+                table.append(chair_and_card) # table = chair_and_card[2]
                 
-#                 # MOVING TO NEXT PLAYER
+                # MOVING TO NEXT PLAYER
                 
-#                 current_player_position = player_left_of_dealer
+                current_player_position = player_left_of_dealer
 
-#                 next_player_answer = next_player(current_player_position, table_position_list)
-#                 current_player_position = next_player_answer
+                next_player_answer = next_player(current_player_position, table_position_list)
+                current_player_position = next_player_answer
                
-#                 # Show what's on the table
-#                 print_table(table)
+                # Show what's on the table
+                print_table(table)
 
-#                 # END OF IF
+                # END OF IF
             
             
             
-#             # IF NOT THE FIRST CARD OF ENTIRE ROUND, IE START OF NEXT HAND, OR MID-HAND
-#             else:   
+            # IF NOT THE FIRST CARD OF ENTIRE ROUND, IE START OF NEXT HAND, OR MID-HAND
+            else:   
                 
-#                 # def pc_plays_a_card(position_on_table, trump, who_called, this_hand, table
+                # def pc_plays_a_card(position_on_table, trump, who_called, this_hand, table
                 
-#                 # NEXT CARD
-#                 if table_position_dict[table_position_list[current_player_position]][0:2] == "pc":
+                # NEXT CARD
+                if table_position_dict[table_position_list[current_player_position]][0:2] == "pc":
 
-#                     chair_and_card = pcPlaysACard.pc_plays_a_card(current_player_position, table, list_of_hand_objects, current_playset)
-#                 else:
+                    chair_and_card = pcPlaysACard.pc_plays_a_card(current_player_position, table, list_of_hand_objects, current_playset)
+                else:
 
-#                     # Add "Playset" object here 
+                    # Add "Playset" object here 
 
-#                     chair_and_card = hu_plays_a_card(current_player_position, whats_trump, who_called, table) 
+                    chair_and_card = hu_plays_a_card(current_player_position, whats_trump, who_called, table) 
                 
-#                 who_played_it = chair_and_card[0]
-#                 one_selected = chair_and_card[1]
+                who_played_it = chair_and_card[0]
+                one_selected = chair_and_card[1]
                 
-#                 table.append(chair_and_card)
+                table.append(chair_and_card)
                 
-#                 # Show what's on the table
-#                 print_table(table)
-#                 # MOVING TO NEXT PLAYER 
-#                 if cards_played_counter <3:
-#                     next_player_answer = next_player(current_player_position, table_position_list)
-#                 current_player_position = next_player_answer
+                # Show what's on the table
+                print_table(table)
+                # MOVING TO NEXT PLAYER 
+                if cards_played_counter <3:
+                    next_player_answer = next_player(current_player_position, table_position_list)
+                current_player_position = next_player_answer
                 
-#                 print ("\n")
+                print ("\n")
 
-#                 # END OF IF
+                # END OF IF
 
 
-#             cards_played_counter += 1
-#             print (f"cards played counter is {cards_played_counter}")
+            cards_played_counter += 1
+            print (f"cards played counter is {cards_played_counter}")
             
             
-#             if cards_played_counter < 4:
-#                 print_table_birds_eye_view(current_player_position, table_position_list, table_position_dict)
+            if cards_played_counter < 4:
+                print_table_birds_eye_view(current_player_position, table_position_list, table_position_dict)
 
             
 
-#             # END OF WHILE cards_played_counter < 4
+            # END OF WHILE cards_played_counter < 4
 
-#             # # #
-#             # CARD LEVEL WORK
-#             # # #
-#         # python debugger 
-#         # pdb.set_trace()
+            # # #
+            # CARD LEVEL WORK
+            # # #
+        # python debugger 
+        # pdb.set_trace()
         
-#         print ("\n All 4 cards have been played \n")
-#         # Which team won the trick
+        print ("\n All 4 cards have been played \n")
+        # Which team won the trick
 
-#         # which card won 
-#         winning_chair_and_card = max(table, key=lambda x: x[1].value)
-#         winning_chair = winning_chair_and_card[0]
-#         winning_card = winning_chair_and_card[1]
-#         print (f"{winning_card} wins \n")
-#         # then what team were they on
+        # which card won 
+        winning_chair_and_card = max(table, key=lambda x: x[1].value)
+        winning_chair = winning_chair_and_card[0]
+        winning_card = winning_chair_and_card[1]
+        print (f"{winning_card} wins \n")
+        # then what team were they on
 
-#         if winning_chair in team_ns:
-#             team_ns_tricks_won += 1
-#         else:
-#             team_ew_tricks_won += 1
-#         # add 1 to the team trick counter
+        if winning_chair in team_ns:
+            team_ns_tricks_won += 1
+        else:
+            team_ew_tricks_won += 1
+        # add 1 to the team trick counter
 
-#         print (f"Team NS {team_ns_tricks_won} tricks" )
-#         print (f"Team EW {team_ew_tricks_won} tricks" )
+        print (f"Team NS {team_ns_tricks_won} tricks" )
+        print (f"Team EW {team_ew_tricks_won} tricks" )
         
-#         winning_chair_position = table_position_list.index(winning_chair)
-#         print (f"{winning_chair} won the last hand and gets to lead the next hand \n")
-#         current_player_position = winning_chair_position
+        winning_chair_position = table_position_list.index(winning_chair)
+        print (f"{winning_chair} won the last hand and gets to lead the next hand \n")
+        current_player_position = winning_chair_position
 
-#         print_table_birds_eye_view(current_player_position, table_position_list, table_position_dict)
+        print_table_birds_eye_view(current_player_position, table_position_list, table_position_dict)
 
-#         tricks_played += 1
-#         print (f"tricks_played is {tricks_played}")
-#         # print (f"IMPORTANT!!! tricks_played is {tricks_played}")
+        tricks_played += 1
+        print (f"tricks_played is {tricks_played}")
+        # print (f"IMPORTANT!!! tricks_played is {tricks_played}")
 
         
 
-#     # # #
-#     # TRICK LEVEL WORK
-#     # # #
+    # # #
+    # TRICK LEVEL WORK
+    # # #
 
     
-#     scores_to_add_ns_ew = check_tricks_for_points(who_called, team_ns_tricks_won, team_ew_tricks_won)
+    scores_to_add_ns_ew = check_tricks_for_points(who_called, team_ns_tricks_won, team_ew_tricks_won)
 
-#     team_ns_score += scores_to_add_ns_ew[0]
-#     team_ew_score += scores_to_add_ns_ew[1]
-
-
-#     print (f"team_ew_score is now {team_ew_score}")
-#     print (f"team_ns_score is now {team_ns_score}")
-
-#     if team_ew_score >= 10:
-#         print (f"\n We \n   Have \n       A \n            WINNER! \n                  Team EW with a score of {team_ew_score} ")
-
-#     if team_ew_score >= 10:
-#         print (f"\n We \n   Have \n       A \n            WINNER! \n                  Team NS with a score of {team_ns_score} ")
-
-# # GAME PLAY LEVEL WORK
-# # # #
-
-# # team_ns_score < 10 and team_ew_score < 10: 
+    team_ns_score += scores_to_add_ns_ew[0]
+    team_ew_score += scores_to_add_ns_ew[1]
 
 
+    print (f"team_ew_score is now {team_ew_score}")
+    print (f"team_ns_score is now {team_ns_score}")
 
-# print ("\n you have exited the gameplay loop \n")
-# print ("\n a team has won! \n")
+    if team_ew_score >= 10:
+        print (f"\n We \n   Have \n       A \n            WINNER! \n                  Team EW with a score of {team_ew_score} ")
+
+    if team_ew_score >= 10:
+        print (f"\n We \n   Have \n       A \n            WINNER! \n                  Team NS with a score of {team_ns_score} ")
+
+# GAME PLAY LEVEL WORK
+# # #
+
+# team_ns_score < 10 and team_ew_score < 10: 
+
+
+
+print ("\n you have exited the gameplay loop \n")
+print ("\n a team has won! \n")
 
 
 

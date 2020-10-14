@@ -2648,11 +2648,20 @@ while team_ns_score < 10 and team_ew_score < 10:
 
 
     # move to next dealer
-    if table_position_list.index(dealers_turn) == 3:
+    # dealer_position = table_position_list.index(dealers_turn)
 
-        dealers_turn = 0
+    if dealer_position == 3:
+        dealer_position = 0
     else:
-        dealers_turn += 1
+        dealer_position += 1
+
+    dealers_turn = dealer_position + 1
+
+    # if table_position_list.index(dealers_turn) == 3:
+
+    #     dealers_turn = 0
+    # else:
+    #     dealers_turn += 1
 
     
     scores_to_add_ns_ew = check_tricks_for_points(who_called, team_ns_tricks_won, team_ew_tricks_won)

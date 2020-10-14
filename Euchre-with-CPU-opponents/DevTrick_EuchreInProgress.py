@@ -1855,7 +1855,8 @@ def left_of_dealer_plays_first(position_on_table, who_called, whats_trump, table
 
     else:
         print ("left_of_dealer_plays_first function says, 'chair was hu'")
-        hu_plays_a_card(position_on_table, whats_trump, who_called, table)
+        #NOTE: return here like for PC above
+        return hu_plays_a_card(position_on_table, whats_trump, who_called, table)
 
 
 def whos_winning(table_list):
@@ -2009,7 +2010,7 @@ def hu_plays_a_card(position_on_table, trump, who_called, table):
         card_to_return = card_chosen[0]
 
         hand.cards.remove(card_to_return)
-        
+        # NOTE: Test same game where human was first on the left and chose card #1 and got nontype 
         return [chair,card_to_return];
 
     if table_is_empty == False: # different rules apply than if hu player was playing the first card
@@ -2644,6 +2645,13 @@ while team_ns_score < 10 and team_ew_score < 10:
     # TRICK LEVEL WORK
     # # #
 
+
+    # move to next dealer
+    if table_position_list.index(dealers_turn) == 3:
+        dealers_turn = 0
+    else:
+        dealers_turn += 1
+        
     
     scores_to_add_ns_ew = check_tricks_for_points(who_called, team_ns_tricks_won, team_ew_tricks_won)
 

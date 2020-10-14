@@ -1113,13 +1113,14 @@ def pc_check_for_suits(hand_ob):
 def pc_single_suited(list_hand_suits):
     print ("\n PcSingleSuited FUNCTION")
     print (list_hand_suits)
+    # [2,0,1,2]
     
 #     single_suited = False
     num_suit = 4
     for num in list_hand_suits:
         if num == 0:
             num_suit -= 1
-    if num_suit <=2:
+    if num_suit <=3:
         return True
     else:
         return False
@@ -2648,10 +2649,11 @@ while team_ns_score < 10 and team_ew_score < 10:
 
     # move to next dealer
     if table_position_list.index(dealers_turn) == 3:
+
         dealers_turn = 0
     else:
         dealers_turn += 1
-        
+
     
     scores_to_add_ns_ew = check_tricks_for_points(who_called, team_ns_tricks_won, team_ew_tricks_won)
 
